@@ -15,6 +15,7 @@ using System.Windows.Shapes;
 
 namespace Uml_Creator
 {
+    //xxx
     /// <summary>
     /// Interaction logic for MainWindow.xaml
     /// </summary>
