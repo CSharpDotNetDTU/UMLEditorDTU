@@ -6,7 +6,38 @@
         xmlns:local="clr-namespace:Uml_Creator"
         mc:Ignorable="d"
         Title="MainWindow" Height="350" Width="600.0">
-    <Grid>
-        
-    </Grid>
+
+    <DockPanel LastChildFill="True">
+        <StatusBar DockPanel.Dock="Bottom" Height="23" Margin="0,0,0.2,0" RenderTransformOrigin="0.5,0.5">
+            <StatusBarItem>
+                <TextBlock Width="317">Status her</TextBlock>
+            </StatusBarItem>
+
+            <StatusBarItem>
+                <Button Content="-"></Button>
+            </StatusBarItem>
+            <StatusBarItem Margin="0,0,0,0.2" Width="105">
+                <Slider Width="100"></Slider>
+            </StatusBarItem>
+            <StatusBarItem>
+                <Button Content="+"></Button>
+            </StatusBarItem>
+        </StatusBar>
+        <ToolBarTray DockPanel.Dock="Top" Height="24" Margin="0,0,0.2,0">
+            <ToolBar Margin="0,0,-467,-19.8">
+                <Button Content="Open" Margin="0,0,0,0.4" VerticalAlignment="Bottom" ToolTip="Open af project">
+                </Button>
+                <Button Content="Save" ToolTip="Save your project" ></Button>
+                <Button Content="Undo" ToolTip="Undo last change" ></Button>
+                <Button Content="Redo" ToolTip="Redo last undo" ></Button>
+            </ToolBar>
+        </ToolBarTray>
+        <DockPanel DockPanel.Dock="Right" Margin="0,0,0,-0.4" RenderTransformOrigin="0.5,0.5" Width="128">
+            <Menu DockPanel.Dock="Top" Height="24"></Menu>
+            <Canvas></Canvas>
+        </DockPanel>
+        <Canvas/>
+    </DockPanel>
+
+
 </Window>
