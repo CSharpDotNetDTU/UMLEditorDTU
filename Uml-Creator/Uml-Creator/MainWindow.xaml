@@ -6,7 +6,7 @@
         xmlns:local="clr-namespace:Uml_Creator"
         mc:Ignorable="d"
         Title="MainWindow" Height="350" Width="600.0">
-    <Grid>
-        
-    </Grid>
+    <DockPanel>
+        <Menu x:Name="menu" Height="26" VerticalAlignment="Top"/>
+    </DockPanel>
 </Window>
