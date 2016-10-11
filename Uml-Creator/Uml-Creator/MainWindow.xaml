@@ -8,6 +8,22 @@
         Title="UML-Creator" Height="350" Width="600.0">
 
     <DockPanel LastChildFill="True">
+        <Menu DockPanel.Dock ="Top"  x:Name="menuBar" >
+            <MenuItem Header ="File">
+                <MenuItem Header ="New"></MenuItem>
+                <MenuItem Header ="Load"></MenuItem>
+                <MenuItem Header ="Save"></MenuItem>
+                <Separator />
+                <MenuItem Header ="Exit"></MenuItem>
+            </MenuItem>
+            <MenuItem Header ="Edit">
+                <MenuItem Header ="Redo"></MenuItem>
+                <MenuItem Header ="Undo"></MenuItem>
+                
+            </MenuItem>
+            
+        </Menu>
+  
         <StatusBar DockPanel.Dock="Bottom" Height="23" Margin="0,0,128.2,0" RenderTransformOrigin="0.5,0.5">
             <StatusBarItem>
                 <TextBlock x:Name="statusText" Width="305">Status her</TextBlock>
@@ -30,6 +46,9 @@
         </StatusBar>
         <ToolBarTray DockPanel.Dock="Top" Height="24" Margin="0,0,0.2,0">
             <ToolBar Margin="0,0,-467,-19.8">
+
+
+
                 <Button x:Name="openBut" ToolTip="Open af project">
                     <Image  Source="Images\Open Folder-64.png" Stretch="UniformToFill" Height="17"></Image>
                 </Button>
@@ -45,13 +64,18 @@
                     <Image Source="Images\Right-64.png" Stretch="UniformToFill" Height="17"></Image>
 
                 </Button>
+
+
             </ToolBar>
         </ToolBarTray>
         <DockPanel DockPanel.Dock="Right" Margin="0,0,0,-0.4" RenderTransformOrigin="0.5,0.5" Width="128">
-            <Menu DockPanel.Dock="Top" Height="24"></Menu>
+            <Menu DockPanel.Dock="Top" Height="24">
+                <ListBox x:Name="listBox" Height="100" Width="100"/>
+            </Menu>
             <Canvas x:Name="toolCanvas" Margin="0,0,0,-23" Height="275" VerticalAlignment="Top"></Canvas>
         </DockPanel>
         <Canvas x:Name="mainCanvas"/>
+        <Menu x:Name="menu" Height="272" VerticalAlignment="Top"/>
     </DockPanel>
 
 
