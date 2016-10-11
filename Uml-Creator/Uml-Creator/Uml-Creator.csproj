@@ -96,7 +96,7 @@
     <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
-    <Resource Include="Left-64.png" />
+    <Resource Include="Images\Left-64.png" />
     <Resource Include="Images\Minus Math -64.png" />
     <Resource Include="Images\Open Folder-64.png" />
     <Resource Include="Images\Plus Math-64.png" />
