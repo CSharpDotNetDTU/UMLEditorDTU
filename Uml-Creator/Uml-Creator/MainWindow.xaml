@@ -30,7 +30,7 @@
         </StatusBar>
         <ToolBarTray DockPanel.Dock="Top" Height="24" Margin="0,0,0.2,0">
             <ToolBar Margin="0,0,-467,-19.8">
-                <Button x:Name="openBut" ToolTip="Open af project" Click="openclick">
+                <Button x:Name="openBut" ToolTip="Open af project">
                     <Image  Source="Images\Open Folder-64.png" Stretch="UniformToFill" Height="17"></Image>
                 </Button>
                 <Button x:Name="saveBut" ToolTip="Save your project" >
