@@ -5,8 +5,54 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:Uml_Creator"
         mc:Ignorable="d"
-        Title="MainWindow" Height="350" Width="600.0">
-    <DockPanel>
-        <Menu x:Name="menu" Height="26" VerticalAlignment="Top"/>
+        Title="UML-Creator" Height="350" Width="600.0">
+
+    <DockPanel LastChildFill="True">
+        <StatusBar DockPanel.Dock="Bottom" Height="23" Margin="0,0,128.2,0" RenderTransformOrigin="0.5,0.5">
+            <StatusBarItem>
+                <TextBlock x:Name="statusText" Width="305">Status her</TextBlock>
+            </StatusBarItem>
+
+            <StatusBarItem>
+                <Button x:Name="zoomOBut" ToolTip="Zoom-out">
+                    <Image Source="C:\Users\AnwarC\Source\Repos\UMLEditorDTU\Uml-Creator\Uml-Creator\Images\Minus Math -64.png" Stretch="Fill" Width="17"></Image>
+
+                </Button>
+            </StatusBarItem>
+            <StatusBarItem Margin="0,0,0,0.2" Width="93">
+                <Slider x:Name="zoomSlider" Width="91" RenderTransformOrigin="0.496,0.564"></Slider>
+            </StatusBarItem>
+            <StatusBarItem Margin="0,0,0,0.2" Width="30">
+                <Button x:Name="zoomIBut" ToolTip="Zoom-in">
+                    <Image Source="C:\Users\AnwarC\Source\Repos\UMLEditorDTU\Uml-Creator\Uml-Creator\Images\Plus Math-64.png" Stretch="Fill" Width="17"></Image>
+                </Button>
+            </StatusBarItem>
+        </StatusBar>
+        <ToolBarTray DockPanel.Dock="Top" Height="24" Margin="0,0,0.2,0">
+            <ToolBar Margin="0,0,-467,-19.8">
+                <Button x:Name="openBut" ToolTip="Open af project" Click="openclick">
+                    <Image  Source="C:\Users\AnwarC\Source\Repos\UMLEditorDTU\Uml-Creator\Uml-Creator\Images\Open Folder-64.png" Stretch="UniformToFill" Height="17"></Image>
+                </Button>
+                <Button x:Name="saveBut" ToolTip="Save your project" >
+                    <Image Source="C:\Users\AnwarC\Source\Repos\UMLEditorDTU\Uml-Creator\Uml-Creator\Images\Save-64.png" Stretch="UniformToFill" Height="17"></Image>
+
+                </Button>
+                <Button x:Name="undoBut" ToolTip="Undo last change" >
+                    <Image Source="C:\Users\AnwarC\Source\Repos\UMLEditorDTU\Uml-Creator\Uml-Creator\Images\Left-64.png" Stretch="UniformToFill" Height="17"></Image>
+
+                </Button>
+                <Button x:Name="redoBut"  ToolTip="Redo last undo" >
+                    <Image Source="C:\Users\AnwarC\Source\Repos\UMLEditorDTU\Uml-Creator\Uml-Creator\Images\Right-64.png" Stretch="UniformToFill" Height="17"></Image>
+
+                </Button>
+            </ToolBar>
+        </ToolBarTray>
+        <DockPanel DockPanel.Dock="Right" Margin="0,0,0,-0.4" RenderTransformOrigin="0.5,0.5" Width="128">
+            <Menu DockPanel.Dock="Top" Height="24"></Menu>
+            <Canvas x:Name="toolCanvas" Margin="0,0,0,-23" Height="275" VerticalAlignment="Top"></Canvas>
+        </DockPanel>
+        <Canvas x:Name="mainCanvas"/>
     </DockPanel>
+
+
 </Window>

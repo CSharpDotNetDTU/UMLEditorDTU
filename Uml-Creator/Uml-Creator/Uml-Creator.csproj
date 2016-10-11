@@ -95,6 +95,14 @@
   <ItemGroup>
     <None Include="App.config" />
   </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Left-64.png" />
+    <Resource Include="Images\Minus Math -64.png" />
+    <Resource Include="Images\Open Folder-64.png" />
+    <Resource Include="Images\Plus Math-64.png" />
+    <Resource Include="Images\Right-64.png" />
+    <Resource Include="Images\Save-64.png" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
