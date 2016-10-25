@@ -1,5 +1,6 @@
 ﻿using System.Windows;
 
+
 namespace Uml_Creator.View
 {
     //
@@ -12,7 +13,5 @@ namespace Uml_Creator.View
         {
             InitializeComponent();
         }
-
-        
     }
 }

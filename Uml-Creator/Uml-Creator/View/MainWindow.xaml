@@ -1,12 +1,17 @@
 ﻿<Window x:Class="Uml_Creator.View.MainWindow"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:cmd="clr-namespace:GalaSoft.MvvmLight.Command;assembly=GalaSoft.MvvmLight.Platform"
+        xmlns:i="clr-namespace:System.Windows.Interactivity;assembly=System.Windows.Interactivity" 
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:vm="clr-namespace:Uml_Creator.ViewModel"
         xmlns:local="clr-namespace:Uml_Creator"
         mc:Ignorable="d"
         Title="UML-Creator" Height="350" Width="600.0">
-
+    <Window.DataContext>
+        <vm:MainViewModel/>
+    </Window.DataContext>
     <DockPanel LastChildFill="True">
         <Menu DockPanel.Dock ="Top"  x:Name="menuBar" >
             <!-- http://www.wpf-tutorial.com/common-interface-controls/menu-control/  Guide til menu -->
@@ -48,12 +53,11 @@
         <ToolBarTray DockPanel.Dock="Top" Height="24" Margin="0,0,0.2,0">
             <ToolBar Margin="0,0,-467,-19.8">
 
-
-
-                <Button x:Name="openBut" ToolTip="Open af project">
+                <Button Command="{Binding BtnLoadCommand}" Name="btn_Load" ToolTip="Åbn diagram">
                     <Image  Source="pack://application:,,,/Images\Open Folder-64.png" Stretch="UniformToFill" Height="17"></Image>
                 </Button>
-                <Button x:Name="saveBut" ToolTip="Save your project" >
+
+                <Button Command="{Binding BtnGemCommand}" Name="btn_gem" ToolTip="Gem diagram">
                     <Image Source="pack://application:,,,/Images\Save-64.png" Stretch="UniformToFill" Height="17"></Image>
 
                 </Button>
