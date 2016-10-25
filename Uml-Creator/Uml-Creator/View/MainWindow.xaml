@@ -12,19 +12,33 @@
     <Window.DataContext>
         <vm:MainViewModel/>
     </Window.DataContext>
+    <Window.InputBindings>
+        <KeyBinding Command="{Binding BtnLoadCommand}" Key="O" Modifiers="Control"/>
+        <KeyBinding Command="{Binding BtnGemCommand}" Key="S" Modifiers="Control"/>
+        <KeyBinding Key="Z" Modifiers="Control"/>
+        <KeyBinding Key="Y" Modifiers="Control"/>
+        <KeyBinding Key="N" Modifiers="Control"/>
+        <KeyBinding Key="C" Modifiers="Control"/>
+        <KeyBinding Key="V" Modifiers="Control"/>
+        <KeyBinding Key="X" Modifiers="Control"/>
+        <KeyBinding Key="Enter" Modifiers="Control"/>
+        <KeyBinding Key="A" Modifiers="Alt"/>
+        <KeyBinding Key="O" Modifiers="Alt"/>
+        <KeyBinding Key="C" Modifiers="Alt"/>
+    </Window.InputBindings>
     <DockPanel LastChildFill="True">
         <Menu DockPanel.Dock ="Top"  x:Name="menuBar" >
             <!-- http://www.wpf-tutorial.com/common-interface-controls/menu-control/  Guide til menu -->
             <MenuItem Header ="File">
-                <MenuItem Header ="New"></MenuItem>
-                <MenuItem Header ="Load"></MenuItem>
-                <MenuItem Header ="Save"></MenuItem>
+                <MenuItem Header ="New" InputGestureText="Ctrl+N"/>
+                <MenuItem Header ="Load" InputGestureText="Ctrl+O" Command="{Binding BtnLoadCommand}"/>
+                <MenuItem Header ="Save" InputGestureText="Ctrl+S" Command="{Binding BtnGemCommand}"/>
                 <Separator />
                 <MenuItem Header ="Exit"></MenuItem>
             </MenuItem>
             <MenuItem Header ="Edit">
-                <MenuItem Header ="Redo"></MenuItem>
-                <MenuItem Header ="Undo"></MenuItem>
+                <MenuItem Header ="Redo" InputGestureText="Ctrl+Y"/>
+                <MenuItem Header ="Undo" InputGestureText="Ctrl+Z"/>
                 
             </MenuItem>
             
