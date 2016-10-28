@@ -27,7 +27,7 @@
         <KeyBinding Key="C" Modifiers="Alt"/>
     </Window.InputBindings>
     <DockPanel LastChildFill="True">
-        <Menu DockPanel.Dock ="Top"  x:Name="menuBar" >
+        <Menu DockPanel.Dock ="Top"  x:Name="MenuBarTop" >
             <!-- http://www.wpf-tutorial.com/common-interface-controls/menu-control/  Guide til menu -->
             <MenuItem Header ="File">
                 <MenuItem Header ="New" InputGestureText="Ctrl+N"/>
@@ -46,20 +46,20 @@
   
         <StatusBar DockPanel.Dock="Bottom" Height="23" Margin="0,0,128.2,0" RenderTransformOrigin="0.5,0.5">
             <StatusBarItem>
-                <TextBlock x:Name="statusText" Width="305">Status her</TextBlock>
+                <TextBlock x:Name="StatusBarText" Width="305">Status her</TextBlock>
             </StatusBarItem>
 
             <StatusBarItem>
-                <Button x:Name="zoomOBut" ToolTip="Zoom-out">
+                <Button x:Name="BtnZoomOut" ToolTip="Zoom-out">
                     <Image  Source="pack://application:,,,/Images/Minus Math -64.png" Stretch="Fill" Width="17"></Image>
 
                 </Button>
             </StatusBarItem>
             <StatusBarItem Margin="0,0,0,0.2" Width="93">
-                <Slider x:Name="zoomSlider" Width="91" RenderTransformOrigin="0.496,0.564"></Slider>
+                <Slider x:Name="SliderZoom" Width="91" RenderTransformOrigin="0.496,0.564"></Slider>
             </StatusBarItem>
             <StatusBarItem Margin="0,0,0,0.2" Width="30">
-                <Button x:Name="zoomIBut" ToolTip="Zoom-in">
+                <Button x:Name="BtnZoomIn" ToolTip="Zoom-in">
                     <Image Source="pack://application:,,,/Images\Plus Math-64.png" Stretch="Fill" Width="17"></Image>
                 </Button>
             </StatusBarItem>
@@ -67,19 +67,19 @@
         <ToolBarTray DockPanel.Dock="Top" Height="24" Margin="0,0,0.2,0">
             <ToolBar Margin="0,0,-467,-19.8">
 
-                <Button Command="{Binding BtnLoadCommand}" Name="btn_Load" ToolTip="Åbn diagram">
+                <Button Command="{Binding BtnLoadCommand}" Name="BtnLoad" ToolTip="Åbn diagram">
                     <Image  Source="pack://application:,,,/Images\Open Folder-64.png" Stretch="UniformToFill" Height="17"></Image>
                 </Button>
 
-                <Button Command="{Binding BtnGemCommand}" Name="btn_gem" ToolTip="Gem diagram">
+                <Button Command="{Binding BtnGemCommand}" Name="BtnGem" ToolTip="Gem diagram">
                     <Image Source="pack://application:,,,/Images\Save-64.png" Stretch="UniformToFill" Height="17"></Image>
 
                 </Button>
-                <Button x:Name="undoBut" ToolTip="Undo last change" >
+                <Button x:Name="BtnUndo" ToolTip="Undo last change" >
                     <Image Source="pack://application:,,,/Images\Left-64.png" Stretch="UniformToFill" Height="17"></Image>
 
                 </Button>
-                <Button x:Name="redoBut"  ToolTip="Redo last undo" >
+                <Button x:Name="BtnRedo"  ToolTip="Redo last undo" >
                     <Image Source="pack://application:,,,/Images\Right-64.png" Stretch="UniformToFill" Height="17"></Image>
 
                 </Button>
@@ -89,12 +89,11 @@
         </ToolBarTray>
         <DockPanel DockPanel.Dock="Right" Margin="0,0,0,-0.4" RenderTransformOrigin="0.5,0.5" Width="128">
             <Menu DockPanel.Dock="Top" Height="24">
-                <ListBox x:Name="listBox" Height="100" Width="100"/>
+                <ListBox x:Name="ListBox" Height="100" Width="100"/>
             </Menu>
-            <Canvas x:Name="toolCanvas" Margin="0,0,0,-23" Height="275" VerticalAlignment="Top"></Canvas>
+            <Canvas x:Name="ToolCanvas" Margin="0,0,0,-23" Height="275" VerticalAlignment="Top"></Canvas>
         </DockPanel>
-        <Canvas x:Name="mainCanvas"/>
-        <Menu x:Name="menu" Height="272" VerticalAlignment="Top"/>
+        <Canvas x:Name="MainCanvas"/>
     </DockPanel>
 
 
