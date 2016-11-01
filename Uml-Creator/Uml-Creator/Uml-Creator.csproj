@@ -80,13 +80,18 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
+    <Compile Include="Model\Attribute.cs" />
     <Compile Include="Model\Diagram.cs" />
     <Compile Include="Model\ENUM\EFigure.cs" />
     <Compile Include="Model\ENUM\ELine.cs" />
+    <Compile Include="Model\ENUM\EVisibility.cs" />
     <Compile Include="Model\Figure.cs" />
+    <Compile Include="Model\Interfaces\IAttribute.cs" />
     <Compile Include="Model\Interfaces\IFigure.cs" />
     <Compile Include="Model\Interfaces\ILine.cs" />
+    <Compile Include="Model\Interfaces\IMethod.cs" />
     <Compile Include="Model\Line.cs" />
+    <Compile Include="Model\Method.cs" />
     <Compile Include="ViewModel\Gem_Load.cs" />
     <Compile Include="ViewModel\MainViewModel.cs" />
     <Compile Include="View\App.xaml.cs">
