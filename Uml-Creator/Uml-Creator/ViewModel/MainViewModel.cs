@@ -59,7 +59,20 @@ namespace Uml_Creator.ViewModel
             {
                 XmlDocument xmlDocument = new XmlDocument();
                 xmlDocument.Load(loadfildialog.FileName);
+                string xmlString = xmlDocument.OuterXml;
 
+                using (StringReader read = new StringReader(xmlString))
+                {
+                    Type outType = 3.GetType(); //skal være samme slags objekter som diagrammet
+                    XmlSerializer serializer = new XmlSerializer(outType);
+                    using (XmlReader reader = new XmlTextReader(read))
+                    {
+                        serializer.Deserialize(reader);
+                        reader.Close();
+                    }
+
+                    read.Close();
+                }
             }
             catch (Exception ex)
             {
@@ -75,8 +88,7 @@ namespace Uml_Creator.ViewModel
             SaveFileDialog gemfildialog = new SaveFileDialog();
             gemfildialog.Filter = "XML files (*.xml)|*.xml";
             if (gemfildialog.ShowDialog() != DialogResult.OK) return;
-            var serialObject = new object(); //skal importere diagrammets data
-            if (gemfildialog.ShowDialog() != DialogResult.OK) return;
+            var serialObject = 5; //skal importere diagrammets data
             if (serialObject == null) return;
             try
             {
@@ -86,6 +98,7 @@ namespace Uml_Creator.ViewModel
                 {
                     serializer.Serialize(stream, serialObject);
                     stream.Position = 0;
+                    xmlDocument.Load(stream);
                     xmlDocument.Save(gemfildialog.FileName);
                     stream.Close();
                 }
