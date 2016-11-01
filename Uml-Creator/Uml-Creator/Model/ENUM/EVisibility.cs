@@ -8,6 +8,6 @@ namespace Uml_Creator.Model.ENUM
 {
     public enum EVisibility
     {
-        Public, Protected, Private;
+        Public, Protected, Private
     }
 }

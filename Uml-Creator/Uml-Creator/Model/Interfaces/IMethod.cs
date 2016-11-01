@@ -12,6 +12,6 @@ namespace Uml_Creator.Model.Interfaces
         string Name { get; set; }
         EVisibility Visibility { get; set; }
         string Type { get; set; }
-        List<string> Parameters { get; set }
+        List<string> Parameters { get; set; }
     }
 }
