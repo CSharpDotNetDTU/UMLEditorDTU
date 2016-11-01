@@ -1,8 +1,11 @@
 ﻿using System;
 using System.ComponentModel;
+using System.IO;
 using System.Windows.Forms;
 using GalaSoft.MvvmLight.CommandWpf;
 using System.Windows.Input;
+using System.Xml;
+using System.Xml.Serialization;
 
 namespace Uml_Creator.ViewModel
 {
@@ -46,29 +49,58 @@ namespace Uml_Creator.ViewModel
              BtnGemCommand = new RelayCommand(Save_Click);
         }
 
-     
+
         private void Load_Click()
         {
             OpenFileDialog loadfildialog = new OpenFileDialog();
             loadfildialog.Filter = "XML files (*.xml)|*.xml";
-            if (loadfildialog.ShowDialog() == System.Windows.Forms.DialogResult.OK)
+            if (loadfildialog.ShowDialog() != DialogResult.OK) return;
+            try
             {
-                //  textBox1.Text = File.ReadAllText(loadfildialog.FileName);
+                XmlDocument xmlDocument = new XmlDocument();
+                xmlDocument.Load(loadfildialog.FileName);
+
             }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.ToString());
+                //Log exception here
+            }
+            //convert fra xml til diagram via serialization
+            //  textBox1.Text = File.ReadAllText(loadfildialog.FileName);
         }
 
         private void Save_Click()
         {
             SaveFileDialog gemfildialog = new SaveFileDialog();
             gemfildialog.Filter = "XML files (*.xml)|*.xml";
-            if (gemfildialog.ShowDialog() == System.Windows.Forms.DialogResult.OK)
+            if (gemfildialog.ShowDialog() != DialogResult.OK) return;
+            var serialObject = new object(); //skal importere diagrammets data
+            if (gemfildialog.ShowDialog() != DialogResult.OK) return;
+            if (serialObject == null) return;
+            try
             {
-                // File.WriteAllText(gemfildialog.FileName, textBox1.Text);
+                XmlDocument xmlDocument = new XmlDocument();
+                XmlSerializer serializer = new XmlSerializer(serialObject.GetType());
+                using (MemoryStream stream = new MemoryStream())
+                {
+                    serializer.Serialize(stream, serialObject);
+                    stream.Position = 0;
+                    xmlDocument.Save(gemfildialog.FileName);
+                    stream.Close();
+                }
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.ToString());
+                //Log exception here
             }
 
+            // File.WriteAllText(gemfildialog.FileName, textBox1.Text);
         }
 
-        public event PropertyChangedEventHandler PropertyChanged;
+        public event
+            PropertyChangedEventHandler PropertyChanged;
 
         private void OnPropertyChanged(string propertyName)
         {
