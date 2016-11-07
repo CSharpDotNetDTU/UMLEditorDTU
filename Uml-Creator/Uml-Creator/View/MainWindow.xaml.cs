@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Diagnostics;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
@@ -113,6 +114,7 @@ namespace Uml_Creator.View
 
                     e.Handled = true;
                 }
+                
             }
         }
 
@@ -176,15 +178,13 @@ namespace Uml_Creator.View
         /// moves all selected figures with the mouse positions
         /// 
         /// </summary>
-        /// <param name="origMouseDownPoint"></param>
-        /// <param name="curMouseDownPoint"></param>
         private void updateMoveSelection(Point origMouseDownPoint, Point curMouseDownPoint)
         {
             //1. we figure out the vector of movement that each object must move
             //2. we have a loop that spans over all objects that are selected.
             //3. we change the pos of each object
 
-            double xDirection = origMouseDownPoint.X - curMouseDownPoint.X;
+            double  xDirection = origMouseDownPoint.X - curMouseDownPoint.X;
             double  yDirection = origMouseDownPoint.Y - curMouseDownPoint.Y;
 
 
@@ -192,6 +192,7 @@ namespace Uml_Creator.View
             {
                 figure.X = figure.X + xDirection;
                 figure.Y = figure.Y + yDirection;
+                
 
             }
         }
@@ -205,17 +206,23 @@ namespace Uml_Creator.View
         public bool IsMouseOnFigure(Point mousePoint)
         {
 
+
             foreach (FigureViewModel figure in this.mainViewModel.FiguresViewModels)
             {
+
+                
                 //Vi skal se om den ligger inden for figurens område.
                 if (mousePoint.X >= figure.X && mousePoint.X < (figure.Width + figure.X))
                 {
-                    
+                    if (mousePoint.Y >= figure.Y && mousePoint.Y < (figure.Height + figure.Y))
+                    {
+                        Debug.Print("cord Mouse: " + mousePoint.X + "," + mousePoint.Y);
+                        Debug.Print("cord Figure: " + figure.X + "," + figure.Y);
+                        Debug.Print("-------------------------------------------------");
+                        return true;
+                    }
                 }
-                if (figure.X == mousePoint.X && figure.Y == mousePoint.Y)
-                {
-                    return true;
-                }
+        
                 
             }
             return false;
