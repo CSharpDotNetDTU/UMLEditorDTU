@@ -33,6 +33,7 @@
                 <MenuItem Header ="New" InputGestureText="Ctrl+N"/>
                 <MenuItem Header ="Load" InputGestureText="Ctrl+O" Command="{Binding BtnLoadCommand}"/>
                 <MenuItem Header ="Save" InputGestureText="Ctrl+S" Command="{Binding BtnGemCommand}"/>
+                <MenuItem Header ="Export as PNG" InputGestureText="Ctrl+E" Command="{Binding BtnExportCommand}" CommandParameter="{Binding ElementName=MainCanvas, Mode=OneWay}" IsCheckable="True"/>
                 <Separator />
                 <MenuItem Header ="Exit"></MenuItem>
             </MenuItem>
