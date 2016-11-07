@@ -47,6 +47,7 @@ namespace Uml_Creator.View
         /// all selected objects will be moved.
         /// </summary>
         private bool isMovingFigures;
+        
 
 
         #endregion Data Members
@@ -59,7 +60,7 @@ namespace Uml_Creator.View
         }
 
 
-        private ViewModel.MainViewModel mainViewModel
+        private ViewModel.MainViewModel MainViewModel
         {
             get
             {
@@ -75,7 +76,8 @@ namespace Uml_Creator.View
             if (e.ChangedButton == MouseButton.Left)
             {
                 isLeftMouseButtonDownOnWindow = true;
-                origMouseDownPoint = e.GetPosition(this);
+               // origMouseDownPoint = e.GetPosition(this);
+                origMouseDownPoint = e.GetPosition(figureListBox);
 
                 this.CaptureMouse();
 
@@ -104,6 +106,7 @@ namespace Uml_Creator.View
                 if (isMovingFigures)
                 {
                     isMovingFigures = false;
+                    figureListBox.SelectedItems.Clear();
                     e.Handled = true;
                 }
 
@@ -128,12 +131,13 @@ namespace Uml_Creator.View
                 //
                 // Drag selection is in progress.
                 //
-                Point curMouseDownPoint = e.GetPosition(this);
+               Point curMouseDownPoint = e.GetPosition(figureListBox);
+                //Point curMouseDownPoint = e.GetPosition(this);
                 UpdateDragSelectionRect(origMouseDownPoint, curMouseDownPoint);
 
                 e.Handled = true;
             }
-            else if (isLeftMouseButtonDownOnWindow)
+            if (isLeftMouseButtonDownOnWindow)
             {
                 /*
                  The user is left-dragging the mouse,
@@ -141,17 +145,18 @@ namespace Uml_Creator.View
                  they have dragged past the threshold value and their mouse position isnt
                  on any object on screen, if mouse is on object, then move object.    
                  */
-                Point curMouseDownPoint = e.GetPosition(this);
+                Point curMouseDownPoint = e.GetPosition(figureListBox);
+                //Point curMouseDownPoint = e.GetPosition(this);
                 var dragDelta = curMouseDownPoint - origMouseDownPoint;
                 double dragDistance = Math.Abs(dragDelta.Length);
 
-                if (IsMouseOnFigure(curMouseDownPoint))
+                if (IsMouseOnFigure(curMouseDownPoint) && !isDraggingSelectionRect)
                 {
                     isMovingFigures = true;
 
-                    InitMoveSelectionRect(origMouseDownPoint,curMouseDownPoint);
+                    InitMoveSelectionRect(curMouseDownPoint);
                 }
-                if (dragDistance > DragThreshold && !IsMouseOnFigure(curMouseDownPoint))
+                if (dragDistance > DragThreshold && !IsMouseOnFigure(curMouseDownPoint) && !isMovingFigures)
                 {
                     //
                     // When the mouse has been dragged more than the threshold value commence drag selection.
@@ -170,31 +175,32 @@ namespace Uml_Creator.View
             }
         }
 
-        private void InitMoveSelectionRect(Point origMouseDownPoint, Point curMouseDownPoint)
+        private void InitMoveSelectionRect(Point curMouseDownPoint)
         {
-            updateMoveSelection(origMouseDownPoint,curMouseDownPoint);
+            updateMoveSelection(curMouseDownPoint);
         }
         /// <summary>
         /// moves all selected figures with the mouse positions
         /// 
         /// </summary>
-        private void updateMoveSelection(Point origMouseDownPoint, Point curMouseDownPoint)
+        private void updateMoveSelection(Point curMouseDownPoint)
         {
             //1. we figure out the vector of movement that each object must move
             //2. we have a loop that spans over all objects that are selected.
-            //3. we change the pos of each object
+            //3. we change the pos of each object that is selected
+            
+            var dragDelta = curMouseDownPoint - origMouseDownPoint;
 
-            double  xDirection = origMouseDownPoint.X - curMouseDownPoint.X;
-            double  yDirection = origMouseDownPoint.Y - curMouseDownPoint.Y;
+            origMouseDownPoint = curMouseDownPoint;
 
-
-            foreach (FigureViewModel figure in this.mainViewModel.FiguresViewModels)
+            foreach (FigureViewModel figure in figureListBox.SelectedItems)
             {
-                figure.X = figure.X + xDirection;
-                figure.Y = figure.Y + yDirection;
-                
+                figure.X += dragDelta.X;
+                figure.Y += dragDelta.Y;
+
 
             }
+          
         }
 
         ///<summary>
@@ -205,25 +211,30 @@ namespace Uml_Creator.View
 
         public bool IsMouseOnFigure(Point mousePoint)
         {
+            
 
-
-            foreach (FigureViewModel figure in this.mainViewModel.FiguresViewModels)
+            foreach (FigureViewModel figure in figureListBox.Items)
             {
-
-                
+                /*
+                Debug.Print("cord Mouse: " + mousePoint.X + "," + mousePoint.Y);
+                Debug.Print("cord Figure: " + figure.X + "," + figure.Y);
+                Debug.Print("-------------------------------------------------");
+                */
+                ///
+                /// Tolerance is used because the mouse can move outside the area, so it helps to have a little extra area to hold on to while moving
+                double TOLERANCE = 20.0;
                 //Vi skal se om den ligger inden for figurens område.
-                if (mousePoint.X >= figure.X && mousePoint.X < (figure.Width + figure.X))
+                if (mousePoint.X >= figure.X- TOLERANCE && mousePoint.X < (figure.Width + figure.X + TOLERANCE))
                 {
-                    if (mousePoint.Y >= figure.Y && mousePoint.Y < (figure.Height + figure.Y))
+                    if (mousePoint.Y >= figure.Y - TOLERANCE && mousePoint.Y < (figure.Height + figure.Y + TOLERANCE))
                     {
-                        Debug.Print("cord Mouse: " + mousePoint.X + "," + mousePoint.Y);
-                        Debug.Print("cord Figure: " + figure.X + "," + figure.Y);
-                        Debug.Print("-------------------------------------------------");
+                        
                         return true;
                     }
                 }
-        
-                
+
+
+
             }
             return false;
 
@@ -309,7 +320,7 @@ namespace Uml_Creator.View
             //
             // Find and select all the list box items.
             //
-            foreach (FigureViewModel figure in this.mainViewModel.FiguresViewModels)
+            foreach (FigureViewModel figure in this.MainViewModel.FiguresViewModels)
             {
                 Rect itemRect = new Rect(figure.X, figure.Y, figure.Width, figure.Height);
                 if (dragRect.Contains(itemRect))

@@ -46,7 +46,7 @@ namespace Uml_Creator.ViewModel
             set
             {
                 Figure.Height = value;
-                OnPropertyChanged("Height changed");
+                OnPropertyChanged("Height");
             }
         }
 
@@ -57,7 +57,7 @@ namespace Uml_Creator.ViewModel
             set
             {
                 Figure.Width = value;
-                OnPropertyChanged("Width changed");
+                OnPropertyChanged("Width");
             }
         }
 
@@ -69,7 +69,7 @@ namespace Uml_Creator.ViewModel
             set
             {
                 Figure.X = value;
-                OnPropertyChanged("X Pos changed");
+                OnPropertyChanged("X");
 
             }
         }
@@ -82,7 +82,7 @@ namespace Uml_Creator.ViewModel
             set
             {
                 Figure.Y = value;
-                OnPropertyChanged("Y Pos updated");
+                OnPropertyChanged("Y");
             }
         }
 
@@ -93,7 +93,7 @@ namespace Uml_Creator.ViewModel
             set
             {
                 Figure.Data = value;
-                OnPropertyChanged("Data updated");
+                OnPropertyChanged("Data");
             }
         }
 
