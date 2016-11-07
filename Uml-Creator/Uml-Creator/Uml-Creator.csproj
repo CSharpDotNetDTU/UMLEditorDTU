@@ -66,6 +66,8 @@
     <Compile Include="Model\Interfaces\IFigure.cs" />
     <Compile Include="Model\Interfaces\ILine.cs" />
     <Compile Include="Model\Line.cs" />
+    <Compile Include="ViewModel\FigureViewModel.cs" />
+    <Compile Include="ViewModel\ViewModel.cs" />
     <Compile Include="View\App.xaml.cs">
       <DependentUpon>App.xaml</DependentUpon>
       <SubType>Code</SubType>

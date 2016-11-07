@@ -3,10 +3,18 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        
+        xmlns:vd ="clr-namespace:Uml_Creator.ViewModel"
         xmlns:local="clr-namespace:Uml_Creator"
+        
+        MouseDown="Window_MouseDown"
+        MouseUp="Window_MouseUp"
+        MouseMove="Window_MouseMove"
         mc:Ignorable="d"
         Title="UML-Creator" Height="350" Width="600.0">
+    <Window.DataContext>
+        <vd:ViewModel/>
+    </Window.DataContext>
+
 
     <DockPanel LastChildFill="True">
         <Menu DockPanel.Dock ="Top"  x:Name="menuBar" >
@@ -76,8 +84,57 @@
             </Menu>
             <Canvas x:Name="toolCanvas" Margin="0,0,0,-23" Height="275" VerticalAlignment="Top"></Canvas>
         </DockPanel>
-        <Canvas x:Name="mainCanvas"/>
-        <Menu x:Name="menu" Height="272" VerticalAlignment="Top"/>
+        <Grid>
+
+            <ListBox
+            x:Name="figureListBox"
+            ItemsSource="{Binding FigureViewModels}"
+            SelectionMode="Extended" 
+            
+            >
+                <ListBox.ItemsPanel>
+                    <ItemsPanelTemplate>
+                        <Canvas/>
+                    </ItemsPanelTemplate>
+                </ListBox.ItemsPanel>
+                <ListBox.ItemContainerStyle>
+                    <Style
+                    TargetType="ListBoxItem"
+                >
+                        <Setter
+                        Property="Canvas.Left"
+                        Value="{Binding X}"
+                        />
+                        <Setter
+                        Property="Canvas.Top"
+                        Value="{Binding Y}"
+                        />
+                    </Style>
+                </ListBox.ItemContainerStyle>
+                <ItemsControl.ItemTemplate>
+                    <DataTemplate>
+                        <Rectangle  Width="{Binding Width}" Height="{Binding Height}" Fill="Black"/>
+                    </DataTemplate>
+                </ItemsControl.ItemTemplate>
+            </ListBox>
+
+            <Canvas
+            x:Name="dragSelectionCanvas"
+            Visibility="Collapsed"
+            >
+                <Border
+                    x:Name="dragSelectionBorder"
+                    BorderBrush="Blue"
+                    BorderThickness="1"
+                    Background="LightBlue"
+                    CornerRadius="1"
+                    Opacity="0.5"
+                />
+            </Canvas>
+
+        </Grid>
+
+
     </DockPanel>
 
 
