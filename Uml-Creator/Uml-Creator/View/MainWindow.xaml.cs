@@ -5,6 +5,7 @@ using System.Windows.Input;
 using System.Windows.Shapes;
 using Uml_Creator.ViewModel;
 
+
 namespace Uml_Creator.View
 {
     //
@@ -57,11 +58,11 @@ namespace Uml_Creator.View
         }
 
 
-        private ViewModel.ViewModel ViewModel
+        private ViewModel.MainViewModel mainViewModel
         {
             get
             {
-                return (ViewModel.ViewModel)this.DataContext;
+                return (ViewModel.MainViewModel)this.DataContext;
             }
         }
 
@@ -187,7 +188,7 @@ namespace Uml_Creator.View
             double  yDirection = origMouseDownPoint.Y - curMouseDownPoint.Y;
 
 
-            foreach (FigureViewModel figure in this.ViewModel.FiguresViewModels)
+            foreach (FigureViewModel figure in this.mainViewModel.FiguresViewModels)
             {
                 figure.X = figure.X + xDirection;
                 figure.Y = figure.Y + yDirection;
@@ -204,7 +205,7 @@ namespace Uml_Creator.View
         public bool IsMouseOnFigure(Point mousePoint)
         {
 
-            foreach (FigureViewModel figure in this.ViewModel.FiguresViewModels)
+            foreach (FigureViewModel figure in this.mainViewModel.FiguresViewModels)
             {
                 //Vi skal se om den ligger inden for figurens område.
                 if (mousePoint.X >= figure.X && mousePoint.X < (figure.Width + figure.X))
@@ -301,7 +302,7 @@ namespace Uml_Creator.View
             //
             // Find and select all the list box items.
             //
-            foreach (FigureViewModel figure in this.ViewModel.FiguresViewModels)
+            foreach (FigureViewModel figure in this.mainViewModel.FiguresViewModels)
             {
                 Rect itemRect = new Rect(figure.X, figure.Y, figure.Width, figure.Height);
                 if (dragRect.Contains(itemRect))
