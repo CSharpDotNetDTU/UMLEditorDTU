@@ -40,7 +40,7 @@
                 <MenuItem Header ="New" InputGestureText="Ctrl+N"/>
                 <MenuItem Header ="Load" InputGestureText="Ctrl+O" Command="{Binding BtnLoadCommand}"/>
                 <MenuItem Header ="Save" InputGestureText="Ctrl+S" Command="{Binding BtnGemCommand}"/>
-                <MenuItem Header ="Export as PNG" InputGestureText="Ctrl+E" Command="{Binding BtnExportCommand}" CommandParameter="{Binding ElementName=MainCanvas, Mode=OneWay}" IsCheckable="True"/>
+                <MenuItem Header ="Export as PNG" InputGestureText="Ctrl+E" Command="{Binding BtnExportCommand}" CommandParameter="{Binding ElementName=mainCanvas, Mode=OneWay}" IsCheckable="True"/>
                 <Separator />
                 <MenuItem Header ="Exit"></MenuItem>
             </MenuItem>
@@ -101,7 +101,7 @@
             </Menu>
             <Canvas x:Name="ToolCanvas" Margin="0,0,0,-23" Height="275" VerticalAlignment="Top"></Canvas>
         </DockPanel>
-        <Grid>
+        <Grid x:Name="mainCanvas">
 
             <ListBox
             x:Name="figureListBox"
@@ -135,20 +135,20 @@
                 </ItemsControl.ItemTemplate>
             </ListBox>
 
-            <Canvas
+                <Canvas
             x:Name="dragSelectionCanvas"
             Visibility="Collapsed"
             >
-                <Border
+                    <Border
                     x:Name="dragSelectionBorder"
                     BorderBrush="Blue"
                     BorderThickness="1"
                     Background="LightBlue"
                     CornerRadius="1"
-                    Opacity="0.5"
+                    Opacity="0.5"                  
                 />
-            </Canvas>
-
+                </Canvas>
+            
         </Grid>
 
 

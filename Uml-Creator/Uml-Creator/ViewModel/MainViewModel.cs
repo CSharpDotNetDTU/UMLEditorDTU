@@ -14,6 +14,7 @@ using System.Windows.Controls;
 using System.IO;
 using System.Windows.Media;
 using System.Windows;
+using System.Diagnostics;
 
 namespace Uml_Creator.ViewModel
 {
@@ -79,7 +80,7 @@ namespace Uml_Creator.ViewModel
             };
             BtnLoadCommand = new RelayCommand(Load_Click);
             BtnGemCommand = new RelayCommand(Save_Click);
-            BtnExportCommand = new RelayCommand<Canvas>(Export_Click);
+            BtnExportCommand = new RelayCommand<Grid>(Export_Click);
 
         }
 
@@ -143,11 +144,11 @@ namespace Uml_Creator.ViewModel
                 //Log exception here
             }
 
-            // File.WriteAllText(gemfildialog.FileName, textBox1.Text);
         }
 
-        private void Export_Click(Canvas canvas)
+        private void Export_Click(Grid canvas)
         {
+            
             SaveFileDialog exportfildialog = new SaveFileDialog();
             exportfildialog.Filter = "PNG files (*.png)|*.png";
 
@@ -157,12 +158,12 @@ namespace Uml_Creator.ViewModel
                                             (int)canvas.RenderSize.Height, 96d, 96d, PixelFormats.Default);
                 rtb.Render(canvas);
 
-                var crop = new CroppedBitmap(rtb, new Int32Rect(50, 50, 250, 250));
+                //var crop = new CroppedBitmap(rtb, new Int32Rect(0, 0, 1000, 1000));
 
                 BitmapEncoder pngEncoder = new PngBitmapEncoder();
-                pngEncoder.Frames.Add(BitmapFrame.Create(crop));
+                pngEncoder.Frames.Add(BitmapFrame.Create(rtb));
 
-                using (var fs = File.OpenWrite(filename))
+                using (var fs = File.OpenWrite(exportfildialog.FileName))
                 {
                     pngEncoder.Save(fs);
                 }
