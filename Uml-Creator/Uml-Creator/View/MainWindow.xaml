@@ -101,6 +101,15 @@
             </Menu>
             <Canvas x:Name="ToolCanvas" Margin="0,0,0,-23" Height="275" VerticalAlignment="Top"></Canvas>
         </DockPanel>
+       
+        
+        
+        
+        
+        
+        
+        
+        
         <Grid>
 
             <ListBox
