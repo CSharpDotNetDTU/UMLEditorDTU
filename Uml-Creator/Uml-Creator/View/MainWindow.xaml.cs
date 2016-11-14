@@ -215,11 +215,7 @@ namespace Uml_Creator.View
 
             foreach (FigureViewModel figure in figureListBox.Items)
             {
-                /*
-                Debug.Print("cord Mouse: " + mousePoint.X + "," + mousePoint.Y);
-                Debug.Print("cord Figure: " + figure.X + "," + figure.Y);
-                Debug.Print("-------------------------------------------------");
-                */
+                
                 ///
                 /// Tolerance is used because the mouse can move outside the area, so it helps to have a little extra area to hold on to while moving
                 double TOLERANCE = 20.0;
