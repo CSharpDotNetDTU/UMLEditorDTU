@@ -7,7 +7,9 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:vm="clr-namespace:Uml_Creator.ViewModel"
         xmlns:local="clr-namespace:Uml_Creator"
-        
+        xmlns:stolenStuff="clr-namespace:Uml_Creator.StolenStuff"
+
+
         MouseDown="Window_MouseDown"
         MouseUp="Window_MouseUp"
         MouseMove="Window_MouseMove"
@@ -131,7 +133,38 @@
                 </ListBox.ItemContainerStyle>
                 <ItemsControl.ItemTemplate>
                     <DataTemplate>
-                        <Rectangle  Width="{Binding Width}" Height="{Binding Height}" Fill="Black"/>
+
+                        <stolenStuff:EditableTextBlock
+                            Text="{Binding Data, Mode=TwoWay}" 
+                            IsInEditMode="{Binding Edit, Mode=TwoWay}"
+                             MouseDown="Figure_MouseDown"
+                            MouseUp="Figure_MouseUp"
+                            MouseMove="Figure_MouseMove"
+                            />
+                           
+                        
+                            
+                        
+                        
+                        <!-->
+                        <Border BorderBrush="Black" BorderThickness="1" Background="White">
+                            <TextBlock Text="{Binding Data}"
+                              MouseDown="Figure_MouseDown"
+                            MouseUp="Figure_MouseUp"
+                            MouseMove="Figure_MouseMove"
+                                       />
+                        </Border>
+                       
+                        
+                        <Rectangle  
+                            Width="{Binding Width}"
+                            Height="{Binding Height}" 
+                            Fill="Black"
+                            Cursor="Hand"
+                            MouseDown="Figure_MouseDown"
+                            MouseUp="Figure_MouseUp"
+                            MouseMove="Figure_MouseMove"
+                                    /> <-->
                     </DataTemplate>
                 </ItemsControl.ItemTemplate>
             </ListBox>

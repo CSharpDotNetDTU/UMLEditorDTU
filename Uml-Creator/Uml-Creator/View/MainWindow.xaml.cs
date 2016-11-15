@@ -1,9 +1,8 @@
 ﻿using System;
-using System.Diagnostics;
+
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
-using System.Windows.Shapes;
 using Uml_Creator.ViewModel;
 
 
@@ -22,34 +21,37 @@ namespace Uml_Creator.View
         /// <summary>
         /// Set to 'true' when the left mouse-button is down.
         /// </summary>
-        private bool isLeftMouseButtonDownOnWindow = false;
+        private bool _isLeftMouseButtonDownOnWindow = false;
 
         /// <summary>
         /// Set to 'true' when dragging the 'selection rectangle'.
         /// Dragging of the selection rectangle only starts when the left mouse-button is held down and the mouse-cursor
         /// is moved more than a threshold distance.
         /// </summary>
-        private bool isDraggingSelectionRect = false;
+        private bool _isDraggingSelectionRect = false;
 
         /// <summary>
         /// Records the location of the mouse (relative to the window) when the left-mouse button has pressed down.
         /// </summary>
-        private Point origMouseDownPoint;
+        private Point _origMouseDownPoint;
 
+        ///<summary>
+        /// 
+        /// </summary>
+        private bool _isLeftMouseDownOnFigure = false;
+
+        ///<summary>
+        /// 
+        /// </summary>
+        private bool isLeftMouseAndControlDownOnFigure = false;
+        /// <summary>
+        /// 
+        /// </summary>
+        private bool _isDraggingFigure = false;
         /// <summary>
         /// The threshold distance the mouse-cursor must move before drag-selection begins.
         /// </summary>
         private static readonly double DragThreshold = 5;
-
-        /// <summary>
-        /// Set to 'true' when we are trying to move the objects on the canvas
-        /// Dragging starts when the mouse is held down on top of an object, then dragged around
-        /// all selected objects will be moved.
-        /// </summary>
-        private bool isMovingFigures;
-        
-
-
         #endregion Data Members
 
 
@@ -68,16 +70,199 @@ namespace Uml_Creator.View
             }
         }
 
-        /// <summary>
-        /// Event raised when the user presses down the left mouse-button.
+
+        ///<summary>
+        /// This is the events that happens when mouse is pressed down on a figure
         /// </summary>
-        private void Window_MouseDown(object sender, MouseButtonEventArgs e)
+        private void Figure_MouseDown(object sender, MouseButtonEventArgs e)
+        {
+
+            ///
+            /// Anything but left click is disabled for now.....
+            if (e.ChangedButton != MouseButton.Left)
+            {
+                return;
+            }
+
+            var figure = (FrameworkElement) sender;
+            var figureViewModel = (FigureViewModel) figure.DataContext;
+
+
+            _isLeftMouseDownOnFigure = true;
+
+            if ((Keyboard.Modifiers & ModifierKeys.Control) != 0)
+            {
+                //
+                // Control key was held down.
+                // This means that the figure is being added to or removed from the existing selection.
+                // Don't do anything yet, we will act on this later in the MouseUp event handler.
+                //
+                isLeftMouseAndControlDownOnFigure = true;
+            }
+            else
+            {
+                //
+                // Control key is not held down.
+                //
+                isLeftMouseAndControlDownOnFigure = false;
+
+                if (figureListBox.SelectedItems.Count == 0)
+                {
+                    //
+                    // Nothing already selected, select the item.
+                    //
+                    figureListBox.SelectedItems.Add(figureViewModel);
+                }
+                else if (figureListBox.SelectedItems.Contains(figureViewModel))
+                {
+                    // 
+                    // Item is already selected, do nothing.
+                    // We will act on this in the MouseUp if there was no drag operation.
+                    //
+                }
+                else
+                {
+                    //
+                    // Item is not selected.
+                    // Deselect all, and select the item.
+                    //
+                    figureListBox.SelectedItems.Clear();
+                    figureListBox.SelectedItems.Add(figureViewModel);
+                }
+            }
+
+            figure.CaptureMouse();
+            _origMouseDownPoint = e.GetPosition(this);
+
+            e.Handled = true;
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        private void Figure_MouseUp(object sender, MouseButtonEventArgs e)
+        {
+            if (_isLeftMouseDownOnFigure)
+            {
+                var figure = (FrameworkElement)sender;
+                var figureViewModel = (FigureViewModel)figure.DataContext;
+
+                
+                if (!_isDraggingFigure)
+                {
+                    //
+                    // Execute mouse up selection logic only if there was no drag operation.
+                    //
+                    if (isLeftMouseAndControlDownOnFigure)
+                    {
+                        //
+                        // Control key was held down.
+                        // Toggle the selection.
+                        //
+                        if (this.figureListBox.SelectedItems.Contains(figureViewModel))
+                        {
+                            //
+                            // Item was already selected, control-click removes it from the selection.
+                            //
+                            this.figureListBox.SelectedItems.Remove(figureViewModel);
+                        }
+                        else
+                        {
+                            // 
+                            // Item was not already selected, control-click adds it to the selection.
+                            //
+                            this.figureListBox.SelectedItems.Add(figureViewModel);
+                        }
+                    }
+                    else
+                    {
+                        //
+                        // Control key was not held down.
+                        //
+                        if (this.figureListBox.SelectedItems.Count == 1 &&
+                            this.figureListBox.SelectedItem == figureViewModel)
+                        {
+                            //
+                            // The item that was clicked is already the only selected item.
+                            // Don't need to do anything.
+                            //
+                        }
+                        else
+                        {
+                            //
+                            // Clear the selection and select the clicked item as the only selected item.
+                            //
+                            this.figureListBox.SelectedItems.Clear();
+                            this.figureListBox.SelectedItems.Add(figureViewModel);
+                        }
+                    }
+                }
+
+                figure.ReleaseMouseCapture();
+                _isLeftMouseDownOnFigure = false;
+                isLeftMouseAndControlDownOnFigure = false;
+
+                e.Handled = true;
+            }
+
+            _isDraggingFigure = false;
+
+
+        }
+        /// <summary>
+        /// 
+        /// </summary>
+        private void Figure_MouseMove(object sender, MouseEventArgs e)
+        {
+
+
+            if (_isDraggingFigure)
+            {
+                //
+                // Drag-move selected rectangles.
+                //
+                Point curMouseDownPoint = e.GetPosition(this);
+                Point dragDelta = new Point(curMouseDownPoint.X - _origMouseDownPoint.X, curMouseDownPoint.Y - _origMouseDownPoint.Y);
+                _origMouseDownPoint = curMouseDownPoint;
+                InitMoveSelectionRect(dragDelta);
+
+            }
+            else if (_isLeftMouseDownOnFigure)
+            {
+                //
+                // The user is left-dragging the rectangle,
+                // but don't initiate the drag operation until
+                // the mouse cursor has moved more than the threshold value.
+                //
+                Point curMouseDownPoint = e.GetPosition(this);
+                var dragDelta = curMouseDownPoint - _origMouseDownPoint;
+                double dragDistance = Math.Abs(dragDelta.Length);
+                if (dragDistance > DragThreshold)
+                {
+                    //
+                    // When the mouse has been dragged more than the threshold value commence dragging the rectangle.
+                    //
+                    _isDraggingFigure = true;
+                }
+
+                e.Handled = true;
+            }
+        }
+
+
+
+
+
+    /// <summary>
+    /// Event raised when the user presses down the left mouse-button.
+    /// </summary>
+    private void Window_MouseDown(object sender, MouseButtonEventArgs e)
         {
             if (e.ChangedButton == MouseButton.Left)
             {
-                isLeftMouseButtonDownOnWindow = true;
+                _isLeftMouseButtonDownOnWindow = true;
                // origMouseDownPoint = e.GetPosition(this);
-                origMouseDownPoint = e.GetPosition(figureListBox);
+                _origMouseDownPoint = e.GetPosition(figureListBox);
 
                 this.CaptureMouse();
 
@@ -92,27 +277,22 @@ namespace Uml_Creator.View
         {
             if (e.ChangedButton == MouseButton.Left)
             {
-                if (isDraggingSelectionRect)
+                if (_isDraggingSelectionRect)
                 {
                     //
                     // Drag selection has ended, apply the 'selection rectangle'.
                     //
 
-                    isDraggingSelectionRect = false;
+                    _isDraggingSelectionRect = false;
                     ApplyDragSelectionRect();
 
                     e.Handled = true;
                 }
-                if (isMovingFigures)
-                {
-                    isMovingFigures = false;
-                    figureListBox.SelectedItems.Clear();
-                    e.Handled = true;
-                }
+               
 
-                if (isLeftMouseButtonDownOnWindow)
+                if (_isLeftMouseButtonDownOnWindow)
                 {
-                    isLeftMouseButtonDownOnWindow = false;
+                    _isLeftMouseButtonDownOnWindow = false;
                     this.ReleaseMouseCapture();
 
                     e.Handled = true;
@@ -126,72 +306,57 @@ namespace Uml_Creator.View
         /// </summary>
         private void Window_MouseMove(object sender, MouseEventArgs e)
         {
-            if (isDraggingSelectionRect)
+            if (_isDraggingSelectionRect)
             {
                 //
                 // Drag selection is in progress.
                 //
                Point curMouseDownPoint = e.GetPosition(figureListBox);
                 //Point curMouseDownPoint = e.GetPosition(this);
-                UpdateDragSelectionRect(origMouseDownPoint, curMouseDownPoint);
+                UpdateDragSelectionRect(_origMouseDownPoint, curMouseDownPoint);
 
                 e.Handled = true;
             }
-            if (isLeftMouseButtonDownOnWindow)
+            if (_isLeftMouseButtonDownOnWindow)
             {
-                /*
-                 The user is left-dragging the mouse,
-                 but don't initiate drag selection until
-                 they have dragged past the threshold value and their mouse position isnt
-                 on any object on screen, if mouse is on object, then move object.    
-                 */
+                
                 Point curMouseDownPoint = e.GetPosition(figureListBox);
                 //Point curMouseDownPoint = e.GetPosition(this);
-                var dragDelta = curMouseDownPoint - origMouseDownPoint;
+                var dragDelta = curMouseDownPoint - _origMouseDownPoint;
                 double dragDistance = Math.Abs(dragDelta.Length);
 
-                if (IsMouseOnFigure(curMouseDownPoint) && !isDraggingSelectionRect)
-                {
-                    isMovingFigures = true;
-
-                    InitMoveSelectionRect(curMouseDownPoint);
-                }
-                if (dragDistance > DragThreshold && !IsMouseOnFigure(curMouseDownPoint) && !isMovingFigures)
+                if (dragDistance > DragThreshold)
                 {
                     //
                     // When the mouse has been dragged more than the threshold value commence drag selection.
                     //
-                    isDraggingSelectionRect = true;
+                    _isDraggingSelectionRect = true;
 
                     //
                     //  Clear selection immediately when starting drag selection.
                     //
                     figureListBox.SelectedItems.Clear();
 
-                    InitDragSelectionRect(origMouseDownPoint, curMouseDownPoint);
+                    InitDragSelectionRect(_origMouseDownPoint, curMouseDownPoint);
                 }
                 
                 e.Handled = true;
             }
         }
 
-        private void InitMoveSelectionRect(Point curMouseDownPoint)
+        private void InitMoveSelectionRect(Point dragDelta)
         {
-            updateMoveSelection(curMouseDownPoint);
+            UpdateMoveSelection(dragDelta);
         }
         /// <summary>
         /// moves all selected figures with the mouse positions
         /// 
         /// </summary>
-        private void updateMoveSelection(Point curMouseDownPoint)
+        private void UpdateMoveSelection(Point dragDelta)
         {
             //1. we figure out the vector of movement that each object must move
             //2. we have a loop that spans over all objects that are selected.
             //3. we change the pos of each object that is selected
-            
-            var dragDelta = curMouseDownPoint - origMouseDownPoint;
-
-            origMouseDownPoint = curMouseDownPoint;
 
             foreach (FigureViewModel figure in figureListBox.SelectedItems)
             {

@@ -74,9 +74,9 @@ namespace Uml_Creator.ViewModel
                
                 //new FigureViewModel() {20.0,20.0,50.0,60.0,"lars",EFigure.ClassSquare},
                
-                 new FigureViewModel(50.0,120.0,50.0,60.0,"Peter",EFigure.ClassSquare),
+                 new FigureViewModel(50.0,120.0,50.0,60.0,"Dette er en klasse her skriver jeg min tekst!",EFigure.ClassSquare),
 
-                 new FigureViewModel(30.0,80.0,20.0,30.0,"Lars",EFigure.ClassSquare)
+                 new FigureViewModel(30.0,80.0,20.0,30.0,"Dette er en anden klasse, skriv noget andet tekst her!",EFigure.ClassSquare)
             };
             BtnLoadCommand = new RelayCommand(Load_Click);
             BtnGemCommand = new RelayCommand(Save_Click);

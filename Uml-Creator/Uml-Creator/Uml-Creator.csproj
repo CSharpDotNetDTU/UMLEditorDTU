@@ -92,6 +92,8 @@
     <Compile Include="Model\Interfaces\IMethod.cs" />
     <Compile Include="Model\Line.cs" />
     <Compile Include="Model\Method.cs" />
+    <Compile Include="StolenStuff\EditableTextBlock.cs" />
+    <Compile Include="StolenStuff\EditableTextBlockAdorner.cs" />
     <Compile Include="ViewModel\Gem_Load.cs" />
     <Compile Include="ViewModel\MainViewModel.cs" />
     <Compile Include="ViewModel\FigureViewModel.cs" />
