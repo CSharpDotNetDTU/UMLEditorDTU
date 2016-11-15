@@ -19,5 +19,6 @@ namespace Uml_Creator.Model.Interfaces
         string ToString();
 
 
+
     }
 }

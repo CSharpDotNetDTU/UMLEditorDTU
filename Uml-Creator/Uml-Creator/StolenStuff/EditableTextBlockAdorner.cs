@@ -35,7 +35,7 @@ namespace Uml_Creator.StolenStuff
             _textBox.MaxLength = adornedElement.MaxLength;
             _textBox.KeyUp += _textBox_KeyUp;
             _collection.Add(_textBox);
-            _wasEnterLastButtonPressed = false;
+           
         }
 
         void _textBox_KeyUp(object sender, KeyEventArgs e)
@@ -46,16 +46,16 @@ namespace Uml_Creator.StolenStuff
                 //we want it to be able to contain new lines, but not add the newline made when enter is pressed with shift.
                 //We do this b
                 //_textBox.Text = _textBox.Text.Replace("\r\n", string.Empty{
+                _wasEnterLastButtonPressed = true;
                 if (Keyboard.Modifiers.HasFlag(ModifierKeys.Shift))
                 {
-                    for (int z = 0; z < 2; z++)
-                    {
+                   
                         int i = _textBox.Text.LastIndexOf("\r\n");
                         if (i >= 0 && _wasEnterLastButtonPressed)
                         {
                             _textBox.Text = _textBox.Text.Substring(0, i) + _textBox.Text.Substring(i + 2);
                         }
-                    }
+                    
                
                     _wasEnterLastButtonPressed = false;
                     return;
@@ -66,7 +66,7 @@ namespace Uml_Creator.StolenStuff
                 {
                     expression.UpdateSource();
                 }
-                _wasEnterLastButtonPressed = true;
+                
             }
             else 
             {

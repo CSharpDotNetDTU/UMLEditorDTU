@@ -9,10 +9,10 @@ namespace Uml_Creator.Model.Interfaces
 {
     public interface ILine
     {
-        int TargetFigureNr { get; }
-        int OriginFigureNr { get; }
-        string TargetLabel { get; }
-        string originLabel { get; }
+        int TargetFigureNr { get; set; }
+        int OriginFigureNr { get; set; }
+        string TargetLabel { get; set; }
+        string OriginLabel { get; set; }
         ELine Type { get; set; }
 
 
