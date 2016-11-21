@@ -53,6 +53,7 @@
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Data" />
+    <Reference Include="System.Drawing" />
     <Reference Include="System.Windows.Forms" />
     <Reference Include="System.Windows.Interactivity, Version=4.5.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <HintPath>..\packages\MvvmLightLibs.5.3.0.0\lib\net45\System.Windows.Interactivity.dll</HintPath>
@@ -76,6 +77,18 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="View\UserControls\SideDockPanel.xaml.cs">
+      <DependentUpon>SideDockPanel.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="View\UserControls\StatusBar.xaml.cs">
+      <DependentUpon>StatusBar.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="View\UserControls\ToolBarTray.xaml.cs">
+      <DependentUpon>ToolBarTray.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="View\UserControls\TopMenuBar.xaml.cs">
+      <DependentUpon>TopMenuBar.xaml</DependentUpon>
+    </Compile>
     <Page Include="View\MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
@@ -92,12 +105,14 @@
     <Compile Include="Model\Interfaces\IMethod.cs" />
     <Compile Include="Model\Line.cs" />
     <Compile Include="Model\Method.cs" />
+    <Compile Include="Model\ToolboxSelection.cs" />
     <Compile Include="StolenStuff\EditableTextBlock.cs" />
     <Compile Include="StolenStuff\EditableTextBlockAdorner.cs" />
     <Compile Include="ViewModel\Gem_Load.cs" />
     <Compile Include="ViewModel\LineViewModel.cs" />
     <Compile Include="ViewModel\MainViewModel.cs" />
     <Compile Include="ViewModel\FigureViewModel.cs" />
+    <Compile Include="ViewModel\ToolboxViewModel.cs" />
     <Compile Include="View\App.xaml.cs">
       <DependentUpon>App.xaml</DependentUpon>
       <SubType>Code</SubType>
@@ -106,6 +121,22 @@
       <DependentUpon>MainWindow.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
+    <Page Include="View\UserControls\SideDockPanel.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="View\UserControls\StatusBar.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="View\UserControls\ToolBarTray.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="View\UserControls\TopMenuBar.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Properties\AssemblyInfo.cs">

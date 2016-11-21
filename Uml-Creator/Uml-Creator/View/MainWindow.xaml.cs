@@ -106,14 +106,14 @@ namespace Uml_Creator.View
                 //
                 isLeftMouseAndControlDownOnFigure = false;
 
-                if (figureListBox.SelectedItems.Count == 0)
+                if (FigureListBox.SelectedItems.Count == 0)
                 {
                     //
                     // Nothing already selected, select the item.
                     //
-                    figureListBox.SelectedItems.Add(figureViewModel);
+                    FigureListBox.SelectedItems.Add(figureViewModel);
                 }
-                else if (figureListBox.SelectedItems.Contains(figureViewModel))
+                else if (FigureListBox.SelectedItems.Contains(figureViewModel))
                 {
                     // 
                     // Item is already selected, do nothing.
@@ -126,8 +126,8 @@ namespace Uml_Creator.View
                     // Item is not selected.
                     // Deselect all, and select the item.
                     //
-                    figureListBox.SelectedItems.Clear();
-                    figureListBox.SelectedItems.Add(figureViewModel);
+                    FigureListBox.SelectedItems.Clear();
+                    FigureListBox.SelectedItems.Add(figureViewModel);
                 }
             }
 
@@ -159,19 +159,19 @@ namespace Uml_Creator.View
                         // Control key was held down.
                         // Toggle the selection.
                         //
-                        if (this.figureListBox.SelectedItems.Contains(figureViewModel))
+                        if (this.FigureListBox.SelectedItems.Contains(figureViewModel))
                         {
                             //
                             // Item was already selected, control-click removes it from the selection.
                             //
-                            this.figureListBox.SelectedItems.Remove(figureViewModel);
+                            this.FigureListBox.SelectedItems.Remove(figureViewModel);
                         }
                         else
                         {
                             // 
                             // Item was not already selected, control-click adds it to the selection.
                             //
-                            this.figureListBox.SelectedItems.Add(figureViewModel);
+                            this.FigureListBox.SelectedItems.Add(figureViewModel);
                         }
                     }
                     else
@@ -179,8 +179,8 @@ namespace Uml_Creator.View
                         //
                         // Control key was not held down.
                         //
-                        if (this.figureListBox.SelectedItems.Count == 1 &&
-                            this.figureListBox.SelectedItem == figureViewModel)
+                        if (this.FigureListBox.SelectedItems.Count == 1 &&
+                            this.FigureListBox.SelectedItem == figureViewModel)
                         {
                             //
                             // The item that was clicked is already the only selected item.
@@ -192,8 +192,8 @@ namespace Uml_Creator.View
                             //
                             // Clear the selection and select the clicked item as the only selected item.
                             //
-                            this.figureListBox.SelectedItems.Clear();
-                            this.figureListBox.SelectedItems.Add(figureViewModel);
+                            this.FigureListBox.SelectedItems.Clear();
+                            this.FigureListBox.SelectedItems.Add(figureViewModel);
                         }
                     }
                 }
@@ -262,7 +262,7 @@ namespace Uml_Creator.View
             {
                 _isLeftMouseButtonDownOnWindow = true;
                // origMouseDownPoint = e.GetPosition(this);
-                _origMouseDownPoint = e.GetPosition(figureListBox);
+                _origMouseDownPoint = e.GetPosition(FigureListBox);
 
                 this.CaptureMouse();
 
@@ -311,7 +311,7 @@ namespace Uml_Creator.View
                 //
                 // Drag selection is in progress.
                 //
-               Point curMouseDownPoint = e.GetPosition(figureListBox);
+               Point curMouseDownPoint = e.GetPosition(FigureListBox);
                 //Point curMouseDownPoint = e.GetPosition(this);
                 UpdateDragSelectionRect(_origMouseDownPoint, curMouseDownPoint);
 
@@ -320,7 +320,7 @@ namespace Uml_Creator.View
             if (_isLeftMouseButtonDownOnWindow)
             {
                 
-                Point curMouseDownPoint = e.GetPosition(figureListBox);
+                Point curMouseDownPoint = e.GetPosition(FigureListBox);
                 //Point curMouseDownPoint = e.GetPosition(this);
                 var dragDelta = curMouseDownPoint - _origMouseDownPoint;
                 double dragDistance = Math.Abs(dragDelta.Length);
@@ -335,7 +335,7 @@ namespace Uml_Creator.View
                     //
                     //  Clear selection immediately when starting drag selection.
                     //
-                    figureListBox.SelectedItems.Clear();
+                    FigureListBox.SelectedItems.Clear();
 
                     InitDragSelectionRect(_origMouseDownPoint, curMouseDownPoint);
                 }
@@ -358,7 +358,7 @@ namespace Uml_Creator.View
             //2. we have a loop that spans over all objects that are selected.
             //3. we change the pos of each object that is selected
 
-            foreach (FigureViewModel figure in figureListBox.SelectedItems)
+            foreach (FigureViewModel figure in FigureListBox.SelectedItems)
             {
                 figure.X += dragDelta.X;
                 figure.Y += dragDelta.Y;
@@ -378,7 +378,7 @@ namespace Uml_Creator.View
         {
             
 
-            foreach (FigureViewModel figure in figureListBox.Items)
+            foreach (FigureViewModel figure in FigureListBox.Items)
             {
                 
                 ///
@@ -476,7 +476,7 @@ namespace Uml_Creator.View
             //
             // Clear the current selection.
             //
-            figureListBox.SelectedItems.Clear();
+            FigureListBox.SelectedItems.Clear();
 
             //
             // Find and select all the list box items.
@@ -486,7 +486,7 @@ namespace Uml_Creator.View
                 Rect itemRect = new Rect(figure.X, figure.Y, figure.Width, figure.Height);
                 if (dragRect.Contains(itemRect))
                 {
-                    figureListBox.SelectedItems.Add(figure);
+                    FigureListBox.SelectedItems.Add(figure);
                 }
             }
         }
