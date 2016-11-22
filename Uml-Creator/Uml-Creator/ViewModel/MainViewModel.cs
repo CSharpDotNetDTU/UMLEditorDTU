@@ -104,9 +104,8 @@ namespace Uml_Creator.ViewModel
                 if (Figure.IsSelected)
                 {
                     //We create a new instance to make sure we get a new object, and so it dosent have the same FigureNr, also its added a little ofset from the original models
-                    double offset = 20.0;
-                    FigureViewModel newfigure = new FigureViewModel(Figure.X+offset,Figure.Y+offset,Figure.Width,Figure.Height,Figure.Data,Figure.Type,false);
-                    copyFigures.Add(newfigure);
+                    
+                    copyFigures.Add(Figure);
                 }
             }
         }
@@ -121,10 +120,13 @@ namespace Uml_Creator.ViewModel
             if (copyFigures.Count > 0)
             {
                 int nrOfCopied = 0;
-                
+
+            
                 foreach (FigureViewModel figure in copyFigures)
                 {
-                    FiguresViewModels.Add(figure);
+                    double offset = 20.0;
+                    FigureViewModel newfigure = new FigureViewModel(figure.X + offset, figure.Y + offset, figure.Width, figure.Height, figure.Data, figure.Type, false);
+                    FiguresViewModels.Add(newfigure);
                     nrOfCopied++;
                 }
                 Debug.Print("Antal Objecter copieret:" + nrOfCopied);
