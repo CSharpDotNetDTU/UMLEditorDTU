@@ -1,0 +1,32 @@
+﻿<UserControl x:Class="Uml_Creator.View.UserControls.StatusBar"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:Uml_Creator.View.UserControls"
+             mc:Ignorable="d" 
+             d:DesignHeight="300" d:DesignWidth="300">
+    <Grid>
+
+        <StatusBar >
+            <StatusBarItem>
+                <TextBlock x:Name="StatusBarText" Width="305">Status her</TextBlock>
+            </StatusBarItem>
+
+            <StatusBarItem>
+                <Button x:Name="BtnZoomOut" ToolTip="Zoom-out">
+                    <Image  Source="pack://application:,,,/Images/Minus Math -64.png" Stretch="Fill" Width="17"></Image>
+
+                </Button>
+            </StatusBarItem>
+            <StatusBarItem Margin="0,0,0,0.2" Width="93">
+                <Slider x:Name="SliderZoom" Width="91" RenderTransformOrigin="0.496,0.564"></Slider>
+            </StatusBarItem>
+            <StatusBarItem Margin="0,0,0,0.2" Width="30">
+                <Button x:Name="BtnZoomIn" ToolTip="Zoom-in">
+                    <Image Source="pack://application:,,,/Images\Plus Math-64.png" Stretch="Fill" Width="17"></Image>
+                </Button>
+            </StatusBarItem>
+        </StatusBar>
+    </Grid>
+</UserControl>
