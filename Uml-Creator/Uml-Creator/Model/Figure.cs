@@ -21,6 +21,8 @@ namespace Uml_Creator.Model
         public double Y { get; set; }
         public string Data { get; set; }
 
+        public bool IsSelected { get; set; }
+
         public void GetObjectData(SerializationInfo info, StreamingContext context)
         {
             throw new NotImplementedException();

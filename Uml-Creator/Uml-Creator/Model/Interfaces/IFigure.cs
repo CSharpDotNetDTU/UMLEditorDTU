@@ -10,6 +10,7 @@ namespace Uml_Creator.Model.Interfaces
 {
     public interface IFigure: ISerializable
     {
+        bool IsSelected { get; set; }
         EFigure Type { get; }
         double Height { get; set; }
         double Width { get; set; }
@@ -18,7 +19,8 @@ namespace Uml_Creator.Model.Interfaces
         double Y { get; }
         string Data { get; set; }
         string ToString();
-
+        
+      
 
 
     }

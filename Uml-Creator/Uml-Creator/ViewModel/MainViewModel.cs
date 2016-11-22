@@ -19,18 +19,25 @@ namespace Uml_Creator.ViewModel
     public class MainViewModel : INotifyPropertyChanged
     {
 
+        #region copy members
+
+        public ObservableCollection<FigureViewModel> copyFigures { get; private set; }
+
+        #endregion
+
         #region data members
+
+
+
 
         public ObservableCollection<FigureViewModel> FiguresViewModels { get; private set; }
         
         public ObservableCollection<Line> Lines { get; private set; }
-       
 
+        private string filename;
         private double _x;
         private object _content;
         #endregion data members
-        private string filename;
-
 
         public object Content
         {
@@ -42,15 +49,9 @@ namespace Uml_Creator.ViewModel
             }
         }
 
-        public double X
-        {
-            get { return _x; }
-            set
-            {
-                _x = value;
-                OnPropertyChanged(nameof(X));
-            }
-        }
+        public ICommand BtnCopy { get; }
+
+        public ICommand BtnPaste { get; }
 
         public ICommand BtnLoadCommand { get; }
 
@@ -58,15 +59,13 @@ namespace Uml_Creator.ViewModel
 
         public ICommand BtnExportCommand { get; }
 
-        public double Y { get; set; }
-
         public MainViewModel()
         {
              Content = new Gem_Load();
              BtnLoadCommand = new RelayCommand(Load_Click);
              BtnGemCommand = new RelayCommand(Save_Click);
 
-
+            copyFigures = new ObservableCollection<FigureViewModel>();
  
            
           
@@ -75,16 +74,64 @@ namespace Uml_Creator.ViewModel
                
                 //new FigureViewModel() {20.0,20.0,50.0,60.0,"lars",EFigure.ClassSquare},
                
-                 new FigureViewModel(50.0,120.0,50.0,60.0,"Dette er en klasse her skriver jeg min tekst!",EFigure.ClassSquare),
+                 new FigureViewModel(50.0,120.0,50.0,60.0,"Dette er en klasse her skriver jeg min tekst!",EFigure.ClassSquare,false),
 
-                 new FigureViewModel(30.0,80.0,20.0,30.0,"Dette er en anden klasse, skriv noget andet tekst her!",EFigure.ClassSquare)
+                 new FigureViewModel(30.0,80.0,20.0,30.0,"Dette er en anden klasse, skriv noget andet tekst her!",EFigure.ClassSquare,false)
             };
             BtnLoadCommand = new RelayCommand(Load_Click);
             BtnGemCommand = new RelayCommand(Save_Click);
             BtnExportCommand = new RelayCommand<Grid>(Export_Click);
+            BtnCopy = new RelayCommand(Copy_Click);
+            BtnPaste = new RelayCommand(Paste_Click);
 
         }
 
+        /// <summary>
+        /// This method is used to take a copy of the selected objects on the canvas, that can be both lines and figures.
+        /// 22-11 -2016 its only for figures at the moment, lines are not in system.
+        /// </summary>
+        private void Copy_Click()
+        {
+            copyFigures.Clear();
+            foreach (FigureViewModel Figure in FigureViewModels)
+            {
+
+                if (Figure.IsSelected)
+                {
+                    //We create a new instance to make sure we get a new object, and so it dosent have the same FigureNr, also its added a little ofset from the original models
+                    double offset = 20.0;
+                    FigureViewModel newfigure = new FigureViewModel(Figure.X+offset,Figure.Y+offset,Figure.Width,Figure.Height,Figure.Data,Figure.Type,false);
+                    copyFigures.Add(newfigure);
+                }
+            }
+        }
+
+        /// <summary>
+        /// This method copies/adds the selected objects in screen to the canvas, if no objects are in the copy list, send message to the statusbar
+        /// 22-11-2016 works only for figures atm, lines not in system.
+        /// </summary>
+        private void Paste_Click()
+        {
+
+            if (copyFigures.Count > 0)
+            {
+                int nrOfCopied = 0;
+                
+                foreach (FigureViewModel figure in copyFigures)
+                {
+                    FigureViewModels.Add(figure);
+                    nrOfCopied++;
+                }
+
+                //Write to status bar that x objects were copied to the canvas
+            }
+            else
+            {
+                throw new NotImplementedException();
+                //No objects in copy list write to statusbar
+            }
+            
+        }
 
         private void Load_Click()
         {

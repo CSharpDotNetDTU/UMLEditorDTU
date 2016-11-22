@@ -23,8 +23,8 @@
         <KeyBinding Key="Z" Modifiers="Control"/>
         <KeyBinding Key="Y" Modifiers="Control"/>
         <KeyBinding Key="N" Modifiers="Control"/>
-        <KeyBinding Key="C" Modifiers="Control"/>
-        <KeyBinding Key="V" Modifiers="Control"/>
+        <KeyBinding Command="{Binding BtnCopy}" Key="C" Modifiers="Control"/>
+        <KeyBinding Command="{Binding BtnPaste}" Key="V" Modifiers="Control"/>
         <KeyBinding Key="X" Modifiers="Control"/>
         <KeyBinding Key="Enter" Modifiers="Control"/>
         <KeyBinding Key="A" Modifiers="Alt"/>

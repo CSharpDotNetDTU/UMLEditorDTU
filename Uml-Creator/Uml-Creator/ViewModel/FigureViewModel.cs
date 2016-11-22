@@ -26,7 +26,7 @@ namespace Uml_Creator.ViewModel
         }
         */
 
-        public FigureViewModel(double x, double y, double width, double height, string data, EFigure type) : this(new Figure())
+        public FigureViewModel(double x, double y, double width, double height, string data, EFigure type, bool isSelected) : this(new Figure())
         {
             Figure.X = x;
             Figure.Y = y;
@@ -34,6 +34,7 @@ namespace Uml_Creator.ViewModel
             Figure.Height = height;
             Figure.Data = data;
             Figure.Type = type;
+            Figure.IsSelected = isSelected;
 
         }
 
@@ -42,6 +43,16 @@ namespace Uml_Creator.ViewModel
             Figure = new Figure();
         }
 
+
+        public bool IsSelected
+        {
+            get { return Figure.IsSelected; }
+            set
+            {
+                Figure.IsSelected = value;
+                OnPropertyChanged("IsSelected");
+            }
+        }
 
         public EFigure Type => Figure.Type;
         public int FigureNr => Figure.FigureNr;

@@ -1,5 +1,4 @@
 ﻿using System;
-
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
@@ -15,6 +14,7 @@ namespace Uml_Creator.View
     public partial class MainWindow : Window
     {
         #region Data Members
+
         //Source: http://www.codeproject.com/Articles/148503/Simple-Drag-Selection-in-WPF
 
 
@@ -44,17 +44,18 @@ namespace Uml_Creator.View
         /// 
         /// </summary>
         private bool isLeftMouseAndControlDownOnFigure = false;
+
         /// <summary>
         /// 
         /// </summary>
         private bool _isDraggingFigure = false;
+
         /// <summary>
         /// The threshold distance the mouse-cursor must move before drag-selection begins.
         /// </summary>
         private static readonly double DragThreshold = 5;
+
         #endregion Data Members
-
-
 
         public MainWindow()
         {
@@ -64,10 +65,7 @@ namespace Uml_Creator.View
 
         private ViewModel.MainViewModel MainViewModel
         {
-            get
-            {
-                return (ViewModel.MainViewModel)this.DataContext;
-            }
+            get { return (ViewModel.MainViewModel) this.DataContext; }
         }
 
 
@@ -76,7 +74,6 @@ namespace Uml_Creator.View
         /// </summary>
         private void Figure_MouseDown(object sender, MouseButtonEventArgs e)
         {
-
             ///
             /// Anything but left click is disabled for now.....
             if (e.ChangedButton != MouseButton.Left)
@@ -112,6 +109,7 @@ namespace Uml_Creator.View
                     // Nothing already selected, select the item.
                     //
                     FigureListBox.SelectedItems.Add(figureViewModel);
+                    figureViewModel.IsSelected = true;
                 }
                 else if (FigureListBox.SelectedItems.Contains(figureViewModel))
                 {
@@ -127,6 +125,8 @@ namespace Uml_Creator.View
                     // Deselect all, and select the item.
                     //
                     FigureListBox.SelectedItems.Clear();
+                    clearSelectedFiguresInModel();
+                    figureViewModel.IsSelected = true;
                     FigureListBox.SelectedItems.Add(figureViewModel);
                 }
             }
@@ -144,10 +144,10 @@ namespace Uml_Creator.View
         {
             if (_isLeftMouseDownOnFigure)
             {
-                var figure = (FrameworkElement)sender;
-                var figureViewModel = (FigureViewModel)figure.DataContext;
+                var figure = (FrameworkElement) sender;
+                var figureViewModel = (FigureViewModel) figure.DataContext;
 
-                
+
                 if (!_isDraggingFigure)
                 {
                     //
@@ -172,6 +172,7 @@ namespace Uml_Creator.View
                             // Item was not already selected, control-click adds it to the selection.
                             //
                             this.FigureListBox.SelectedItems.Add(figureViewModel);
+                            figureViewModel.IsSelected = true;
                         }
                     }
                     else
@@ -194,6 +195,8 @@ namespace Uml_Creator.View
                             //
                             this.FigureListBox.SelectedItems.Clear();
                             this.FigureListBox.SelectedItems.Add(figureViewModel);
+                            clearSelectedFiguresInModel();
+                            figureViewModel.IsSelected = true;
                         }
                     }
                 }
@@ -206,26 +209,23 @@ namespace Uml_Creator.View
             }
 
             _isDraggingFigure = false;
-
-
         }
+
         /// <summary>
         /// 
         /// </summary>
         private void Figure_MouseMove(object sender, MouseEventArgs e)
         {
-
-
             if (_isDraggingFigure)
             {
                 //
                 // Drag-move selected rectangles.
                 //
                 Point curMouseDownPoint = e.GetPosition(this);
-                Point dragDelta = new Point(curMouseDownPoint.X - _origMouseDownPoint.X, curMouseDownPoint.Y - _origMouseDownPoint.Y);
+                Point dragDelta = new Point(curMouseDownPoint.X - _origMouseDownPoint.X,
+                    curMouseDownPoint.Y - _origMouseDownPoint.Y);
                 _origMouseDownPoint = curMouseDownPoint;
                 InitMoveSelectionRect(dragDelta);
-
             }
             else if (_isLeftMouseDownOnFigure)
             {
@@ -250,18 +250,15 @@ namespace Uml_Creator.View
         }
 
 
-
-
-
-    /// <summary>
-    /// Event raised when the user presses down the left mouse-button.
-    /// </summary>
-    private void Window_MouseDown(object sender, MouseButtonEventArgs e)
+        /// <summary>
+        /// Event raised when the user presses down the left mouse-button.
+        /// </summary>
+        private void Window_MouseDown(object sender, MouseButtonEventArgs e)
         {
             if (e.ChangedButton == MouseButton.Left)
             {
                 _isLeftMouseButtonDownOnWindow = true;
-               // origMouseDownPoint = e.GetPosition(this);
+                // origMouseDownPoint = e.GetPosition(this);
                 _origMouseDownPoint = e.GetPosition(FigureListBox);
 
                 this.CaptureMouse();
@@ -288,7 +285,7 @@ namespace Uml_Creator.View
 
                     e.Handled = true;
                 }
-               
+
 
                 if (_isLeftMouseButtonDownOnWindow)
                 {
@@ -297,7 +294,6 @@ namespace Uml_Creator.View
 
                     e.Handled = true;
                 }
-                
             }
         }
 
@@ -311,7 +307,7 @@ namespace Uml_Creator.View
                 //
                 // Drag selection is in progress.
                 //
-               Point curMouseDownPoint = e.GetPosition(FigureListBox);
+                Point curMouseDownPoint = e.GetPosition(FigureListBox);
                 //Point curMouseDownPoint = e.GetPosition(this);
                 UpdateDragSelectionRect(_origMouseDownPoint, curMouseDownPoint);
 
@@ -319,7 +315,6 @@ namespace Uml_Creator.View
             }
             if (_isLeftMouseButtonDownOnWindow)
             {
-                
                 Point curMouseDownPoint = e.GetPosition(FigureListBox);
                 //Point curMouseDownPoint = e.GetPosition(this);
                 var dragDelta = curMouseDownPoint - _origMouseDownPoint;
@@ -336,10 +331,11 @@ namespace Uml_Creator.View
                     //  Clear selection immediately when starting drag selection.
                     //
                     FigureListBox.SelectedItems.Clear();
-
+                    clearSelectedFiguresInModel();
+                    
                     InitDragSelectionRect(_origMouseDownPoint, curMouseDownPoint);
                 }
-                
+
                 e.Handled = true;
             }
         }
@@ -348,6 +344,7 @@ namespace Uml_Creator.View
         {
             UpdateMoveSelection(dragDelta);
         }
+
         /// <summary>
         /// moves all selected figures with the mouse positions
         /// 
@@ -362,44 +359,30 @@ namespace Uml_Creator.View
             {
                 figure.X += dragDelta.X;
                 figure.Y += dragDelta.Y;
-
-
             }
-          
         }
 
         ///<summary>
         ///This method is used to determine if the mouse is currently on top of any of the objects on the canvas.
         /// Only works on figures, lines and other objects need to be added... 
         ///</summary>
-
-
         public bool IsMouseOnFigure(Point mousePoint)
         {
-            
-
             foreach (FigureViewModel figure in FigureListBox.Items)
             {
-                
                 ///
                 /// Tolerance is used because the mouse can move outside the area, so it helps to have a little extra area to hold on to while moving
                 double TOLERANCE = 20.0;
                 //Vi skal se om den ligger inden for figurens område.
-                if (mousePoint.X >= figure.X- TOLERANCE && mousePoint.X < (figure.Width + figure.X + TOLERANCE))
+                if (mousePoint.X >= figure.X - TOLERANCE && mousePoint.X < (figure.Width + figure.X + TOLERANCE))
                 {
                     if (mousePoint.Y >= figure.Y - TOLERANCE && mousePoint.Y < (figure.Height + figure.Y + TOLERANCE))
                     {
-                        
                         return true;
                     }
                 }
-
-
-
             }
             return false;
-
-
         }
 
         /// <summary>
@@ -471,12 +454,13 @@ namespace Uml_Creator.View
             // Inflate the drag selection-rectangle by 1/10 of its size to 
             // make sure the intended item is selected.
             //
-            dragRect.Inflate(width / 10, height / 10);
+            dragRect.Inflate(width/10, height/10);
 
             //
             // Clear the current selection.
             //
             FigureListBox.SelectedItems.Clear();
+            clearSelectedFiguresInModel();
 
             //
             // Find and select all the list box items.
@@ -487,10 +471,35 @@ namespace Uml_Creator.View
                 if (dragRect.Contains(itemRect))
                 {
                     FigureListBox.SelectedItems.Add(figure);
+                    
+                    figure.IsSelected = true;
                 }
             }
         }
 
-       
+        public void clearSelectedFiguresInModel()
+        {
+            foreach (FigureViewModel Figure in MainViewModel.FigureViewModels)
+            {
+                if (Figure.IsSelected)
+                {
+                    Figure.IsSelected = false;
+                }
+            }
+        }
+
+
+        ///
+        /// 
+        /*
+        public ICommand BtnCopy { get; }
+
+        public ICommand BtnPaste { get; }
+
+
+        private void Copy_Click()
+        {
+        }*/
+
     }
 }
