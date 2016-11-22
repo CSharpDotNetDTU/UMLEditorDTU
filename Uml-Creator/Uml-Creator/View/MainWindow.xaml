@@ -30,6 +30,7 @@
         <KeyBinding Key="A" Modifiers="Alt"/>
         <KeyBinding Key="O" Modifiers="Alt"/>
         <KeyBinding Key="C" Modifiers="Alt"/>
+        <KeyBinding Command="{Binding BtnDelete}" Key="Delete"/>
     </Window.InputBindings>
 
 

@@ -332,7 +332,7 @@ namespace Uml_Creator.View
                     //
                     FigureListBox.SelectedItems.Clear();
                     clearSelectedFiguresInModel();
-                    
+
                     InitDragSelectionRect(_origMouseDownPoint, curMouseDownPoint);
                 }
 
@@ -471,7 +471,7 @@ namespace Uml_Creator.View
                 if (dragRect.Contains(itemRect))
                 {
                     FigureListBox.SelectedItems.Add(figure);
-                    
+
                     figure.IsSelected = true;
                 }
             }
@@ -500,6 +500,5 @@ namespace Uml_Creator.View
         private void Copy_Click()
         {
         }*/
-
     }
 }

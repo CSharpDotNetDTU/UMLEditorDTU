@@ -1,7 +1,9 @@
 ﻿using System;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
+using System.Diagnostics;
 using System.IO;
+using System.Linq;
 using System.Windows.Forms;
 using GalaSoft.MvvmLight.CommandWpf;
 using System.Windows.Input;
@@ -59,6 +61,8 @@ namespace Uml_Creator.ViewModel
 
         public ICommand BtnExportCommand { get; }
 
+        public ICommand BtnDelete { get; }
+
         public MainViewModel()
         {
              Content = new Gem_Load();
@@ -83,6 +87,7 @@ namespace Uml_Creator.ViewModel
             BtnExportCommand = new RelayCommand<Grid>(Export_Click);
             BtnCopy = new RelayCommand(Copy_Click);
             BtnPaste = new RelayCommand(Paste_Click);
+            BtnDelete = new RelayCommand(Delete_Click);
 
         }
 
@@ -119,10 +124,11 @@ namespace Uml_Creator.ViewModel
                 
                 foreach (FigureViewModel figure in copyFigures)
                 {
-                    FigureViewModels.Add(figure);
+                    FiguresViewModels.Add(figure);
                     nrOfCopied++;
                 }
-
+                Debug.Print("Antal Objecter copieret:" + nrOfCopied);
+                Debug.Print("nr of objects total ---->"+FiguresViewModels.Count);
                 //Write to status bar that x objects were copied to the canvas
             }
             else
@@ -131,6 +137,19 @@ namespace Uml_Creator.ViewModel
                 //No objects in copy list write to statusbar
             }
             
+        }
+
+        private void Delete_Click()
+        {
+            foreach (FigureViewModel Figure in FigureViewModels.Reverse())
+            {
+                if (Figure.IsSelected)
+                {
+                    FiguresViewModels.Remove(Figure);
+
+                }
+                
+            }
         }
 
         private void Load_Click()
@@ -155,7 +174,7 @@ namespace Uml_Creator.ViewModel
                         FiguresViewModels.Clear();
                         for (int i = 0; i < temp.Count; i++)
                         {
-                            FiguresViewModels.Add(new FigureViewModel(temp[i].X, temp[i].Y, temp[i].Width, temp[i].Height, temp[i].Data, temp[i].Type));
+                            FiguresViewModels.Add(new FigureViewModel(temp[i].X, temp[i].Y, temp[i].Width, temp[i].Height, temp[i].Data, temp[i].Type,false));
                         }
                         
                         Console.WriteLine(FiguresViewModels[1].Data);
@@ -227,7 +246,7 @@ namespace Uml_Creator.ViewModel
             }
             }
 
-   
+
 
         public ObservableCollection<FigureViewModel> FigureViewModels
         {
