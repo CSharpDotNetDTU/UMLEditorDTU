@@ -98,11 +98,18 @@ namespace Uml_Creator.ViewModel
 
                 using (StringReader read = new StringReader(xmlString))
                 {
+                    ObservableCollection<FigureViewModel> temp;
                     Type outType = typeof(ObservableCollection<FigureViewModel>); //skal være samme slags objekter som diagrammet
                     XmlSerializer serializer = new XmlSerializer(outType);
                     using (XmlReader reader = new XmlTextReader(read))
                     {
-                        FiguresViewModels = (ObservableCollection<FigureViewModel>)serializer.Deserialize(reader);
+                        temp = (ObservableCollection<FigureViewModel>)serializer.Deserialize(reader);
+                        FiguresViewModels.Clear();
+                        for (int i = 0; i < temp.Count; i++)
+                        {
+                            FiguresViewModels.Add(new FigureViewModel(temp[i].X, temp[i].Y, temp[i].Width, temp[i].Height, temp[i].Data, temp[i].Type));
+                        }
+                        
                         Console.WriteLine(FiguresViewModels[1].Data);
                         reader.Close();
                     }
