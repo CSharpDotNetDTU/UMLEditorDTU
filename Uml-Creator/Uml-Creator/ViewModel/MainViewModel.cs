@@ -98,11 +98,12 @@ namespace Uml_Creator.ViewModel
 
                 using (StringReader read = new StringReader(xmlString))
                 {
-                    Type outType = 3.GetType(); //skal være samme slags objekter som diagrammet
+                    Type outType = typeof(ObservableCollection<FigureViewModel>); //skal være samme slags objekter som diagrammet
                     XmlSerializer serializer = new XmlSerializer(outType);
                     using (XmlReader reader = new XmlTextReader(read))
                     {
-                        serializer.Deserialize(reader);
+                        FiguresViewModels = (ObservableCollection<FigureViewModel>)serializer.Deserialize(reader);
+                        Console.WriteLine(FiguresViewModels[1].Data);
                         reader.Close();
                     }
 
@@ -123,7 +124,8 @@ namespace Uml_Creator.ViewModel
             SaveFileDialog gemfildialog = new SaveFileDialog();
             gemfildialog.Filter = "XML files (*.xml)|*.xml";
             if (gemfildialog.ShowDialog() != DialogResult.OK) return;
-            var serialObject = 5; //skal importere diagrammets data
+            var serialObject = FiguresViewModels; //skal importere diagrammets data
+
             if (serialObject == null) return;
             try
             {

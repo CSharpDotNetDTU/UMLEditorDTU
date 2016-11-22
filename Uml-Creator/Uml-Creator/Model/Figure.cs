@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Runtime.Serialization;
 using System.Text;
 using System.Threading.Tasks;
 using Uml_Creator.Model.ENUM;
@@ -19,5 +20,10 @@ namespace Uml_Creator.Model
         public double X { get; set; }
         public double Y { get; set; }
         public string Data { get; set; }
+
+        public void GetObjectData(SerializationInfo info, StreamingContext context)
+        {
+            throw new NotImplementedException();
+        }
     }
 }

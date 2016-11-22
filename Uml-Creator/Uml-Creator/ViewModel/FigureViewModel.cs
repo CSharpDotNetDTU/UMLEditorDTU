@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
+using System.Runtime.Serialization;
 using System.Text;
 using System.Threading.Tasks;
 using Uml_Creator.Model;
@@ -10,7 +11,7 @@ using Uml_Creator.Model.Interfaces;
 
 namespace Uml_Creator.ViewModel
 {
-    public class FigureViewModel : INotifyPropertyChanged, IFigure
+    public class FigureViewModel :ISerializable, INotifyPropertyChanged, IFigure
     {
 
         protected Figure Figure { get; }
@@ -34,6 +35,11 @@ namespace Uml_Creator.ViewModel
             Figure.Data = data;
             Figure.Type = type;
 
+        }
+
+        public FigureViewModel()
+        {
+            Figure = new Figure();
         }
 
 
@@ -105,6 +111,11 @@ namespace Uml_Creator.ViewModel
             {
                 PropertyChanged(this, new PropertyChangedEventArgs(name));
             }
+        }
+
+        public void GetObjectData(SerializationInfo info, StreamingContext context)
+        {
+            ((ISerializable)Figure).GetObjectData(info, context);
         }
     }
 }
