@@ -15,7 +15,7 @@
         Title="UML-Creator" Height="350" Width="600.0">
     <Window.DataContext>
         <vm:MainViewModel/>
-       
+
     </Window.DataContext>
     <Window.InputBindings>
         <KeyBinding Command="{Binding BtnLoadCommand}" Key="O" Modifiers="Control"/>
@@ -31,14 +31,14 @@
         <KeyBinding Key="O" Modifiers="Alt"/>
         <KeyBinding Key="C" Modifiers="Alt"/>
     </Window.InputBindings>
-  
+
 
 
     <DockPanel LastChildFill="True">
         <userControls:TopMenuBar DockPanel.Dock="Top" />
         <userControls:ToolBarTray  DockPanel.Dock="Top" Height="24" Margin="0,0,0.2,0"/>
-        <userControls:StatusBar DockPanel.Dock="Bottom" Height="23" Margin="0,0,128.2,0" RenderTransformOrigin="0.5,0.5"/>
-        <userControls:SideDockPanel  DockPanel.Dock="Right" Margin="0,0,0,-0.4" RenderTransformOrigin="0.5,0.5" Width="128"/>
+        <userControls:StatusBar DockPanel.Dock="Bottom" Height="23" RenderTransformOrigin="0.5,0.5" HorizontalAlignment="Left" Width="464"/>
+        <userControls:SideDockPanel  DockPanel.Dock="Right" RenderTransformOrigin="0.5,0.5" Width="128" VerticalAlignment="Bottom" />
 
 
         <Grid x:Name="MainCanvas">
@@ -71,15 +71,15 @@
                 </ListBox.ItemContainerStyle>
                 <ItemsControl.ItemTemplate>
                     <DataTemplate>
-
-                        <stolenStuff:EditableTextBlock
+                        <Border BorderThickness="1" BorderBrush="Black">
+                            <stolenStuff:EditableTextBlock
                             Text="{Binding Data, Mode=TwoWay}" 
                             IsInEditMode="{Binding Edit, Mode=TwoWay}"
                              MouseDown="Figure_MouseDown"
                             MouseUp="Figure_MouseUp"
                             MouseMove="Figure_MouseMove"
                             />
-
+                        </Border>
 
 
 

@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.IO;
@@ -12,11 +11,8 @@ using Uml_Creator.Model;
 using Uml_Creator.Model.ENUM;
 using System.Windows.Media.Imaging;
 using System.Windows.Controls;
-using System.IO;
 using System.Windows.Media;
-using System.Windows;
-using System.Diagnostics;
-using System.Windows.Data;
+
 
 namespace Uml_Creator.ViewModel
 {
@@ -28,7 +24,6 @@ namespace Uml_Creator.ViewModel
         public ObservableCollection<FigureViewModel> FiguresViewModels { get; private set; }
         
         public ObservableCollection<Line> Lines { get; private set; }
-
        
 
         private double _x;
@@ -67,11 +62,14 @@ namespace Uml_Creator.ViewModel
 
         public MainViewModel()
         {
-            Content = new Gem_Load();
+             Content = new Gem_Load();
              BtnLoadCommand = new RelayCommand(Load_Click);
              BtnGemCommand = new RelayCommand(Save_Click);
 
 
+ 
+           
+          
             FiguresViewModels = new ObservableCollection<FigureViewModel>
             {
                
@@ -192,45 +190,5 @@ namespace Uml_Creator.ViewModel
     }
 
 
-    class ToolboxViewModel : INotifyPropertyChanged
-    {
-
-        public ToolboxViewModel()
-        {
-            IList<ToolboxSelection> list = new List<ToolboxSelection>();
-            list.Add(new ToolboxSelection("test1"));
-            list.Add(new ToolboxSelection("test2"));
-            _toolboxList = new CollectionView(list);
-        }
-
-        private readonly CollectionView _toolboxList;
-        private string _selectedList;
-
-
-
-        public CollectionView ToolboxSelections
-        {
-            get { return _toolboxList; }
-        }
-
-
-        public string SelectedList
-        {
-            get { return _selectedList; }
-            set
-            {
-                if (_selectedList == value) return;
-                _selectedList = value;
-                OnPropertyChanged("SelectedList");
-            }
-        }
-
-        public event PropertyChangedEventHandler PropertyChanged;
-
-        private void OnPropertyChanged(string propertyName)
-        {
-            if (PropertyChanged != null)
-                PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
-        }
-    }
+  
 }
