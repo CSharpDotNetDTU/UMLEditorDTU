@@ -14,7 +14,7 @@ using Uml_Creator.Model.ENUM;
 using System.Windows.Media.Imaging;
 using System.Windows.Controls;
 using System.Windows.Media;
-
+using System.Windows;
 
 namespace Uml_Creator.ViewModel
 {
@@ -66,8 +66,6 @@ namespace Uml_Creator.ViewModel
         public MainViewModel()
         {
              Content = new Gem_Load();
-             BtnLoadCommand = new RelayCommand(Load_Click);
-             BtnGemCommand = new RelayCommand(Save_Click);
 
             copyFigures = new ObservableCollection<FigureViewModel>();
  
@@ -263,6 +261,12 @@ namespace Uml_Creator.ViewModel
         {
             if (PropertyChanged != null)
                 PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
+        }
+
+        public void AddFigure(string dataString, Point p)
+        {
+            FiguresViewModels.Add(new FigureViewModel(p.X, p.Y, 200, 200, dataString, EFigure.ClassSquare, false));
+            
         }
     }
 
