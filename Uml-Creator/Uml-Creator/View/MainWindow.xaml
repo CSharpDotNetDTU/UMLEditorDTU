@@ -38,7 +38,8 @@
     <DockPanel LastChildFill="True">
         <userControls:TopMenuBar DockPanel.Dock="Top" />
         <userControls:ToolBarTray  DockPanel.Dock="Top" Height="24" Margin="0,0,0.2,0"/>
-        <userControls:StatusBar DockPanel.Dock="Bottom" Height="23" RenderTransformOrigin="0.5,0.5" HorizontalAlignment="Left" Width="464"/>
+        <Slider Width="100" DockPanel.Dock="Bottom" Value="1" Minimum="0.1" Maximum="2" Name="ZoomSlider"/>
+        <!--<userControls:StatusBar DockPanel.Dock="Bottom" Height="23" RenderTransformOrigin="0.5,0.5" HorizontalAlignment="Left" Width="464" SbMax="{Binding VmSbMax}"/>-->
         <userControls:SideDockPanel  DockPanel.Dock="Right" RenderTransformOrigin="0.5,0.5" Width="128" VerticalAlignment="Bottom"/>
 
 
@@ -56,6 +57,16 @@
 
                     </ItemsPanelTemplate>
                 </ListBox.ItemsPanel>
+                <ListBox.LayoutTransform>
+                    <ScaleTransform
+                        CenterX="0" CenterY="0"
+                        ScaleX="{Binding ElementName=ZoomSlider, Path=Value}"
+                        ScaleY="{Binding ElementName=ZoomSlider, Path=Value}"
+                        
+                        >
+
+                    </ScaleTransform>
+                </ListBox.LayoutTransform>
                 <ListBox.ItemContainerStyle>
                     <Style
                     TargetType="ListBoxItem"
