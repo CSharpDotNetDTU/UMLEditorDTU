@@ -5,8 +5,8 @@
         <Setter Property="X1" Value="{Binding From.CenterX}"/>
         <Setter Property="Y1" Value="{Binding From.CenterY}"/>
         <Setter Property="X2" Value="{Binding To.CenterX}"/>
-        <Setter Property="Y2" Value="{Binding To.CenterX}"/>
-        <Setter Property="StrokeThickness" Value="3"/>
+        <Setter Property="Y2" Value="{Binding To.CenterY}"/>
+        <Setter Property="StrokeThickness" Value="1"/>
         <Setter Property="Stroke" Value="Black"/>
     </Style>
     

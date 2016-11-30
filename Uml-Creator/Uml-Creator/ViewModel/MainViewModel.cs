@@ -79,9 +79,9 @@ namespace Uml_Creator.ViewModel
                
                 //new FigureViewModel() {20.0,20.0,50.0,60.0,"lars",EFigure.ClassSquare},
                
-                 new FigureViewModel(50.0,120.0,50.0,60.0,"Dette er en klasse her skriver jeg min tekst!",EFigure.ClassSquare,false),
+                 new FigureViewModel(0.0,0.0,50.0,20.0,"Dette er en klasse her skriver jeg min tekst!",EFigure.ClassSquare,false),
 
-                 new FigureViewModel(30.0,80.0,20.0,30.0,"Dette er en anden klasse, skriv noget andet tekst her!",EFigure.ClassSquare,false)
+                 new FigureViewModel(30.0,80.0,20.0,20.0,"Dette er en anden klasse, skriv noget andet tekst her!",EFigure.ClassSquare,false)
             };
 
             lines = new ObservableCollection<LineViewModel>
@@ -133,6 +133,7 @@ namespace Uml_Creator.ViewModel
 
         private void AddFigure()
         {
+            Console.WriteLine(lines[0].X1 + " " + lines[0].Y1);
             undoRedoController.DoExecute(new AddBoxCommand(FiguresViewModels, new FigureViewModel(10.0, 80.0, 20.0, 30.0,
                 "Dette er en anden klasse, skriv noget andet tekst her!", EFigure.ClassSquare, false)));
         }
