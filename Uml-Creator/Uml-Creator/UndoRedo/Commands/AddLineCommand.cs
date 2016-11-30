@@ -15,7 +15,7 @@ namespace Uml_Creator.UndoRedo.Commands
 
         public AddLineCommand(ObservableCollection<LineViewModel> _lines, LineViewModel _line)
         {
-            lines = lines;
+            lines = _lines;
             line = _line;
         }
 

@@ -16,6 +16,7 @@ using System.Windows.Controls;
 using System.Windows.Media;
 using System.Windows;
 using Uml_Creator.UndoRedo;
+using Uml_Creator.UndoRedo.Commands;
 
 namespace Uml_Creator.ViewModel
 {
@@ -60,10 +61,12 @@ namespace Uml_Creator.ViewModel
         public ICommand BtnDelete { get; }
         public ICommand UndoCommand { get; }
         public ICommand RedoCommand { get; }
+        public ICommand AddCommand { get; }
+        UndoRedoController undoRedoController = UndoRedoController.Instance;
 
         public MainViewModel()
         {
-            UndoRedoController undoRedoController = UndoRedoController.Instance;
+            
              Content = new Gem_Load();
 
             copyFigures = new ObservableCollection<FigureViewModel>();
@@ -85,8 +88,15 @@ namespace Uml_Creator.ViewModel
             BtnCopy = new RelayCommand(Copy_Click);
             BtnPaste = new RelayCommand(Paste_Click);
             BtnDelete = new RelayCommand(Delete_Click);
-            UndoCommand = new RelayCommand(UndoRedoController.Undo, UndoRedoController.canUndo);
-            RedoCommand = new RelayCommand(UndoRedoController.Redo, UndoRedoController.canRedo);
+            UndoCommand = new RelayCommand(undoRedoController.Undo, undoRedoController.canUndo);
+            RedoCommand = new RelayCommand(undoRedoController.Redo, undoRedoController.canRedo);
+            AddCommand = new RelayCommand(AddFigure);
+        }
+
+        private void AddFigure()
+        {
+            undoRedoController.DoExecute(new AddBoxCommand(FiguresViewModels, new FigureViewModel(10.0, 80.0, 20.0, 30.0,
+                "Dette er en anden klasse, skriv noget andet tekst her!", EFigure.ClassSquare, false)));
         }
 
         /// <summary>

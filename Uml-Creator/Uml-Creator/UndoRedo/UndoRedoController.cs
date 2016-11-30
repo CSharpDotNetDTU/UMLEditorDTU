@@ -16,9 +16,34 @@ namespace Uml_Creator.UndoRedo
         {
         }
 
-        public void doExecute(IUndoCommand undoRedo)
+        public void DoExecute(IUndoCommand command)
         {
-            
+            undoStack.Push(command);
+            command.Execute();
+        }
+
+        public void Undo()
+        {
+            IUndoCommand command = undoStack.Pop();
+            command.Unexecute();
+            redoStack.Push(command);
+        }
+
+        public void Redo()
+        {
+            IUndoCommand command = redoStack.Pop();
+            command.Execute();
+            undoStack.Push(command);
+        }
+
+        public bool canUndo()
+        {
+            return undoStack.Any();
+        }
+
+        public bool canRedo()
+        {
+            return redoStack.Any();
         }
     }
 }
