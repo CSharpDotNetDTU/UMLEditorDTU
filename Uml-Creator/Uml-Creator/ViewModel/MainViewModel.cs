@@ -63,6 +63,9 @@ namespace Uml_Creator.ViewModel
         public ICommand RedoCommand { get; }
         public ICommand AddCommand { get; }
         UndoRedoController undoRedoController = UndoRedoController.Instance;
+        public ObservableCollection<LineViewModel> lines { get; }
+        public bool isAddingLineBtnPressed;
+        public FigureViewModel _firstShapeToConnect;
 
         public MainViewModel()
         {
@@ -70,8 +73,6 @@ namespace Uml_Creator.ViewModel
              Content = new Gem_Load();
 
             copyFigures = new ObservableCollection<FigureViewModel>();
- 
-           
           
             FiguresViewModels = new ObservableCollection<FigureViewModel>
             {
@@ -82,6 +83,12 @@ namespace Uml_Creator.ViewModel
 
                  new FigureViewModel(30.0,80.0,20.0,30.0,"Dette er en anden klasse, skriv noget andet tekst her!",EFigure.ClassSquare,false)
             };
+
+            lines = new ObservableCollection<LineViewModel>
+            {
+                new LineViewModel(new Line(), FiguresViewModels[0], FiguresViewModels[1], ELine.Solid)
+            };
+
             BtnLoadCommand = new RelayCommand(Load_Click);
             BtnGemCommand = new RelayCommand(Save_Click);
             BtnExportCommand = new RelayCommand<Grid>(Export_Click);
@@ -91,6 +98,37 @@ namespace Uml_Creator.ViewModel
             UndoCommand = new RelayCommand(undoRedoController.Undo, undoRedoController.canUndo);
             RedoCommand = new RelayCommand(undoRedoController.Redo, undoRedoController.canRedo);
             AddCommand = new RelayCommand(AddFigure);
+        }
+
+        public bool IsAddingLineBtnPressed
+        {
+            get { return isAddingLineBtnPressed; }
+            set
+            {
+                isAddingLineBtnPressed = value;
+                if (!value)
+                    _firstShapeToConnect = null;
+                OnPropertyChanged(nameof(isAddingLineBtnPressed));
+                AddLineBetweenShapes.RaiseCanExecuteChanged();
+            }
+
+        }
+
+        public RelayCommand<FigureViewModel> AddLineBetweenShapes => new RelayCommand<FigureViewModel>(OnAddLineBetweenShapes, lit => IsAddingLineBtnPressed);
+
+        public void OnAddLineBetweenShapes(FigureViewModel fig)
+        {
+            if (_firstShapeToConnect == null)
+                _firstShapeToConnect = fig;
+            else
+            {
+                if (fig != _firstShapeToConnect)
+                {
+                    undoRedoController.DoExecute(new AddLineCommand(lines,
+                        new LineViewModel(new Line(), _firstShapeToConnect, fig, ELine.Solid)));
+                    IsAddingLineBtnPressed = false;
+                }
+            }
         }
 
         private void AddFigure()

@@ -14,6 +14,8 @@ namespace Uml_Creator.ViewModel
 {
     public class FigureViewModel :ISerializable, INotifyPropertyChanged, IFigure
     {
+        public double CenterX => Figure.Width/2 + Figure.X;
+        public double CenterY => Figure.Height / 2 + Figure.Y;
         public ObservableCollection<AttributeViewModel> attributes { get; }
         public ObservableCollection<MethodViewModel> methods { get; }
 
@@ -101,7 +103,7 @@ namespace Uml_Creator.ViewModel
             {
                 Figure.X = value;
                 OnPropertyChanged("X");
-
+                OnPropertyChanged(nameof(CenterX));
             }
         }
 
@@ -114,6 +116,7 @@ namespace Uml_Creator.ViewModel
             {
                 Figure.Y = value;
                 OnPropertyChanged("Y");
+                OnPropertyChanged(nameof(CenterY));
             }
         }
 

@@ -1,0 +1,12 @@
+﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                    xmlns:local="clr-namespace:Uml_Creator.View"
+                    xmlns:viewModel="clr-namespace:Uml_Creator.ViewModel">
+    <ResourceDictionary.MergedDictionaries>
+        <ResourceDictionary Source="ShapeStyles.xaml"/>
+    </ResourceDictionary.MergedDictionaries>
+        
+    <DataTemplate DataType="{x:Type viewModel:LineViewModel}">
+        <Line Style="{StaticResource SolidLine}"/>
+    </DataTemplate>
+</ResourceDictionary>

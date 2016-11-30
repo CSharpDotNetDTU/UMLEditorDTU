@@ -10,7 +10,7 @@ using Uml_Creator.Model.Interfaces;
 
 namespace Uml_Creator.ViewModel
 {
-    class LineViewModel : INotifyPropertyChanged, ILine
+    public class LineViewModel : INotifyPropertyChanged, ILine
     {
         
         protected Line Line { get; }
@@ -29,6 +29,13 @@ namespace Uml_Creator.ViewModel
             Line.Type = type;
         }
 
+        public LineViewModel(Line line, FigureViewModel _from, FigureViewModel _to, ELine _type) : this(line)
+        {
+            From = _from;
+            To = _to;
+            Type = _type;
+        }
+
 
 
         public int TargetFigureNr { get; set; }
@@ -36,6 +43,9 @@ namespace Uml_Creator.ViewModel
         public string TargetLabel { get; set; }
         public string OriginLabel { get; set; }
         public ELine Type { get; set; }
+
+        public FigureViewModel From;
+        public FigureViewModel To;
 
 
         public event PropertyChangedEventHandler PropertyChanged;
