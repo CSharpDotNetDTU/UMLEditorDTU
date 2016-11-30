@@ -15,6 +15,7 @@ using System.Windows.Media.Imaging;
 using System.Windows.Controls;
 using System.Windows.Media;
 using System.Windows;
+using Uml_Creator.UndoRedo;
 
 namespace Uml_Creator.ViewModel
 {
@@ -52,19 +53,17 @@ namespace Uml_Creator.ViewModel
         }
 
         public ICommand BtnCopy { get; }
-
         public ICommand BtnPaste { get; }
-
         public ICommand BtnLoadCommand { get; }
-
         public ICommand BtnGemCommand { get; }
-
         public ICommand BtnExportCommand { get; }
-
         public ICommand BtnDelete { get; }
+        public ICommand UndoCommand { get; }
+        public ICommand RedoCommand { get; }
 
         public MainViewModel()
         {
+            UndoRedoController undoRedoController = UndoRedoController.Instance;
              Content = new Gem_Load();
 
             copyFigures = new ObservableCollection<FigureViewModel>();
@@ -86,7 +85,8 @@ namespace Uml_Creator.ViewModel
             BtnCopy = new RelayCommand(Copy_Click);
             BtnPaste = new RelayCommand(Paste_Click);
             BtnDelete = new RelayCommand(Delete_Click);
-
+            UndoCommand = new RelayCommand(UndoRedoController.Undo, UndoRedoController.canUndo);
+            RedoCommand = new RelayCommand(UndoRedoController.Redo, UndoRedoController.canRedo);
         }
 
         /// <summary>

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Linq;
 using System.Runtime.Serialization;
@@ -13,6 +14,8 @@ namespace Uml_Creator.ViewModel
 {
     public class FigureViewModel :ISerializable, INotifyPropertyChanged, IFigure
     {
+        public ObservableCollection<AttributeViewModel> attributes { get; }
+        public ObservableCollection<MethodViewModel> methods { get; }
 
         protected Figure Figure { get; }
 
@@ -36,6 +39,17 @@ namespace Uml_Creator.ViewModel
             Figure.Type = type;
             Figure.IsSelected = isSelected;
 
+        }
+
+        public FigureViewModel(FigureViewModel figure)
+        {
+            Figure.X = figure.X;
+            Figure.Y = figure.Y;
+            Figure.Width = figure.Width;
+            Figure.Height = figure.Height;
+            Figure.Data = figure.Data;
+            Figure.Type = figure.Type;
+            Figure.IsSelected = false;
         }
 
         public FigureViewModel()
