@@ -38,7 +38,8 @@
     <DockPanel LastChildFill="True">
         <userControls:TopMenuBar DockPanel.Dock="Top" />
         <userControls:ToolBarTray  DockPanel.Dock="Top" Height="24" Margin="0,0,0.2,0"/>
-        <userControls:StatusBar DockPanel.Dock="Bottom" Height="23" RenderTransformOrigin="0.5,0.5" HorizontalAlignment="Left" Width="464"/>
+        <userControls:StatusBar x:Name="StatusBar" TextBar="{Binding StatusBarTextProperty}" DockPanel.Dock="Bottom" Height="23" RenderTransformOrigin="0.5,0.5" HorizontalAlignment="Left" Width="464"
+                               />
         <userControls:SideDockPanel  DockPanel.Dock="Right" RenderTransformOrigin="0.5,0.5" Width="128" VerticalAlignment="Bottom" />
 
 

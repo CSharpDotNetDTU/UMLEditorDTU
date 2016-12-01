@@ -20,9 +20,23 @@ namespace Uml_Creator.View.UserControls
     /// </summary>
     public partial class StatusBar : UserControl
     {
+
+
+        public static DependencyProperty StatusBarTextProperty =
+            DependencyProperty.Register("TextBar", typeof(string), typeof(StatusBar),
+                new PropertyMetadata("default value"));
+
+
+        public string TextBar
+        {
+            get { return (string)GetValue(StatusBarTextProperty); }
+            set { SetValue(StatusBarTextProperty, value); }
+        }
         public StatusBar()
         {
             InitializeComponent();
         }
+
+     
     }
 }

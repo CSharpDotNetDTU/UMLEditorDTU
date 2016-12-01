@@ -4,6 +4,7 @@ using System.ComponentModel;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
+using System.Windows;
 using System.Windows.Forms;
 using GalaSoft.MvvmLight.CommandWpf;
 using System.Windows.Input;
@@ -30,7 +31,7 @@ namespace Uml_Creator.ViewModel
         #region data members
 
 
-
+       
 
         public ObservableCollection<FigureViewModel> FiguresViewModels { get; private set; }
         
@@ -39,6 +40,9 @@ namespace Uml_Creator.ViewModel
         private string filename;
         private double _x;
         private object _content;
+        public static readonly DependencyProperty StatusTextChangerProperty = DependencyProperty.Register("StatusTextChanger", typeof(string), typeof(MainViewModel), new PropertyMetadata(default(string)));
+        public static readonly DependencyProperty StatusBarTextPropertyProperty = DependencyProperty.Register("StatusBarTextProperty", typeof(string), typeof(MainViewModel), new PropertyMetadata(default(string)));
+
         #endregion data members
 
         public object Content
@@ -257,6 +261,24 @@ namespace Uml_Creator.ViewModel
                 return FiguresViewModels;
             }
         }
+
+        public string StatusBarTextProperty
+        {
+            get { return (string) GetValue(StatusBarTextPropertyProperty); }
+            set { SetValue(StatusBarTextPropertyProperty, value); }
+        }
+
+        private void SetValue(DependencyProperty statusBarTextPropertyProperty, string value)
+        {
+            statusBarTextPropertyProperty.Name = value;
+        }
+
+        private string GetValue(DependencyProperty statusBarTextPropertyProperty)
+        {
+            return statusBarTextPropertyProperty.Name;
+            //throw new NotImplementedException();
+        }
+
         public event PropertyChangedEventHandler PropertyChanged;
 
         private void OnPropertyChanged(string propertyName)
@@ -267,5 +289,5 @@ namespace Uml_Creator.ViewModel
     }
 
 
-  
+
 }
