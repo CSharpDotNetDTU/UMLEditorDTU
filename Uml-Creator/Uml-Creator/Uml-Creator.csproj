@@ -77,6 +77,27 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="UndoRedo\Commands\AddAttributeCommand.cs" />
+    <Compile Include="UndoRedo\Commands\AddBoxCommand.cs" />
+    <Compile Include="UndoRedo\Commands\AddLineCommand.cs" />
+    <Compile Include="UndoRedo\Commands\AddMethod.cs" />
+    <Compile Include="UndoRedo\Commands\DeleteAttribute.cs" />
+    <Compile Include="UndoRedo\Commands\DeleteBoxCommand.cs" />
+    <Compile Include="UndoRedo\Commands\DeleteLineCommand.cs" />
+    <Compile Include="UndoRedo\Commands\DeleteMethodCommand.cs" />
+    <Compile Include="UndoRedo\Commands\EditAttributeName.cs" />
+    <Compile Include="UndoRedo\Commands\EditClassName.cs" />
+    <Compile Include="UndoRedo\Commands\EditMethodName.cs" />
+    <Compile Include="UndoRedo\Commands\MoveBoxCommand.cs" />
+    <Compile Include="UndoRedo\Commands\MoveLineCommand.cs" />
+    <Compile Include="UndoRedo\Commands\PasteClassCommand.cs" />
+    <Compile Include="UndoRedo\IUndoCommand.cs" />
+    <Compile Include="UndoRedo\UndoRedoController.cs" />
+    <Compile Include="ViewModel\AttributeViewModel.cs" />
+    <Compile Include="ViewModel\MethodViewModel.cs" />
+    <Compile Include="View\UserControls\DraggableBox.xaml.cs">
+      <DependentUpon>DraggableBox.xaml</DependentUpon>
+    </Compile>
     <Compile Include="View\UserControls\SideDockPanel.xaml.cs">
       <DependentUpon>SideDockPanel.xaml</DependentUpon>
     </Compile>
@@ -93,18 +114,18 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
-    <Compile Include="Model\Attribute.cs" />
+    <Compile Include="Model\ClassAttribute.cs" />
     <Compile Include="Model\Diagram.cs" />
     <Compile Include="Model\ENUM\EFigure.cs" />
     <Compile Include="Model\ENUM\ELine.cs" />
     <Compile Include="Model\ENUM\EVisibility.cs" />
     <Compile Include="Model\Figure.cs" />
-    <Compile Include="Model\Interfaces\IAttribute.cs" />
+    <Compile Include="Model\Interfaces\IClassAttribute.cs" />
     <Compile Include="Model\Interfaces\IFigure.cs" />
     <Compile Include="Model\Interfaces\ILine.cs" />
-    <Compile Include="Model\Interfaces\IMethod.cs" />
+    <Compile Include="Model\Interfaces\IClassMethod.cs" />
     <Compile Include="Model\Line.cs" />
-    <Compile Include="Model\Method.cs" />
+    <Compile Include="Model\ClassMethod.cs" />
     <Compile Include="Model\ToolboxSelection.cs" />
     <Compile Include="StolenStuff\EditableTextBlock.cs" />
     <Compile Include="StolenStuff\EditableTextBlockAdorner.cs" />
@@ -120,6 +141,18 @@
       <DependentUpon>MainWindow.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
+    <Page Include="View\Resource\ShapeStyles.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="View\Resource\Templates.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="View\UserControls\DraggableBox.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="View\UserControls\SideDockPanel.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -168,12 +201,17 @@
   <ItemGroup>
     <Resource Include="Images\Left-64.png" />
     <Resource Include="Images\Minus Math -64.png" />
-    <Resource Include="Images\Open Folder-64.png" />
     <Resource Include="Images\Plus Math-64.png" />
     <Resource Include="Images\Right-64.png" />
     <Resource Include="Images\Save-64.png" />
   </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\ClassIcon.PNG" />
+  </ItemGroup>
   <ItemGroup />
+  <ItemGroup>
+    <Resource Include="Images\Open Folder-64.png" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Diagnostics;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
@@ -257,9 +258,14 @@ namespace Uml_Creator.View
         {
             if (e.ChangedButton == MouseButton.Left)
             {
-                _isLeftMouseButtonDownOnWindow = true;
-                // origMouseDownPoint = e.GetPosition(this);
                 _origMouseDownPoint = e.GetPosition(FigureListBox);
+
+                if (_origMouseDownPoint.X > FigureListBox.ActualWidth)
+                {
+                    return;
+                }
+
+                _isLeftMouseButtonDownOnWindow = true;
 
                 this.CaptureMouse();
 
@@ -486,6 +492,34 @@ namespace Uml_Creator.View
                     Figure.IsSelected = false;
                 }
             }
+        }
+
+        private void FigureListBox_Drop(object sender, DragEventArgs e)
+        {
+            base.OnDrop(e);
+
+            // If the DataObject contains string data, extract it.
+            if (e.Data.GetDataPresent(DataFormats.StringFormat))
+            {
+                string dataString = (string)e.Data.GetData(DataFormats.StringFormat);
+
+                Debug.WriteLine(dataString);
+
+                MainViewModel.AddFigure(dataString, e.GetPosition(FigureListBox));
+
+                // Set Effects to notify the drag source what effect
+                // the drag-and-drop operation had.
+                // Copy if CTRL is pressed; otherwise, move.
+                if (e.KeyStates.HasFlag(DragDropKeyStates.ControlKey))
+                {
+                    e.Effects = DragDropEffects.Copy;
+                }
+                else
+                {
+                    e.Effects = DragDropEffects.Move;
+                }
+            }
+            e.Handled = true;
         }
 
 

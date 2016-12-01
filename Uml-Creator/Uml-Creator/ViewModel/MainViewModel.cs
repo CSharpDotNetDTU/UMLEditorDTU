@@ -15,7 +15,9 @@ using Uml_Creator.Model.ENUM;
 using System.Windows.Media.Imaging;
 using System.Windows.Controls;
 using System.Windows.Media;
-
+using System.Windows;
+using Uml_Creator.UndoRedo;
+using Uml_Creator.UndoRedo.Commands;
 
 namespace Uml_Creator.ViewModel
 {
@@ -56,43 +58,156 @@ namespace Uml_Creator.ViewModel
         }
 
         public ICommand BtnCopy { get; }
-
         public ICommand BtnPaste { get; }
-
         public ICommand BtnLoadCommand { get; }
-
         public ICommand BtnGemCommand { get; }
-
         public ICommand BtnExportCommand { get; }
-
-        public ICommand BtnDelete { get; }
+        public ICommand UndoCommand { get; }
+        public ICommand RedoCommand { get; }
+        public ICommand AddBoxCommand { get; }
+        public ICommand DeleteBoxCommand { get; }
+        UndoRedoController undoRedoController = UndoRedoController.Instance;
+        public ObservableCollection<LineViewModel> lines { get; }
+        public bool isAddingLineBtnPressed;
+        public FigureViewModel _firstShapeToConnect;
 
         public MainViewModel()
         {
+            
              Content = new Gem_Load();
-             BtnLoadCommand = new RelayCommand(Load_Click);
-             BtnGemCommand = new RelayCommand(Save_Click);
 
             copyFigures = new ObservableCollection<FigureViewModel>();
- 
-           
           
             FiguresViewModels = new ObservableCollection<FigureViewModel>
             {
                
                 //new FigureViewModel() {20.0,20.0,50.0,60.0,"lars",EFigure.ClassSquare},
                
-                 new FigureViewModel(50.0,120.0,50.0,60.0,"Dette er en klasse her skriver jeg min tekst!",EFigure.ClassSquare,false),
+                 new FigureViewModel(0.0,0.0,50.0,20.0,"Dette er en klasse her skriver jeg min tekst!",EFigure.ClassSquare,false),
 
-                 new FigureViewModel(30.0,80.0,20.0,30.0,"Dette er en anden klasse, skriv noget andet tekst her!",EFigure.ClassSquare,false)
+                 new FigureViewModel(30.0,80.0,20.0,20.0,"Dette er en anden klasse, skriv noget andet tekst her!",EFigure.ClassSquare,false)
             };
+
+            lines = new ObservableCollection<LineViewModel>
+            {
+                new LineViewModel(new Line(), FiguresViewModels[0], FiguresViewModels[1], ELine.Solid)
+            };
+
             BtnLoadCommand = new RelayCommand(Load_Click);
             BtnGemCommand = new RelayCommand(Save_Click);
             BtnExportCommand = new RelayCommand<Grid>(Export_Click);
             BtnCopy = new RelayCommand(Copy_Click);
             BtnPaste = new RelayCommand(Paste_Click);
-            BtnDelete = new RelayCommand(Delete_Click);
+            UndoCommand = new RelayCommand(undoRedoController.Undo, undoRedoController.canUndo);
+            RedoCommand = new RelayCommand(undoRedoController.Redo, undoRedoController.canRedo);
+            AddBoxCommand = new RelayCommand(AddFigure);
+            DeleteBoxCommand = new RelayCommand(DeleteBox);
+        }
 
+        public bool IsAddingLineBtnPressed
+        {
+            get { return isAddingLineBtnPressed; }
+            set
+            {
+                isAddingLineBtnPressed = value;
+                if (!value)
+                    _firstShapeToConnect = null;
+                OnPropertyChanged(nameof(isAddingLineBtnPressed));
+                AddLineBetweenShapes.RaiseCanExecuteChanged();
+            }
+
+        }
+
+        public RelayCommand<FigureViewModel> AddLineBetweenShapes => new RelayCommand<FigureViewModel>(OnAddLineBetweenShapes, lit => IsAddingLineBtnPressed);
+
+        public void OnAddLineBetweenShapes(FigureViewModel fig)
+        {
+            if (_firstShapeToConnect == null)
+                _firstShapeToConnect = fig;
+            else
+            {
+                if (fig != _firstShapeToConnect)
+                {
+                    undoRedoController.DoExecute(new AddLineCommand(lines,
+                        new LineViewModel(new Line(), _firstShapeToConnect, fig, ELine.Solid)));
+                    IsAddingLineBtnPressed = false;
+                }
+            }
+        }
+
+        private void AddFigure()
+        {
+            undoRedoController.DoExecute(new AddBoxCommand(FiguresViewModels, new FigureViewModel(10.0, 80.0, 20.0, 30.0,
+                "Dette er en anden klasse, skriv noget andet tekst her!", EFigure.ClassSquare, false)));
+        }
+
+        private void AddMethod()
+        {
+            //mangler
+        }
+
+        private void AddAttribute()
+        {
+            //mangler
+        }
+
+        private void DeleteAttribute()
+        {
+            //mangler
+        }
+
+        private void DeleteBox()
+        {
+            //i stedet for for-loop skal der sendes en liste af objekter eller et enkelt objekt via databinding
+            foreach (FigureViewModel Figure in FigureViewModels.Reverse())
+            {
+                if (Figure.IsSelected)
+                {
+                    undoRedoController.DoExecute(new DeleteBoxCommand(FigureViewModels, Figure));
+
+                }
+
+            }
+        }
+
+        private void DeleteMethod()
+        {
+            //mangler
+        }
+
+        private void DeleteLine()
+        {
+            //mangler
+        }
+
+        private void EditAttributeName()
+        {
+            //mangler
+        }
+
+        private void EditBox()
+        {
+            //,amgler
+        }
+
+        private void EditMethod()
+        {
+            //mangler
+        }
+
+        private void MoveBox(MouseButtonEventArgs e)
+        {
+            
+        }
+
+        private void MoveLine()
+        {
+            //mangler
+        }
+
+        private void Paste()
+        {
+            //mangler
         }
 
         /// <summary>
@@ -143,19 +258,6 @@ namespace Uml_Creator.ViewModel
                 //No objects in copy list write to statusbar
             }
             
-        }
-
-        private void Delete_Click()
-        {
-            foreach (FigureViewModel Figure in FigureViewModels.Reverse())
-            {
-                if (Figure.IsSelected)
-                {
-                    FiguresViewModels.Remove(Figure);
-
-                }
-                
-            }
         }
 
         private void Load_Click()
@@ -270,7 +372,7 @@ namespace Uml_Creator.ViewModel
 
         private void SetValue(DependencyProperty statusBarTextPropertyProperty, string value)
         {
-            statusBarTextPropertyProperty.Name = value;
+           // statusBarTextPropertyProperty.Name = value;
         }
 
         private string GetValue(DependencyProperty statusBarTextPropertyProperty)
@@ -285,6 +387,12 @@ namespace Uml_Creator.ViewModel
         {
             if (PropertyChanged != null)
                 PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
+        }
+
+        public void AddFigure(string dataString, Point p)
+        {
+            FiguresViewModels.Add(new FigureViewModel(p.X, p.Y, 200, 200, dataString, EFigure.ClassSquare, false));
+            
         }
     }
 

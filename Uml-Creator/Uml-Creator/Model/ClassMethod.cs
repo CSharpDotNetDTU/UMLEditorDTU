@@ -8,7 +8,7 @@ using Uml_Creator.Model.Interfaces;
 
 namespace Uml_Creator.Model
 {
-    class Method : IMethod
+    public class ClassMethod : IClassMethod
     {
         public string Name { get; set; }
         public EVisibility Visibility { get; set; }
