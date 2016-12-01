@@ -58,10 +58,10 @@ namespace Uml_Creator.ViewModel
         public ICommand BtnLoadCommand { get; }
         public ICommand BtnGemCommand { get; }
         public ICommand BtnExportCommand { get; }
-        public ICommand BtnDelete { get; }
         public ICommand UndoCommand { get; }
         public ICommand RedoCommand { get; }
-        public ICommand AddCommand { get; }
+        public ICommand AddBoxCommand { get; }
+        public ICommand DeleteBoxCommand { get; }
         UndoRedoController undoRedoController = UndoRedoController.Instance;
         public ObservableCollection<LineViewModel> lines { get; }
         public bool isAddingLineBtnPressed;
@@ -94,10 +94,10 @@ namespace Uml_Creator.ViewModel
             BtnExportCommand = new RelayCommand<Grid>(Export_Click);
             BtnCopy = new RelayCommand(Copy_Click);
             BtnPaste = new RelayCommand(Paste_Click);
-            BtnDelete = new RelayCommand(Delete_Click);
             UndoCommand = new RelayCommand(undoRedoController.Undo, undoRedoController.canUndo);
             RedoCommand = new RelayCommand(undoRedoController.Redo, undoRedoController.canRedo);
-            AddCommand = new RelayCommand(AddFigure);
+            AddBoxCommand = new RelayCommand(AddFigure);
+            DeleteBoxCommand = new RelayCommand(DeleteBox);
         }
 
         public bool IsAddingLineBtnPressed
@@ -133,9 +133,77 @@ namespace Uml_Creator.ViewModel
 
         private void AddFigure()
         {
-            Console.WriteLine(lines[0].X1 + " " + lines[0].Y1);
             undoRedoController.DoExecute(new AddBoxCommand(FiguresViewModels, new FigureViewModel(10.0, 80.0, 20.0, 30.0,
                 "Dette er en anden klasse, skriv noget andet tekst her!", EFigure.ClassSquare, false)));
+        }
+
+        private void AddMethod()
+        {
+            //mangler
+        }
+
+        private void AddAttribute()
+        {
+            //mangler
+        }
+
+        private void DeleteAttribute()
+        {
+            //mangler
+        }
+
+        private void DeleteBox()
+        {
+            //i stedet for for-loop skal der sendes en liste af objekter eller et enkelt objekt via databinding
+            foreach (FigureViewModel Figure in FigureViewModels.Reverse())
+            {
+                if (Figure.IsSelected)
+                {
+                    undoRedoController.DoExecute(new DeleteBoxCommand(FigureViewModels, Figure));
+
+                }
+
+            }
+        }
+
+        private void DeleteMethod()
+        {
+            //mangler
+        }
+
+        private void DeleteLine()
+        {
+            //mangler
+        }
+
+        private void EditAttributeName()
+        {
+            //mangler
+        }
+
+        private void EditBox()
+        {
+            //,amgler
+        }
+
+        private void EditMethod()
+        {
+            //mangler
+        }
+
+        private void MoveBox(MouseButtonEventArgs e)
+        {
+            
+        }
+
+        private void MoveLine()
+        {
+            //mangler
+        }
+
+        private void Paste()
+        {
+            //mangler
         }
 
         /// <summary>
@@ -186,19 +254,6 @@ namespace Uml_Creator.ViewModel
                 //No objects in copy list write to statusbar
             }
             
-        }
-
-        private void Delete_Click()
-        {
-            foreach (FigureViewModel Figure in FigureViewModels.Reverse())
-            {
-                if (Figure.IsSelected)
-                {
-                    FiguresViewModels.Remove(Figure);
-
-                }
-                
-            }
         }
 
         private void Load_Click()
