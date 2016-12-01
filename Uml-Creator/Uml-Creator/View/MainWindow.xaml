@@ -46,10 +46,10 @@
     <DockPanel LastChildFill="True">
         <userControls:TopMenuBar DockPanel.Dock="Top" Margin="-5,0,5,0" />
         <userControls:ToolBarTray  DockPanel.Dock="Top" Height="24" Margin="0,0,0.2,0"/>
-        <Slider Width="100" DockPanel.Dock="Bottom" Value="1" Minimum="0.1" Maximum="2" Name="ZoomSlider"/>
-        <!--<userControls:StatusBar DockPanel.Dock="Bottom" Height="23" RenderTransformOrigin="0.5,0.5" HorizontalAlignment="Left" Width="464" SbMax="{Binding VmSbMax}"/>-->
-        <userControls:SideDockPanel  DockPanel.Dock="Right" RenderTransformOrigin="0.5,0.5" Width="128" VerticalAlignment="Bottom"/>
-        
+        <userControls:StatusBar DockPanel.Dock="Bottom" Height="23" RenderTransformOrigin="0.5,0.5" HorizontalAlignment="Left" Width="464"/>
+        <userControls:SideDockPanel  DockPanel.Dock="Right" RenderTransformOrigin="0.5,0.5" Width="128" VerticalAlignment="Bottom" />
+
+
         <Grid x:Name="MainCanvas">
 
             <ListBox
@@ -94,7 +94,7 @@
                             <stolenStuff:EditableTextBlock
                             Text="{Binding Data, Mode=TwoWay}" 
                             IsInEditMode="{Binding Edit, Mode=TwoWay}"
-                                 MouseDown="Figure_MouseDown"
+                             MouseDown="Figure_MouseDown"
                             MouseUp="Figure_MouseUp"
                             MouseMove="Figure_MouseMove"
                             />
