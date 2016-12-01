@@ -15,7 +15,6 @@ using Uml_Creator.Model.ENUM;
 using System.Windows.Media.Imaging;
 using System.Windows.Controls;
 using System.Windows.Media;
-using System.Windows;
 using Uml_Creator.UndoRedo;
 using Uml_Creator.UndoRedo.Commands;
 
@@ -42,8 +41,8 @@ namespace Uml_Creator.ViewModel
         private string filename;
         private double _x;
         private object _content;
-        public static readonly DependencyProperty StatusTextChangerProperty = DependencyProperty.Register("StatusTextChanger", typeof(string), typeof(MainViewModel), new PropertyMetadata(default(string)));
-        public static readonly DependencyProperty StatusBarTextPropertyProperty = DependencyProperty.Register("StatusBarTextProperty", typeof(string), typeof(MainViewModel), new PropertyMetadata(default(string)));
+       // public static readonly DependencyProperty StatusTextChangerProperty = DependencyProperty.Register("StatusTextChanger", typeof(string), typeof(MainViewModel), new PropertyMetadata(default(string)));
+       // public static readonly DependencyProperty StatusBarTextPropertyProperty = DependencyProperty.Register("StatusBarTextProperty", typeof(string), typeof(MainViewModel), new PropertyMetadata(default(string)));
 
         #endregion data members
 
@@ -363,13 +362,13 @@ namespace Uml_Creator.ViewModel
                 return FiguresViewModels;
             }
         }
-
+/*
         public string StatusBarTextProperty
         {
             get { return (string) GetValue(StatusBarTextPropertyProperty); }
             set { SetValue(StatusBarTextPropertyProperty, value); }
         }
-
+        */
         private void SetValue(DependencyProperty statusBarTextPropertyProperty, string value)
         {
             statusBarTextPropertyProperty.Name = value;
