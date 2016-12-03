@@ -4,6 +4,7 @@ using System.ComponentModel;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
+using System.Windows;
 using System.Windows.Forms;
 using GalaSoft.MvvmLight.CommandWpf;
 using System.Windows.Input;
@@ -37,7 +38,7 @@ namespace Uml_Creator.ViewModel
         #region data members
 
 
-
+       
 
         public ObservableCollection<FigureViewModel> FiguresViewModels { get; private set; }
         
@@ -46,6 +47,9 @@ namespace Uml_Creator.ViewModel
         private string filename;
         private double _x;
         private object _content;
+        public static readonly DependencyProperty StatusTextChangerProperty = DependencyProperty.Register("StatusTextChanger", typeof(string), typeof(MainViewModel), new PropertyMetadata(default(string)));
+        public static readonly DependencyProperty StatusBarTextPropertyProperty = DependencyProperty.Register("StatusBarTextProperty", typeof(string), typeof(MainViewModel), new PropertyMetadata(default(string)));
+
         #endregion data members
 
         public object Content
@@ -63,7 +67,6 @@ namespace Uml_Creator.ViewModel
         public ICommand BtnLoadCommand { get; }
         public ICommand BtnGemCommand { get; }
         public ICommand BtnExportCommand { get; }
-        public ICommand BtnDelete { get; }
         public ICommand UndoCommand { get; }
         public ICommand RedoCommand { get; }
         public ICommand AddCommand { get; }
@@ -103,7 +106,6 @@ namespace Uml_Creator.ViewModel
             BtnExportCommand = new RelayCommand<Grid>(Export_Click);
             BtnCopy = new RelayCommand(Copy_Click);
             BtnPaste = new RelayCommand(Paste_Click);
-            BtnDelete = new RelayCommand(Delete_Click);
             UndoCommand = new RelayCommand(undoRedoController.Undo, undoRedoController.canUndo);
             RedoCommand = new RelayCommand(undoRedoController.Redo, undoRedoController.canRedo);
             AddCommand = new RelayCommand(AddFigure);
@@ -145,7 +147,6 @@ namespace Uml_Creator.ViewModel
 
         private void AddFigure()
         {
-            Console.WriteLine(lines[0].X1 + " " + lines[0].Y1);
             undoRedoController.DoExecute(new AddBoxCommand(FiguresViewModels, new FigureViewModel(10.0, 80.0, 20.0, 30.0,
                 "Dette er en anden klasse, skriv noget andet tekst her!", EFigure.ClassSquare, false)));
         }

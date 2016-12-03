@@ -30,7 +30,7 @@
         <KeyBinding Command="{Binding BtnGemCommand}" Key="S" Modifiers="Control"/>
         <KeyBinding Command="{Binding UndoCommand}" Key="Z" Modifiers="Control"/>
         <KeyBinding Command="{Binding RedoCommand}" Key="Y" Modifiers="Control"/>
-        <KeyBinding Command="{Binding AddCommand}" Key="N" Modifiers="Control"/>
+        <KeyBinding Command="{Binding AddBoxCommand}" Key="N" Modifiers="Control"/>
         <KeyBinding Command="{Binding BtnCopy}" Key="C" Modifiers="Control"/>
         <KeyBinding Command="{Binding BtnPaste}" Key="V" Modifiers="Control"/>
         <KeyBinding Key="X" Modifiers="Control"/>
@@ -38,7 +38,7 @@
         <KeyBinding Key="A" Modifiers="Alt"/>
         <KeyBinding Key="O" Modifiers="Alt"/>
         <KeyBinding Key="C" Modifiers="Alt"/>
-        <KeyBinding Command="{Binding BtnDelete}" Key="Delete"/>
+        <KeyBinding Command="{Binding DeleteBoxCommand}" Key="Delete"/>
     </Window.InputBindings>
 
 
@@ -148,7 +148,7 @@
                             <stolenStuff:EditableTextBlock
                             Text="{Binding Data, Mode=TwoWay}" 
                             IsInEditMode="{Binding Edit, Mode=TwoWay}"
-                                 MouseDown="Figure_MouseDown"
+                             MouseDown="Figure_MouseDown"
                             MouseUp="Figure_MouseUp"
                             MouseMove="Figure_MouseMove"
                             />
