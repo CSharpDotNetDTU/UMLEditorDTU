@@ -17,11 +17,16 @@ using System.Windows.Media;
 using System.Windows;
 using Uml_Creator.UndoRedo;
 using Uml_Creator.UndoRedo.Commands;
+using ClassFolder = Uml_Creator.ViewModel.Class;
+
 
 namespace Uml_Creator.ViewModel
 {
     public class MainViewModel : INotifyPropertyChanged
     {
+
+        public ObservableCollection<ClassFolder.ClassViewModel> ClassViewModels { get; set; }
+
 
         #region copy members
 
@@ -62,6 +67,7 @@ namespace Uml_Creator.ViewModel
         public ICommand UndoCommand { get; }
         public ICommand RedoCommand { get; }
         public ICommand AddCommand { get; }
+        public ICommand BtnAddClass { get; }
         UndoRedoController undoRedoController = UndoRedoController.Instance;
         public ObservableCollection<LineViewModel> lines { get; }
         public bool isAddingLineBtnPressed;
@@ -79,15 +85,18 @@ namespace Uml_Creator.ViewModel
                
                 //new FigureViewModel() {20.0,20.0,50.0,60.0,"lars",EFigure.ClassSquare},
                
-                 new FigureViewModel(0.0,0.0,50.0,20.0,"Dette er en klasse her skriver jeg min tekst!",EFigure.ClassSquare,false),
+             //    new FigureViewModel(0.0,0.0,50.0,20.0,"Dette er en klasse her skriver jeg min tekst!",EFigure.ClassSquare,false),
 
-                 new FigureViewModel(30.0,80.0,20.0,20.0,"Dette er en anden klasse, skriv noget andet tekst her!",EFigure.ClassSquare,false)
+               //  new FigureViewModel(30.0,80.0,20.0,20.0,"Dette er en anden klasse, skriv noget andet tekst her!",EFigure.ClassSquare,false)
             };
 
-            lines = new ObservableCollection<LineViewModel>
-            {
-                new LineViewModel(new Line(), FiguresViewModels[0], FiguresViewModels[1], ELine.Solid)
-            };
+            ClassViewModels = new ObservableCollection<ClassFolder.ClassViewModel>();
+          
+
+          //  lines = new ObservableCollection<LineViewModel>
+            //{
+            //    new LineViewModel(new Line(), FiguresViewModels[0], FiguresViewModels[1], ELine.Solid)
+            //};
 
             BtnLoadCommand = new RelayCommand(Load_Click);
             BtnGemCommand = new RelayCommand(Save_Click);
@@ -98,7 +107,10 @@ namespace Uml_Creator.ViewModel
             UndoCommand = new RelayCommand(undoRedoController.Undo, undoRedoController.canUndo);
             RedoCommand = new RelayCommand(undoRedoController.Redo, undoRedoController.canRedo);
             AddCommand = new RelayCommand(AddFigure);
+            BtnAddClass = new RelayCommand(AddClass);
         }
+
+      
 
         public bool IsAddingLineBtnPressed
         {
@@ -199,6 +211,11 @@ namespace Uml_Creator.ViewModel
                 }
                 
             }
+        }
+
+          private void AddClass()
+        {
+            ClassViewModels.Add(new ClassFolder.ClassViewModel() { ClassName = "Classname" });
         }
 
         private void Load_Click()

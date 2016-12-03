@@ -1,10 +1,13 @@
 ﻿using System;
+using System.Collections.ObjectModel;
 using System.Diagnostics;
+using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
+using PropertyChanged;
 using Uml_Creator.ViewModel;
-
+using ClassFolder = Uml_Creator.ViewModel.Class;
 
 namespace Uml_Creator.View
 {
@@ -12,6 +15,7 @@ namespace Uml_Creator.View
     /// <summary>
     /// Interaction logic for MainWindow.xaml
     /// </summary>
+    [ImplementPropertyChanged]
     public partial class MainWindow : Window
     {
         #region Data Members
@@ -56,6 +60,8 @@ namespace Uml_Creator.View
         /// </summary>
         private static readonly double DragThreshold = 5;
 
+
+
         #endregion Data Members
 
         public MainWindow()
@@ -64,9 +70,11 @@ namespace Uml_Creator.View
         }
 
 
-        private ViewModel.MainViewModel MainViewModel
+        #region MyRegion
+
+        private MainViewModel MainViewModel
         {
-            get { return (ViewModel.MainViewModel) this.DataContext; }
+            get { return (MainViewModel) this.DataContext; }
         }
 
 
@@ -534,5 +542,31 @@ namespace Uml_Creator.View
         private void Copy_Click()
         {
         }*/
+
+        #endregion
+
+        
+        private void AddMethod_OnClick(object sender, RoutedEventArgs e)
+        {
+            var control = sender as Button;
+            if (control!=null && control.DataContext is ClassFolder.ClassViewModel)
+            {
+                var classVM = control.DataContext as ClassFolder.ClassViewModel;
+
+                classVM.MethodsCollection.Add(new ClassFolder.MethodViewModel() {Name = "Metode"});
+            }
+        }
+
+        private void AddProperty_OnClick(object sender, RoutedEventArgs e)
+        {
+
+            var control = sender as Button;
+            if (control != null && control.DataContext is ClassFolder.ClassViewModel)
+            {
+                var classVM = control.DataContext as ClassFolder.ClassViewModel;
+
+                classVM.PropertiesCollection.Add("Attribut");
+            }
+        }
     }
 }
