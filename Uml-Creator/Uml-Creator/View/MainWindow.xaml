@@ -15,7 +15,6 @@
         Title="UML-Creator" Height="350" Width="600.0">
     <Window.DataContext>
         <vm:MainViewModel/>
-
     </Window.DataContext>
     <Window.Resources>
         <ResourceDictionary>

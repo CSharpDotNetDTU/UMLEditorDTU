@@ -47,9 +47,7 @@ namespace Uml_Creator.ViewModel
         private string filename;
         private double _x;
         private object _content;
-        public static readonly DependencyProperty StatusTextChangerProperty = DependencyProperty.Register("StatusTextChanger", typeof(string), typeof(MainViewModel), new PropertyMetadata(default(string)));
-        public static readonly DependencyProperty StatusBarTextPropertyProperty = DependencyProperty.Register("StatusBarTextProperty", typeof(string), typeof(MainViewModel), new PropertyMetadata(default(string)));
-
+       
         #endregion data members
 
         public object Content
@@ -313,7 +311,10 @@ namespace Uml_Creator.ViewModel
             }
             }
 
-
+        public void AddFigure(string dataString, Point p)
+        {
+            FiguresViewModels.Add(new FigureViewModel(p.X, p.Y, 200, 200, dataString, EFigure.ClassSquare, false));
+        }
 
         public ObservableCollection<FigureViewModel> FigureViewModels
         {
@@ -330,11 +331,7 @@ namespace Uml_Creator.ViewModel
                 PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
         }
 
-        public void AddFigure(string dataString, Point p)
-        {
-            FiguresViewModels.Add(new FigureViewModel(p.X, p.Y, 200, 200, dataString, EFigure.ClassSquare, false));
-            
-        }
+      
     }
 
 
