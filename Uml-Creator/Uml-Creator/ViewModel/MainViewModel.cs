@@ -17,11 +17,16 @@ using System.Windows.Controls;
 using System.Windows.Media;
 using Uml_Creator.UndoRedo;
 using Uml_Creator.UndoRedo.Commands;
+using ClassFolder = Uml_Creator.ViewModel.Class;
+
 
 namespace Uml_Creator.ViewModel
 {
     public class MainViewModel : INotifyPropertyChanged
     {
+
+        public ObservableCollection<ClassFolder.ClassViewModel> ClassViewModels { get; set; }
+
 
         #region copy members
 
@@ -32,7 +37,7 @@ namespace Uml_Creator.ViewModel
         #region data members
 
 
-       
+
 
         public ObservableCollection<FigureViewModel> FiguresViewModels { get; private set; }
         
@@ -41,9 +46,7 @@ namespace Uml_Creator.ViewModel
         private string filename;
         private double _x;
         private object _content;
-       // public static readonly DependencyProperty StatusTextChangerProperty = DependencyProperty.Register("StatusTextChanger", typeof(string), typeof(MainViewModel), new PropertyMetadata(default(string)));
-       // public static readonly DependencyProperty StatusBarTextPropertyProperty = DependencyProperty.Register("StatusBarTextProperty", typeof(string), typeof(MainViewModel), new PropertyMetadata(default(string)));
-
+       
         #endregion data members
 
         public object Content
@@ -63,8 +66,8 @@ namespace Uml_Creator.ViewModel
         public ICommand BtnExportCommand { get; }
         public ICommand UndoCommand { get; }
         public ICommand RedoCommand { get; }
-        public ICommand AddBoxCommand { get; }
-        public ICommand DeleteBoxCommand { get; }
+        public ICommand AddCommand { get; }
+        public ICommand BtnAddClass { get; }
         UndoRedoController undoRedoController = UndoRedoController.Instance;
         public ObservableCollection<LineViewModel> lines { get; }
         public bool isAddingLineBtnPressed;
@@ -82,15 +85,18 @@ namespace Uml_Creator.ViewModel
                
                 //new FigureViewModel() {20.0,20.0,50.0,60.0,"lars",EFigure.ClassSquare},
                
-                 new FigureViewModel(0.0,0.0,50.0,20.0,"Dette er en klasse her skriver jeg min tekst!",EFigure.ClassSquare,false),
+             //    new FigureViewModel(0.0,0.0,50.0,20.0,"Dette er en klasse her skriver jeg min tekst!",EFigure.ClassSquare,false),
 
-                 new FigureViewModel(30.0,80.0,20.0,20.0,"Dette er en anden klasse, skriv noget andet tekst her!",EFigure.ClassSquare,false)
+               //  new FigureViewModel(30.0,80.0,20.0,20.0,"Dette er en anden klasse, skriv noget andet tekst her!",EFigure.ClassSquare,false)
             };
 
-            lines = new ObservableCollection<LineViewModel>
-            {
-                new LineViewModel(new Line(), FiguresViewModels[0], FiguresViewModels[1], ELine.Solid)
-            };
+            ClassViewModels = new ObservableCollection<ClassFolder.ClassViewModel>();
+
+
+          //  lines = new ObservableCollection<LineViewModel>
+            //{
+            //    new LineViewModel(new Line(), FiguresViewModels[0], FiguresViewModels[1], ELine.Solid)
+            //};
 
             BtnLoadCommand = new RelayCommand(Load_Click);
             BtnGemCommand = new RelayCommand(Save_Click);
@@ -99,9 +105,11 @@ namespace Uml_Creator.ViewModel
             BtnPaste = new RelayCommand(Paste_Click);
             UndoCommand = new RelayCommand(undoRedoController.Undo, undoRedoController.canUndo);
             RedoCommand = new RelayCommand(undoRedoController.Redo, undoRedoController.canRedo);
-            AddBoxCommand = new RelayCommand(AddFigure);
-            DeleteBoxCommand = new RelayCommand(DeleteBox);
+            AddCommand = new RelayCommand(AddFigure);
+            BtnAddClass = new RelayCommand(AddClass);
         }
+
+      
 
         public bool IsAddingLineBtnPressed
         {
@@ -138,75 +146,6 @@ namespace Uml_Creator.ViewModel
         {
             undoRedoController.DoExecute(new AddBoxCommand(FiguresViewModels, new FigureViewModel(10.0, 80.0, 20.0, 30.0,
                 "Dette er en anden klasse, skriv noget andet tekst her!", EFigure.ClassSquare, false)));
-        }
-
-        private void AddMethod()
-        {
-            //mangler
-        }
-
-        private void AddAttribute()
-        {
-            //mangler
-        }
-
-        private void DeleteAttribute()
-        {
-            //mangler
-        }
-
-        private void DeleteBox()
-        {
-            //i stedet for for-loop skal der sendes en liste af objekter eller et enkelt objekt via databinding
-            foreach (FigureViewModel Figure in FigureViewModels.Reverse())
-            {
-                if (Figure.IsSelected)
-                {
-                    undoRedoController.DoExecute(new DeleteBoxCommand(FigureViewModels, Figure));
-
-                }
-
-            }
-        }
-
-        private void DeleteMethod()
-        {
-            //mangler
-        }
-
-        private void DeleteLine()
-        {
-            //mangler
-        }
-
-        private void EditAttributeName()
-        {
-            //mangler
-        }
-
-        private void EditBox()
-        {
-            //,amgler
-        }
-
-        private void EditMethod()
-        {
-            //mangler
-        }
-
-        private void MoveBox(MouseButtonEventArgs e)
-        {
-            
-        }
-
-        private void MoveLine()
-        {
-            //mangler
-        }
-
-        private void Paste()
-        {
-            //mangler
         }
 
         /// <summary>
@@ -257,6 +196,24 @@ namespace Uml_Creator.ViewModel
                 //No objects in copy list write to statusbar
             }
             
+        }
+
+        private void Delete_Click()
+        {
+            foreach (FigureViewModel Figure in FigureViewModels.Reverse())
+            {
+                if (Figure.IsSelected)
+                {
+                    FiguresViewModels.Remove(Figure);
+
+                }
+                
+            }
+        }
+
+          private void AddClass()
+        {
+            ClassViewModels.Add(new ClassFolder.ClassViewModel() { ClassName = "Classname" });
         }
 
         private void Load_Click()
@@ -353,7 +310,10 @@ namespace Uml_Creator.ViewModel
             }
             }
 
-
+        public void AddFigure(string dataString, Point p)
+        {
+            FiguresViewModels.Add(new FigureViewModel(p.X, p.Y, 200, 200, dataString, EFigure.ClassSquare, false));
+        }
 
         public ObservableCollection<FigureViewModel> FigureViewModels
         {
@@ -362,18 +322,18 @@ namespace Uml_Creator.ViewModel
                 return FiguresViewModels;
             }
         }
-/*
+        /*
         public string StatusBarTextProperty
         {
             get { return (string) GetValue(StatusBarTextPropertyProperty); }
             set { SetValue(StatusBarTextPropertyProperty, value); }
         }
-        */
+        
         private void SetValue(DependencyProperty statusBarTextPropertyProperty, string value)
         {
             statusBarTextPropertyProperty.Name = value;
         }
-
+        */
         private string GetValue(DependencyProperty statusBarTextPropertyProperty)
         {
             return statusBarTextPropertyProperty.Name;
@@ -388,13 +348,9 @@ namespace Uml_Creator.ViewModel
                 PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
         }
 
-        public void AddFigure(string dataString, Point p)
-        {
-            FiguresViewModels.Add(new FigureViewModel(p.X, p.Y, 200, 200, dataString, EFigure.ClassSquare, false));
             
         }
-    }
 
 
-
+  
 }

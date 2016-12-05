@@ -1,0 +1,76 @@
+﻿<UserControl x:Class="Uml_Creator.View.UserControls.Class"
+      xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+      xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+      xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+      xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+      xmlns:local="clr-namespace:Uml_Creator.View.UserControls"
+      mc:Ignorable="d" 
+      d:DesignHeight="100" d:DesignWidth="135">
+    <Border BorderBrush="Black" BorderThickness="2">
+        <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="20"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+        </Grid.RowDefinitions>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="100"/>
+            <ColumnDefinition Width="30"/>
+            <ColumnDefinition Width="30"/>
+        </Grid.ColumnDefinitions>
+
+        <TextBox Text="{Binding Path=ClassName}" 
+                                     Grid.Row="0" Grid.Column="0"
+                                     Background="Orange" Grid.ColumnSpan="3" Margin="0,0,14,29.4" Grid.RowSpan="2"
+                                     />
+        <!--<Button Content="+" Grid.Row="0" Grid.Column="1" Command="{Binding Path=AddMethod}"/>
+                            <Button Content="-" Grid.Row="0" Grid.Column="2" Command="{Binding Path=RemoveMethod}"
+                                    IsEnabled="{Binding SelectedMethod, Converter={StaticResource IsNotNullConverter}}"
+                                    />-->
+
+        <Expander Grid.Column="0" Grid.Row="1"
+                                     Grid.ColumnSpan="3"
+                                     >
+            <Expander.HeaderTemplate>
+                <DataTemplate>
+                    <StackPanel FlowDirection="RightToLeft" Orientation="Horizontal">
+                        <Button Width="20" Height="20" Content="-"/>
+                        <Button Width="20" Height="20" Content="+"/>
+                        <Label Width="65" Content="Methods"/>
+                    </StackPanel>
+                </DataTemplate>
+            </Expander.HeaderTemplate>
+            <ListBox ItemsSource="{Binding Path=MethodsCollection}" SelectedItem="{Binding SelectedMethod}">
+                <ListBox.ItemTemplate>
+                    <DataTemplate>
+                        <TextBox Background="LightSteelBlue" Text="{Binding Name}"/>
+                    </DataTemplate>
+                </ListBox.ItemTemplate>
+            </ListBox>
+
+        </Expander>
+
+        <Expander Grid.Column="0" Grid.Row="2" Header="Attributes"
+                                      Grid.ColumnSpan="3">
+            <Expander.HeaderTemplate>
+                <DataTemplate>
+                    <StackPanel FlowDirection="RightToLeft" Orientation="Horizontal">
+                        <Button Width="20" Height="20" Content="-"/>
+                        <Button Width="20" Height="20" Content="+"/>
+                            <Label Width="65" Content="Attributes"/>
+                    </StackPanel>
+                </DataTemplate>
+            </Expander.HeaderTemplate>
+            <ListBox ItemsSource="{Binding Path=PropertiesCollection}">
+                <ListBox.ItemTemplate>
+                    <DataTemplate>
+                        <TextBox Background="LightSlateGray" Text="{Binding .}"/>
+                    </DataTemplate>
+                </ListBox.ItemTemplate>
+            </ListBox>
+
+        </Expander>
+
+    </Grid>
+    </Border>
+</UserControl>

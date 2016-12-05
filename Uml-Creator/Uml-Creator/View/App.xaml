@@ -4,6 +4,6 @@
              xmlns:local="clr-namespace:Uml_Creator"
              StartupUri="View/MainWindow.xaml">
     <Application.Resources>
-         
+         <!--    ... notation   -->
     </Application.Resources>
 </Application>

@@ -15,7 +15,6 @@
         Title="UML-Creator" Height="350" Width="600.0">
     <Window.DataContext>
         <vm:MainViewModel/>
-
     </Window.DataContext>
     <Window.Resources>
         <ResourceDictionary>
@@ -46,13 +45,67 @@
     <DockPanel LastChildFill="True">
         <userControls:TopMenuBar DockPanel.Dock="Top" Margin="-5,0,5,0" />
         <userControls:ToolBarTray  DockPanel.Dock="Top" Height="24" Margin="0,0,0.2,0"/>
-        <userControls:StatusBar DockPanel.Dock="Bottom" Height="23" RenderTransformOrigin="0.5,0.5" HorizontalAlignment="Left" Width="464"/>
-        <userControls:SideDockPanel  DockPanel.Dock="Right" RenderTransformOrigin="0.5,0.5" Width="128" VerticalAlignment="Bottom" />
-
+        <Slider Width="100" DockPanel.Dock="Bottom" Value="1" Minimum="0.1" Maximum="2" Name="ZoomSlider"/>
+        <!--<userControls:StatusBar DockPanel.Dock="Bottom" Height="23" RenderTransformOrigin="0.5,0.5" HorizontalAlignment="Left" Width="464" SbMax="{Binding VmSbMax}"/>-->
+        <!-- <userControls:SideDockPanel  DockPanel.Dock="Right" RenderTransformOrigin="0.5,0.5" Width="128" VerticalAlignment="Bottom"/>-->
+        
+        <Grid>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="1*" />
+                <ColumnDefinition Width="1*" />
+            </Grid.ColumnDefinitions>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="*" />
+                <RowDefinition Height="*" />
+            </Grid.RowDefinitions>
+            <Button Content="Add class" Command="{Binding BtnAddClass}"/>
+            <Button Grid.Row="1"  Content="Add line" Command="{Binding IsAddingLineBtnPressed}"/>
+        </Grid>
 
         <Grid x:Name="MainCanvas">
 
-            <ListBox
+            <ListBox ItemsSource="{Binding ClassViewModels}" 
+                     x:Name="FigureListBox"
+                     SelectionMode="Extended" AllowDrop="True" Drop="FigureListBox_Drop">
+                <ListBox.LayoutTransform>
+                    <ScaleTransform
+                        CenterX="0" CenterY="0"
+                        ScaleX="{Binding ElementName=ZoomSlider, Path=Value}"
+                        ScaleY="{Binding ElementName=ZoomSlider, Path=Value}">
+                    </ScaleTransform>
+                </ListBox.LayoutTransform>
+                <ListBox.ItemsPanel>
+                    <ItemsPanelTemplate>
+                        <Canvas/>
+                    </ItemsPanelTemplate>
+                </ListBox.ItemsPanel>
+                <ListBox.ItemContainerStyle>
+                    <Style
+                    TargetType="ListBoxItem">
+                        <Setter
+                        Property="Canvas.Left"
+                        Value="{Binding X}"
+                        />
+                        <Setter
+                        Property="Canvas.Top"
+                        Value="{Binding Y}"
+                        />
+                    </Style>
+                </ListBox.ItemContainerStyle>
+
+                        
+                
+                <ListBox.ItemTemplate>
+                   
+                    <DataTemplate>
+                       <userControls:Class/>
+                    </DataTemplate>
+                </ListBox.ItemTemplate>
+                
+                
+            </ListBox>
+            
+            <!--<ListBox
             x:Name="FigureListBox"
             ItemsSource="{Binding FigureViewModels}"
             SelectionMode="Extended" AllowDrop="True" Drop="FigureListBox_Drop"
@@ -94,11 +147,11 @@
                             <stolenStuff:EditableTextBlock
                             Text="{Binding Data, Mode=TwoWay}" 
                             IsInEditMode="{Binding Edit, Mode=TwoWay}"
-                             MouseDown="Figure_MouseDown"
+                                 MouseDown="Figure_MouseDown"
                             MouseUp="Figure_MouseUp"
                             MouseMove="Figure_MouseMove"
                             />
-                        </Border>
+                        </Border>-->
 
 
 
@@ -122,9 +175,9 @@
                             MouseUp="Figure_MouseUp"
                             MouseMove="Figure_MouseMove"
                                     /> <-->
-                    </DataTemplate>
+                    <!--</DataTemplate>
                 </ItemsControl.ItemTemplate>
-            </ListBox>
+            </ListBox>-->
 
             <Canvas
             x:Name="dragSelectionCanvas"
@@ -154,4 +207,6 @@
 
 
 </Window>
+
+
 
