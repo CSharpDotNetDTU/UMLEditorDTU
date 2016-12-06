@@ -24,6 +24,7 @@ namespace Uml_Creator.Model.Interfaces
         string Name { get; set; }
 
         ObservableCollection<MethodViewModel> MethodCollection { get; set; }
+        ObservableCollection<AttributeViewModel> AttributeCollection { get; set; }
 
 
     }

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -21,12 +22,12 @@ namespace Uml_Creator.UndoRedo.Commands
 
         public void Execute()
         {
-            //box.attributes.Remove(attribute);
+            box.AttributeCollection.Remove(attribute);
         }
 
         public void Unexecute()
         {
-            //box.attributes.Add(attribute);
+            box.AttributeCollection.Add(attribute);
         }
     }
 }

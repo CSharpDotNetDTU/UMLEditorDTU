@@ -25,8 +25,12 @@ namespace Uml_Creator.ViewModel
         private UndoRedoController undoRedoController = UndoRedoController.Instance;
         public ICommand AddMethod => new RelayCommand(OnAddMethod);
         public ICommand RemoveMethod => new RelayCommand(OnRemoveMethod);
+        public ICommand AddAttribute => new RelayCommand(OnAddAttribute);
+        public ICommand RemoveAttribute => new RelayCommand(OnRemoveAttribute);
 
-        public ObservableCollection<string> AttributesCollection { get; set; } = new ObservableCollection<string>();
+        public MethodViewModel SelectedMethod { get; set; }
+
+        public AttributeViewModel SelectedAttribute { get; set; }
 
         protected Figure Figure { get; }
 
@@ -39,17 +43,27 @@ namespace Uml_Creator.ViewModel
         {
         }
         */
+        
+        private void OnAddAttribute()
+        {
+            undoRedoController.DoExecute(new AddAttributeCommand(this, new AttributeViewModel()));
+        }
 
+        private void OnRemoveAttribute()
+        {
+            undoRedoController.DoExecute(new DeleteAttribute(this, SelectedAttribute));
+        }
 
         private void OnAddMethod()
         {
-            Debug.WriteLine("HEEEEEJ");
             undoRedoController.DoExecute(new AddMethod(this, new MethodViewModel()));
+            
         }
 
         private void OnRemoveMethod()
         {
-            undoRedoController.DoExecute(new DeleteMethodCommand(this, new MethodViewModel()));
+            
+            undoRedoController.DoExecute(new DeleteMethodCommand(this, SelectedMethod));
         }
 
         public FigureViewModel(double x, double y, double width, double height, string data, EFigure type, bool isSelected) : this(new Figure())
@@ -107,6 +121,7 @@ namespace Uml_Creator.ViewModel
             {
                 Figure.Height = value;
                 OnPropertyChanged("Height");
+                Debug.WriteLine(Height+ " AYYYYYYYY");
             }
         }
 
@@ -122,7 +137,6 @@ namespace Uml_Creator.ViewModel
         }
 
 
-
         public double X
         {
             get { return Figure.X; }
@@ -133,8 +147,6 @@ namespace Uml_Creator.ViewModel
                 OnPropertyChanged(nameof(CenterX));
             }
         }
-
-
 
         public double Y
         {
@@ -178,6 +190,17 @@ namespace Uml_Creator.ViewModel
             {
                 Figure.MethodCollection = value;
                 OnPropertyChanged("MethodCollection");
+            }
+        }
+
+        public ObservableCollection<AttributeViewModel> AttributeCollection
+        {
+            get { return Figure.AttributeCollection; }
+
+            set
+            {
+                Figure.AttributeCollection = value;
+                OnPropertyChanged("AttributeCollection");
             }
         }
 

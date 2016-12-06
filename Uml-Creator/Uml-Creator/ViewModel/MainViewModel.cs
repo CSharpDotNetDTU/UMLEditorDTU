@@ -110,6 +110,7 @@ namespace Uml_Creator.ViewModel
             BtnAddClass = new RelayCommand(AddClass);
 
 
+
         }
 
         private void ExecuteRemoveMethod()

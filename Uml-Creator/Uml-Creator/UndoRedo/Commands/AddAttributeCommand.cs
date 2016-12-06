@@ -22,12 +22,12 @@ namespace Uml_Creator.UndoRedo.Commands
 
         public void Execute()
         {
-            //box.attributes.Add(attribute);
+            box.AttributeCollection.Add(attribute);
         }
 
         public void Unexecute()
         {
-            //box.attributes.Remove(attribute);
+            box.AttributeCollection.Remove(attribute);
         }
     }
 }

@@ -4,10 +4,10 @@
       xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
       xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
       xmlns:viewModel="clr-namespace:Uml_Creator.ViewModel"
-      mc:Ignorable="d" 
-      d:DesignHeight="100" d:DesignWidth="135">
-        <Border BorderBrush="Black" BorderThickness="2">
-        <Grid x:Name="ClassGrid">
+      mc:Ignorable="d">
+    
+    <Border Name="ClassBorder" BorderBrush="Black" BorderThickness="2" Width="134">
+        <Grid x:Name="ClassGrid" Background="Orange">
         <Grid.RowDefinitions>
             <RowDefinition Height="20"/>
             <RowDefinition Height="Auto"/>
@@ -19,9 +19,10 @@
             <ColumnDefinition Width="30"/>
         </Grid.ColumnDefinitions>
 
+            
         <TextBox Text="{Binding Path=Name}" 
                                      Grid.Row="0" Grid.Column="0"
-                                     Background="Orange" Grid.ColumnSpan="3" Margin="0,0,14,29.4" Grid.RowSpan="2"
+                                     Background="Orange" Grid.ColumnSpan="3" Margin="0,0,29,29.4" Grid.RowSpan="2"
                                      />
         <!--<Button Content="+" Grid.Row="0" Grid.Column="1" Command="{Binding Path=AddMethod}"/>
                             <Button Content="-" Grid.Row="0" Grid.Column="2" Command="{Binding Path=RemoveMethod}"
@@ -34,7 +35,8 @@
             <Expander.HeaderTemplate>
                     <DataTemplate >
                     <StackPanel FlowDirection="RightToLeft" Orientation="Horizontal">
-                            <Button Width="20" Height="20" Content="-" Command="{Binding ElementName=ClassGrid,Path= DataContext.RemoveMethod}" />
+                            <Button Width="20" Height="20" Content="-" Command="{Binding ElementName=ClassGrid,Path= DataContext.RemoveMethod}"
+                                    IsEnabled="{Binding SelectedMethod}"/>
                             <Button Width="20" Height="20" Content="+" Command="{Binding ElementName=ClassGrid,Path= DataContext.AddMethod}"/>
                         <Label Width="65" Content="Methods"/>
                     </StackPanel>
@@ -55,16 +57,17 @@
             <Expander.HeaderTemplate>
                 <DataTemplate>
                     <StackPanel FlowDirection="RightToLeft" Orientation="Horizontal">
-                        <Button Width="20" Height="20" Content="-"/>
-                        <Button Width="20" Height="20" Content="+"/>
+                            <Button Width="20" Height="20" Content="-" Command="{Binding ElementName=ClassGrid,Path= DataContext.RemoveAttribute}"
+                                    IsEnabled="{Binding SelectedAttribute}"/>
+                            <Button Width="20" Height="20" Content="+" Command="{Binding ElementName=ClassGrid, Path= DataContext.AddAttribute}"/>
                             <Label Width="65" Content="Attributes"/>
                     </StackPanel>
                 </DataTemplate>
             </Expander.HeaderTemplate>
-            <ListBox ItemsSource="{Binding Path=PropertiesCollection}">
+                <ListBox ItemsSource="{Binding Path=AttributeCollection}" SelectedItem="{Binding SelectedAttribute}" >
                 <ListBox.ItemTemplate>
                     <DataTemplate>
-                        <TextBox Background="LightSlateGray" Text="{Binding .}"/>
+                            <TextBox Background="LightSteelBlue" Text="{Binding .}"/>
                     </DataTemplate>
                 </ListBox.ItemTemplate>
             </ListBox>

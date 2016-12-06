@@ -90,6 +90,7 @@
                         Property="Canvas.Top"
                         Value="{Binding Y}"
                         />
+                        
                     </Style>
                 </ListBox.ItemContainerStyle>
                 

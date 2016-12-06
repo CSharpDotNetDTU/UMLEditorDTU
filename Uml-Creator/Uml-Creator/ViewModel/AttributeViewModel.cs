@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Linq;
 using System.Runtime.Serialization;
 using System.Text;
@@ -18,7 +19,8 @@ namespace Uml_Creator.ViewModel
         public string Type { get; set; }
         public void GetObjectData(SerializationInfo info, StreamingContext context)
         {
-            ((ISerializable)Attribute).GetObjectData(info, context);
+           // ((ISerializable)Attribute).GetObjectData(info, context);
         }
+
     }
 }

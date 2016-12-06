@@ -26,6 +26,8 @@ namespace Uml_Creator.Model
         public bool IsSelected { get; set; }
 
         public ObservableCollection<MethodViewModel> MethodCollection {get; set; } = new ObservableCollection<MethodViewModel>();
+        public ObservableCollection<AttributeViewModel> AttributeCollection { get; set; } = new ObservableCollection<AttributeViewModel>();
+
 
         public void GetObjectData(SerializationInfo info, StreamingContext context)
         {
