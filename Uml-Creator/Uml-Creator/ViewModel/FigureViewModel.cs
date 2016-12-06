@@ -26,7 +26,9 @@ namespace Uml_Creator.ViewModel
         public double CenterX => Figure.Width/2 + X;
         public double CenterY => Figure.Height / 2 + Y;
         private UndoRedoController undoRedoController = UndoRedoController.Instance;
-
+        public ICommand AddMethod => new RelayCommand(OnAddMethod);
+        public ICommand RemoveMethod => new RelayCommand(OnRemoveMethod);
+        
         #region MouseMembers
 
         private bool _isDraggingFigure = false;
@@ -44,15 +46,7 @@ namespace Uml_Creator.ViewModel
         {
             Figure = figure;
         }
-
-        /*public FigureViewModel() : this(new Figure())    
-        {
-        }
-        */
-
-        public ICommand AddMethod => new RelayCommand(OnAddMethod);
-
-        public ICommand RemoveMethod => new RelayCommand(OnRemoveMethod);
+       
 
         public ICommand OnMouseLeftBtnDownCommand => new RelayCommand<MouseButtonEventArgs>(OnMouseLeftBtnDown);
         public ICommand OnMouseLeftBtnUpCommand => new RelayCommand<MouseButtonEventArgs>(OnMouseLeftUp);
@@ -115,7 +109,7 @@ namespace Uml_Creator.ViewModel
 
         private void OnAddMethod()
         {
-            Console.WriteLine("HEEEEEJ");
+            Debug.WriteLine("HEEEEEJ");
             undoRedoController.DoExecute(new AddMethod(this, new MethodViewModel()));
         }
 
@@ -171,7 +165,12 @@ namespace Uml_Creator.ViewModel
         }
 
         public EFigure Type => Figure.Type;
-        public int FigureNr => Figure.FigureNr;
+
+        public int FigureNr
+        {
+            get { return Figure.FigureNr; }
+        }
+
         public double Height
         {
             get { return Figure.Height; }
@@ -269,5 +268,4 @@ namespace Uml_Creator.ViewModel
             ((ISerializable)Figure).GetObjectData(info, context);
         }
     }
-
 }

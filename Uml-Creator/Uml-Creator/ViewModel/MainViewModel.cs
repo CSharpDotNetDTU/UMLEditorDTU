@@ -58,6 +58,7 @@ namespace Uml_Creator.ViewModel
             }
         }
 
+
         public ICommand BtnCopy { get; }
         public ICommand BtnPaste { get; }
         public ICommand BtnLoadCommand { get; }
@@ -68,7 +69,6 @@ namespace Uml_Creator.ViewModel
         public ICommand AddCommand { get; }
         
         public ICommand BtnAddClass { get; }
-        public ICommand RemoveMethod { get; set; }
         UndoRedoController undoRedoController = UndoRedoController.Instance;
         public ObservableCollection<LineViewModel> lines { get; }
         public bool isAddingLineBtnPressed;
@@ -107,8 +107,6 @@ namespace Uml_Creator.ViewModel
             RedoCommand = new RelayCommand(undoRedoController.Redo, undoRedoController.canRedo);
             AddCommand = new RelayCommand(AddFigure);
             BtnAddClass = new RelayCommand(AddClass);
-           
-            RemoveMethod = new RelayCommand(ExecuteRemoveMethod);
 
 
         }
