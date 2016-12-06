@@ -2,13 +2,19 @@
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
+using System.Diagnostics;
 using System.Linq;
 using System.Runtime.Serialization;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows.Controls;
+using System.Windows.Input;
+using GalaSoft.MvvmLight.CommandWpf;
 using Uml_Creator.Model;
 using Uml_Creator.Model.ENUM;
 using Uml_Creator.Model.Interfaces;
+using Uml_Creator.UndoRedo;
+using Uml_Creator.UndoRedo.Commands;
 
 namespace Uml_Creator.ViewModel
 {
@@ -16,8 +22,10 @@ namespace Uml_Creator.ViewModel
     {
         public double CenterX => Figure.Width/2 + X;
         public double CenterY => Figure.Height / 2 + Y;
-        public ObservableCollection<AttributeViewModel> attributes { get; }
-        public ObservableCollection<MethodViewModel> methods { get; }
+        private UndoRedoController undoRedoController = UndoRedoController.Instance;
+        
+
+        public ObservableCollection<string> AttributesCollection { get; set; } = new ObservableCollection<string>();
 
         protected Figure Figure { get; }
 
@@ -30,6 +38,21 @@ namespace Uml_Creator.ViewModel
         {
         }
         */
+
+        public ICommand AddMethod => new RelayCommand(OnAddMethod);
+
+        public ICommand RemoveMethod => new RelayCommand(OnRemoveMethod);
+
+        private void OnAddMethod()
+        {
+            Console.WriteLine("HEEEEEJ");
+            undoRedoController.DoExecute(new AddMethod(this, new MethodViewModel()));
+        }
+
+        private void OnRemoveMethod()
+        {
+            undoRedoController.DoExecute(new DeleteMethodCommand(this, new MethodViewModel()));
+        }
 
         public FigureViewModel(double x, double y, double width, double height, string data, EFigure type, bool isSelected) : this(new Figure())
         {
@@ -57,6 +80,8 @@ namespace Uml_Creator.ViewModel
         public FigureViewModel()
         {
             Figure = new Figure();
+            Figure.Name = "ExampleClass";
+
         }
 
 
@@ -128,6 +153,29 @@ namespace Uml_Creator.ViewModel
             {
                 Figure.Data = value;
                 OnPropertyChanged("Data");
+            }
+        }
+
+        public string Name
+        {
+            get { return Figure.Name; }
+
+            set
+            {
+                Figure.Name = value; 
+                OnPropertyChanged("Name");
+            }
+
+        }
+
+        public ObservableCollection<MethodViewModel> MethodCollection
+        {
+            get { return Figure.MethodCollection; }
+
+            set
+            {
+                Figure.MethodCollection = value;
+                OnPropertyChanged("MethodCollection");
             }
         }
 

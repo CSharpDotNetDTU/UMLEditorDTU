@@ -6,6 +6,7 @@ using System.Windows.Input;
 using GalaSoft.MvvmLight.Command;
 using PropertyChanged;
 using Uml_Creator.Annotations;
+using Uml_Creator.Model.Interfaces;
 
 
 namespace Uml_Creator.ViewModel.Class

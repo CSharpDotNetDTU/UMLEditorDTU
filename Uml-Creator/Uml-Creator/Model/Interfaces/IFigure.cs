@@ -1,10 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Linq;
 using System.Runtime.Serialization;
 using System.Text;
 using System.Threading.Tasks;
 using Uml_Creator.Model.ENUM;
+using Uml_Creator.ViewModel;
 
 namespace Uml_Creator.Model.Interfaces
 {
@@ -19,8 +21,9 @@ namespace Uml_Creator.Model.Interfaces
         double Y { get; }
         string Data { get; set; }
         string ToString();
-        
-      
+        string Name { get; set; }
+
+        ObservableCollection<MethodViewModel> MethodCollection { get; set; }
 
 
     }

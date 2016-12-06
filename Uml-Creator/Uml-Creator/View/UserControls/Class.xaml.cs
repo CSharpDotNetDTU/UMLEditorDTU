@@ -23,6 +23,7 @@ namespace Uml_Creator.View.UserControls
         public Class()
         {
             InitializeComponent();
+            this.DataContext = this;
         }
     }
 }
