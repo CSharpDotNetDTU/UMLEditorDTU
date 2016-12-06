@@ -112,6 +112,9 @@
     <Compile Include="View\UserControls\DraggableBox.xaml.cs">
       <DependentUpon>DraggableBox.xaml</DependentUpon>
     </Compile>
+    <Compile Include="View\UserControls\FigureBox.xaml.cs">
+      <DependentUpon>FigureBox.xaml</DependentUpon>
+    </Compile>
     <Compile Include="View\UserControls\SideDockPanel.xaml.cs">
       <DependentUpon>SideDockPanel.xaml</DependentUpon>
     </Compile>
@@ -168,6 +171,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="View\UserControls\DraggableBox.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="View\UserControls\FigureBox.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

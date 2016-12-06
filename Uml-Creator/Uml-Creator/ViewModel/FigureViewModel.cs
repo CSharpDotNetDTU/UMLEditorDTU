@@ -57,6 +57,7 @@ namespace Uml_Creator.ViewModel
         public FigureViewModel()
         {
             Figure = new Figure();
+            
         }
 
 

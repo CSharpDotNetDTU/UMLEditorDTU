@@ -213,7 +213,8 @@ namespace Uml_Creator.ViewModel
 
           private void AddClass()
         {
-            ClassViewModels.Add(new ClassFolder.ClassViewModel() { ClassName = "Classname" });
+            //   ClassViewModels.Add(new ClassFolder.ClassViewModel() { ClassName = "Classname" });
+            FigureViewModels.Add(new FigureViewModel());
         }
 
         private void Load_Click()

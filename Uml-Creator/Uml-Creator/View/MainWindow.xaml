@@ -64,7 +64,7 @@
 
         <Grid x:Name="MainCanvas">
 
-            <ListBox ItemsSource="{Binding ClassViewModels}" 
+            <ListBox ItemsSource="{Binding FigureViewModels}" 
                      x:Name="FigureListBox"
                      SelectionMode="Extended" AllowDrop="True" Drop="FigureListBox_Drop">
                 <ListBox.LayoutTransform>
@@ -98,7 +98,9 @@
                 <ListBox.ItemTemplate>
                    
                     <DataTemplate>
-                       <userControls:Class/>
+                      <!-- <userControls:Class/>
+                        -->
+                        <userControls:FigureBox></userControls:FigureBox>
                     </DataTemplate>
                 </ListBox.ItemTemplate>
                 
