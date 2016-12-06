@@ -23,7 +23,8 @@ namespace Uml_Creator.ViewModel
         public double CenterX => Figure.Width/2 + X;
         public double CenterY => Figure.Height / 2 + Y;
         private UndoRedoController undoRedoController = UndoRedoController.Instance;
-        
+        public ICommand AddMethod => new RelayCommand(OnAddMethod);
+        public ICommand RemoveMethod => new RelayCommand(OnRemoveMethod);
 
         public ObservableCollection<string> AttributesCollection { get; set; } = new ObservableCollection<string>();
 
@@ -39,13 +40,10 @@ namespace Uml_Creator.ViewModel
         }
         */
 
-        public ICommand AddMethod => new RelayCommand(OnAddMethod);
-
-        public ICommand RemoveMethod => new RelayCommand(OnRemoveMethod);
 
         private void OnAddMethod()
         {
-            Console.WriteLine("HEEEEEJ");
+            Debug.WriteLine("HEEEEEJ");
             undoRedoController.DoExecute(new AddMethod(this, new MethodViewModel()));
         }
 
@@ -80,7 +78,6 @@ namespace Uml_Creator.ViewModel
         public FigureViewModel()
         {
             Figure = new Figure();
-            Figure.Name = "ExampleClass";
 
         }
 
@@ -96,7 +93,12 @@ namespace Uml_Creator.ViewModel
         }
 
         public EFigure Type => Figure.Type;
-        public int FigureNr => Figure.FigureNr;
+
+        public int FigureNr
+        {
+            get { return Figure.FigureNr; }
+        }
+
         public double Height
         {
             get { return Figure.Height; }

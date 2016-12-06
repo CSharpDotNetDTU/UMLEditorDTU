@@ -7,7 +7,7 @@
       mc:Ignorable="d" 
       d:DesignHeight="100" d:DesignWidth="135">
         <Border BorderBrush="Black" BorderThickness="2">
-        <Grid>
+        <Grid x:Name="ClassGrid">
         <Grid.RowDefinitions>
             <RowDefinition Height="20"/>
             <RowDefinition Height="Auto"/>
@@ -34,8 +34,8 @@
             <Expander.HeaderTemplate>
                     <DataTemplate >
                     <StackPanel FlowDirection="RightToLeft" Orientation="Horizontal">
-                            <Button Width="20" Height="20" Content="-" Command="{Binding RemoveMethod}" />
-                            <Button Width="20" Height="20" Content="+" Command="{Binding Path=AddMethod}"/>
+                            <Button Width="20" Height="20" Content="-" Command="{Binding ElementName=ClassGrid,Path= DataContext.RemoveMethod}" />
+                            <Button Width="20" Height="20" Content="+" Command="{Binding ElementName=ClassGrid,Path= DataContext.AddMethod}"/>
                         <Label Width="65" Content="Methods"/>
                     </StackPanel>
                 </DataTemplate>

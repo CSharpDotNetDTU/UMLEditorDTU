@@ -92,11 +92,8 @@
                         />
                     </Style>
                 </ListBox.ItemContainerStyle>
-
-                        
                 
                 <ListBox.ItemTemplate>
-
                     <DataTemplate>
                        <userControls:Class/>
                     </DataTemplate>
