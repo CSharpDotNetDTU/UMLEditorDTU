@@ -118,7 +118,7 @@ namespace Uml_Creator.ViewModel
             undoRedoController.DoExecute(new DeleteMethodCommand(this, new MethodViewModel()));
         }
 
-        public FigureViewModel(double x, double y, double width, double height, string data, EFigure type, bool isSelected) : this(new Figure())
+        public FigureViewModel(double x, double y, double width, double height, string data, EFigure type, bool isSelected, string name) : this(new Figure())
         {
             Figure.X = x;
             Figure.Y = y;
@@ -127,6 +127,7 @@ namespace Uml_Creator.ViewModel
             Figure.Data = data;
             Figure.Type = type;
             Figure.IsSelected = isSelected;
+            Figure.Name = name;
 
         }
 
@@ -139,6 +140,7 @@ namespace Uml_Creator.ViewModel
             Figure.Data = figure.Data;
             Figure.Type = figure.Type;
             Figure.IsSelected = false;
+            Figure.Name = figure.Name;
         }
 
         public FigureViewModel(string newName)
