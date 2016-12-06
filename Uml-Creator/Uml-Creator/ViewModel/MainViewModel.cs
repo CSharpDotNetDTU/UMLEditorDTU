@@ -223,7 +223,7 @@ namespace Uml_Creator.ViewModel
         {
            // FiguresViewModels.Add(new FigureViewModel() { Name = "Classname" });
 
-
+            FigureViewModels.Add(new FigureViewModel("new name"));
         }
 
         private void Load_Click()

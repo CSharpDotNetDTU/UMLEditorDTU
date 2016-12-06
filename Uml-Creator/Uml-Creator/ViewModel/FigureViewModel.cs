@@ -146,11 +146,16 @@ namespace Uml_Creator.ViewModel
             Figure.IsSelected = false;
         }
 
+        public FigureViewModel(string newName)
+        {
+            Figure = new Figure();
+            Figure.Name = newName;
+
+        }
+
         public FigureViewModel()
         {
             Figure = new Figure();
-            Figure.Name = "ExampleClass";
-
         }
 
 
