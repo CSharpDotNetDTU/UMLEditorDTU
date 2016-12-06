@@ -21,12 +21,12 @@ namespace Uml_Creator.UndoRedo.Commands
 
         public void Execute()
         {
-            box.methods.Add(method);
+            box.MethodCollection.Add(method);
         }
 
         public void Unexecute()
         {
-            box.methods.Remove(method);
+            box.MethodCollection.Remove(method);
         }
     }
 }

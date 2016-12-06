@@ -545,7 +545,7 @@ namespace Uml_Creator.View
 
         #endregion
 
-        
+        /*
         private void AddMethod_OnClick(object sender, RoutedEventArgs e)
         {
             var control = sender as Button;
@@ -568,5 +568,7 @@ namespace Uml_Creator.View
                 classVM.PropertiesCollection.Add("Attribut");
             }
         }
+    */
     }
+
 }

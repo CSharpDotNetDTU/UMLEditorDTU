@@ -1,11 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Linq;
 using System.Runtime.Serialization;
 using System.Text;
 using System.Threading.Tasks;
 using Uml_Creator.Model.ENUM;
 using Uml_Creator.Model.Interfaces;
+using Uml_Creator.ViewModel;
 
 namespace Uml_Creator.Model
 {
@@ -20,8 +22,10 @@ namespace Uml_Creator.Model
         public double X { get; set; }
         public double Y { get; set; }
         public string Data { get; set; }
-
+        public string Name { get; set; }
         public bool IsSelected { get; set; }
+
+        public ObservableCollection<MethodViewModel> MethodCollection {get; set; }
 
         public void GetObjectData(SerializationInfo info, StreamingContext context)
         {

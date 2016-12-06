@@ -17,7 +17,7 @@ using System.Windows.Controls;
 using System.Windows.Media;
 using Uml_Creator.UndoRedo;
 using Uml_Creator.UndoRedo.Commands;
-using ClassFolder = Uml_Creator.ViewModel.Class;
+using Folder = Uml_Creator.ViewModel.FigureViewModel;
 
 
 namespace Uml_Creator.ViewModel
@@ -25,7 +25,6 @@ namespace Uml_Creator.ViewModel
     public class MainViewModel : INotifyPropertyChanged
     {
 
-        public ObservableCollection<ClassFolder.ClassViewModel> ClassViewModels { get; set; }
 
 
         #region copy members
@@ -37,7 +36,7 @@ namespace Uml_Creator.ViewModel
         #region data members
 
 
-
+       
 
         public ObservableCollection<FigureViewModel> FiguresViewModels { get; private set; }
         
@@ -67,7 +66,9 @@ namespace Uml_Creator.ViewModel
         public ICommand UndoCommand { get; }
         public ICommand RedoCommand { get; }
         public ICommand AddCommand { get; }
+        
         public ICommand BtnAddClass { get; }
+        public ICommand RemoveMethod { get; set; }
         UndoRedoController undoRedoController = UndoRedoController.Instance;
         public ObservableCollection<LineViewModel> lines { get; }
         public bool isAddingLineBtnPressed;
@@ -90,8 +91,7 @@ namespace Uml_Creator.ViewModel
                //  new FigureViewModel(30.0,80.0,20.0,20.0,"Dette er en anden klasse, skriv noget andet tekst her!",EFigure.ClassSquare,false)
             };
 
-            ClassViewModels = new ObservableCollection<ClassFolder.ClassViewModel>();
-
+          
 
           //  lines = new ObservableCollection<LineViewModel>
             //{
@@ -107,8 +107,16 @@ namespace Uml_Creator.ViewModel
             RedoCommand = new RelayCommand(undoRedoController.Redo, undoRedoController.canRedo);
             AddCommand = new RelayCommand(AddFigure);
             BtnAddClass = new RelayCommand(AddClass);
+           
+            RemoveMethod = new RelayCommand(ExecuteRemoveMethod);
+
+
         }
 
+        private void ExecuteRemoveMethod()
+        {
+        //   MethodsCollection.Remove(SelectedMethod);
+        }
       
 
         public bool IsAddingLineBtnPressed
@@ -213,8 +221,9 @@ namespace Uml_Creator.ViewModel
 
           private void AddClass()
         {
-            //   ClassViewModels.Add(new ClassFolder.ClassViewModel() { ClassName = "Classname" });
-            FigureViewModels.Add(new FigureViewModel());
+           // FiguresViewModels.Add(new FigureViewModel() { Name = "Classname" });
+
+
         }
 
         private void Load_Click()
@@ -349,8 +358,8 @@ namespace Uml_Creator.ViewModel
                 PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
         }
 
-            
-        }
+      
+    }
 
 
   
