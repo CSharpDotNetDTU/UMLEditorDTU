@@ -9,27 +9,104 @@
              xmlns:command="http://www.galasoft.ch/mvvmlight"
              mc:Ignorable="d"
              d:DesignHeight="300" d:DesignWidth="300">
+    
+    <!--There is a textBlock around everything because we havent been able to get the eventtriggers to work on anything but textblocs-->
+    
+    <TextBlock Name="TextBlock">
+      <i:Interaction.Triggers>
+                <i:EventTrigger EventName="MouseLeftButtonDown">
+                    <command:EventToCommand Command="{Binding OnMouseLeftBtnDownCommand}" PassEventArgsToCommand="True" />
+                </i:EventTrigger>
+
+                <i:EventTrigger EventName="MouseMove">
+                    <command:EventToCommand Command="{Binding OnMouseMoveCommand}"
+                                        CommandParameter="{Binding ElementName=TextBlock, Mode=OneWay}" />
+                </i:EventTrigger>
+
+                <i:EventTrigger EventName="MouseLeftButtonUp">
+                    <command:EventToCommand Command="{Binding OnMouseLeftBtnUpCommand}" PassEventArgsToCommand="True" />
+                </i:EventTrigger>
+            </i:Interaction.Triggers>
+       
+        
+    
     <Grid Name="GridGrid">
-        <stolenStuff:EditableTextBlock
-            x:Name="EditableTextBlock"
-            Text="{Binding Data, Mode=TwoWay}"
-            IsInEditMode="{Binding Edit, Mode=TwoWay}" />
 
-        <i:Interaction.Triggers>
-            <i:EventTrigger EventName="MouseLeftButtonDown">
-                <command:EventToCommand Command="{Binding OnMouseLeftBtnDownCommand}" PassEventArgsToCommand="True" />
-            </i:EventTrigger>
+       
 
-            <i:EventTrigger EventName="MouseMove">
-                <command:EventToCommand Command="{Binding OnMouseMoveCommand}"
-                                        CommandParameter="{Binding ElementName=GridGrid, Mode=OneWay}" />
-            </i:EventTrigger>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="20"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+        </Grid.RowDefinitions>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="100"/>
+            <ColumnDefinition Width="30"/>
+            <ColumnDefinition Width="30"/>
+        </Grid.ColumnDefinitions>
 
-            <i:EventTrigger EventName="MouseLeftButtonUp">
-                <command:EventToCommand Command="{Binding OnMouseLeftBtnUpCommand}" PassEventArgsToCommand="True" />
-            </i:EventTrigger>
-        </i:Interaction.Triggers>
+        <TextBox Text="{Binding Path=Name}" 
+                                     Grid.Row="0" Grid.Column="0"
+                                     Background="Orange" Margin="0,0,0,29" Grid.RowSpan="2"
+                                     />
+
+        
+        <!--<Button Content="+" Grid.Row="0" Grid.Column="1" Command="{Binding Path=AddMethod}"/>
+                            <Button Content="-" Grid.Row="0" Grid.Column="2" Command="{Binding Path=RemoveMethod}"
+                                    IsEnabled="{Binding SelectedMethod, Converter={StaticResource IsNotNullConverter}}"
+                                    />-->
+
+        
+        
+        <Expander Grid.Column="0" Grid.Row="1"
+                                     Grid.ColumnSpan="3"
+                                     >
+            <Expander.HeaderTemplate>
+                <DataTemplate >
+                    <StackPanel FlowDirection="RightToLeft" Orientation="Horizontal">
+                        <Button Width="20" Height="20" Content="-" Command="{Binding RemoveMethod}" />
+                        <Button Width="20" Height="20" Content="+" Command="{Binding Path=AddMethod}"/>
+                        <Label Width="65" Content="Methods"/>
+                    </StackPanel>
+                </DataTemplate>
+            </Expander.HeaderTemplate>
+            <ListBox ItemsSource="{Binding Path=MethodCollection}" SelectedItem="{Binding SelectedMethod}">
+                <ListBox.ItemTemplate>
+                    <DataTemplate>
+                        <TextBox Background="LightSteelBlue" Text="{Binding Name}"/>
+                    </DataTemplate>
+                </ListBox.ItemTemplate>
+            </ListBox>
+
+        </Expander>
+
+        <Expander Grid.Column="0" Grid.Row="2" Header="Attributes"
+                                      Grid.ColumnSpan="3">
+            <Expander.HeaderTemplate>
+                <DataTemplate>
+                    <StackPanel FlowDirection="RightToLeft" Orientation="Horizontal">
+                        <Button Width="20" Height="20" Content="-"/>
+                        <Button Width="20" Height="20" Content="+"/>
+                        <Label Width="65" Content="Attributes"/>
+                    </StackPanel>
+                </DataTemplate>
+            </Expander.HeaderTemplate>
+            <ListBox ItemsSource="{Binding Path=PropertiesCollection}">
+                <ListBox.ItemTemplate>
+                    <DataTemplate>
+                        <TextBox Background="LightSlateGray" Text="{Binding .}"/>
+                    </DataTemplate>
+                </ListBox.ItemTemplate>
+            </ListBox>
+
+        </Expander>
+        <Image x:Name="image" Grid.ColumnSpan="3" HorizontalAlignment="Left" Height="100" Margin="68,0,-5,-17" Grid.RowSpan="3" VerticalAlignment="Top" Width="100"/>
+
+
+
+
 
 
     </Grid>
+    </TextBlock>
 </UserControl>

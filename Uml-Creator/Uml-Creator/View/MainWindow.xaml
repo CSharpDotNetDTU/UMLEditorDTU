@@ -98,9 +98,11 @@
                 <ListBox.ItemTemplate>
 
                     <DataTemplate>
-                      <!-- <userControls:Class/>
+                        <!--
+                         <userControls:Class/>
                         -->
                         <userControls:FigureBox></userControls:FigureBox>
+                          
                     </DataTemplate>
                 </ListBox.ItemTemplate>
                 

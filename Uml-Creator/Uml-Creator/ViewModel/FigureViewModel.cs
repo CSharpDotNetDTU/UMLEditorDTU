@@ -68,7 +68,8 @@ namespace Uml_Creator.ViewModel
             }
 
             var pos = Mouse.GetPosition(VisualTreeHelper.GetParent(obj) as IInputElement);
-
+            //X= pos.X - _origMouseDownPoint.X;
+            //Y = pos.Y - _origMouseDownPoint.Y;
             X = X + pos.X - _origMouseDownPoint.X;
             Y = Y + pos.Y - _origMouseDownPoint.Y;
         }

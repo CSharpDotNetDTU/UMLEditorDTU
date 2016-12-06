@@ -4,73 +4,92 @@
       xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
       xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
       xmlns:viewModel="clr-namespace:Uml_Creator.ViewModel"
+      xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"
+      xmlns:command="http://www.galasoft.ch/mvvmlight"
       mc:Ignorable="d" 
       d:DesignHeight="100" d:DesignWidth="135">
-        <Border BorderBrush="Black" BorderThickness="2">
-        <Grid>
-        <Grid.RowDefinitions>
-            <RowDefinition Height="20"/>
-            <RowDefinition Height="Auto"/>
-            <RowDefinition Height="Auto"/>
-        </Grid.RowDefinitions>
-        <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="100"/>
-            <ColumnDefinition Width="30"/>
-            <ColumnDefinition Width="30"/>
-        </Grid.ColumnDefinitions>
+    <Border BorderBrush="Black" BorderThickness="2">
 
-        <TextBox Text="{Binding Path=Name}" 
+
+        <Grid Name="GridGrid">
+            <i:Interaction.Triggers>
+                <i:EventTrigger EventName="MouseLeftButtonDown">
+                    <command:EventToCommand Command="{Binding OnMouseLeftBtnDownCommand}" PassEventArgsToCommand="True" />
+                </i:EventTrigger>
+
+                <i:EventTrigger EventName="MouseMove">
+                    <command:EventToCommand Command="{Binding OnMouseMoveCommand}"
+                                        CommandParameter="{Binding ElementName=GridGrid, Mode=OneWay}" />
+                </i:EventTrigger>
+
+                <i:EventTrigger EventName="MouseLeftButtonUp">
+                    <command:EventToCommand Command="{Binding OnMouseLeftBtnUpCommand}" PassEventArgsToCommand="True" />
+                </i:EventTrigger>
+            </i:Interaction.Triggers>
+
+            <Grid.RowDefinitions>
+                <RowDefinition Height="20"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+            </Grid.RowDefinitions>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="100"/>
+                <ColumnDefinition Width="30"/>
+                <ColumnDefinition Width="30"/>
+            </Grid.ColumnDefinitions>
+
+            <TextBox Text="{Binding Path=Name}" 
                                      Grid.Row="0" Grid.Column="0"
-                                     Background="Orange" Grid.ColumnSpan="3" Margin="0,0,14,29.4" Grid.RowSpan="2"
+                                     Background="Orange" Margin="0,0,0,29" Grid.RowSpan="2"
                                      />
-        <!--<Button Content="+" Grid.Row="0" Grid.Column="1" Command="{Binding Path=AddMethod}"/>
+            <!--<Button Content="+" Grid.Row="0" Grid.Column="1" Command="{Binding Path=AddMethod}"/>
                             <Button Content="-" Grid.Row="0" Grid.Column="2" Command="{Binding Path=RemoveMethod}"
                                     IsEnabled="{Binding SelectedMethod, Converter={StaticResource IsNotNullConverter}}"
                                     />-->
 
-        <Expander Grid.Column="0" Grid.Row="1"
+            <Expander Grid.Column="0" Grid.Row="1"
                                      Grid.ColumnSpan="3"
                                      >
-            <Expander.HeaderTemplate>
+                <Expander.HeaderTemplate>
                     <DataTemplate >
-                    <StackPanel FlowDirection="RightToLeft" Orientation="Horizontal">
+                        <StackPanel FlowDirection="RightToLeft" Orientation="Horizontal">
                             <Button Width="20" Height="20" Content="-" Command="{Binding RemoveMethod}" />
                             <Button Width="20" Height="20" Content="+" Command="{Binding Path=AddMethod}"/>
-                        <Label Width="65" Content="Methods"/>
-                    </StackPanel>
-                </DataTemplate>
-            </Expander.HeaderTemplate>
-            <ListBox ItemsSource="{Binding Path=MethodCollection}" SelectedItem="{Binding SelectedMethod}">
-                <ListBox.ItemTemplate>
-                    <DataTemplate>
-                        <TextBox Background="LightSteelBlue" Text="{Binding Name}"/>
+                            <Label Width="65" Content="Methods"/>
+                        </StackPanel>
                     </DataTemplate>
-                </ListBox.ItemTemplate>
-            </ListBox>
+                </Expander.HeaderTemplate>
+                <ListBox ItemsSource="{Binding Path=MethodCollection}" SelectedItem="{Binding SelectedMethod}">
+                    <ListBox.ItemTemplate>
+                        <DataTemplate>
+                            <TextBox Background="LightSteelBlue" Text="{Binding Name}"/>
+                        </DataTemplate>
+                    </ListBox.ItemTemplate>
+                </ListBox>
 
-        </Expander>
+            </Expander>
 
-        <Expander Grid.Column="0" Grid.Row="2" Header="Attributes"
+            <Expander Grid.Column="0" Grid.Row="2" Header="Attributes"
                                       Grid.ColumnSpan="3">
-            <Expander.HeaderTemplate>
-                <DataTemplate>
-                    <StackPanel FlowDirection="RightToLeft" Orientation="Horizontal">
-                        <Button Width="20" Height="20" Content="-"/>
-                        <Button Width="20" Height="20" Content="+"/>
-                            <Label Width="65" Content="Attributes"/>
-                    </StackPanel>
-                </DataTemplate>
-            </Expander.HeaderTemplate>
-            <ListBox ItemsSource="{Binding Path=PropertiesCollection}">
-                <ListBox.ItemTemplate>
+                <Expander.HeaderTemplate>
                     <DataTemplate>
-                        <TextBox Background="LightSlateGray" Text="{Binding .}"/>
+                        <StackPanel FlowDirection="RightToLeft" Orientation="Horizontal">
+                            <Button Width="20" Height="20" Content="-"/>
+                            <Button Width="20" Height="20" Content="+"/>
+                            <Label Width="65" Content="Attributes"/>
+                        </StackPanel>
                     </DataTemplate>
-                </ListBox.ItemTemplate>
-            </ListBox>
+                </Expander.HeaderTemplate>
+                <ListBox ItemsSource="{Binding Path=PropertiesCollection}">
+                    <ListBox.ItemTemplate>
+                        <DataTemplate>
+                            <TextBox Background="LightSlateGray" Text="{Binding .}"/>
+                        </DataTemplate>
+                    </ListBox.ItemTemplate>
+                </ListBox>
 
-        </Expander>
+            </Expander>
 
-    </Grid>
+        </Grid>
     </Border>
 </UserControl>

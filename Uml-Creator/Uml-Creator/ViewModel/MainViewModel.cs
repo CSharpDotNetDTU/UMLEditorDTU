@@ -222,8 +222,9 @@ namespace Uml_Creator.ViewModel
           private void AddClass()
         {
            // FiguresViewModels.Add(new FigureViewModel() { Name = "Classname" });
-
-            FigureViewModels.Add(new FigureViewModel("new name"));
+            FigureViewModel abc = new FigureViewModel(0, 0, 10, 20, "data", EFigure.ClassSquare, false);
+            abc.Name = "LarsHansen";
+            FigureViewModels.Add(abc);
         }
 
         private void Load_Click()
