@@ -25,15 +25,16 @@
         <KeyBinding Command="{Binding BtnGemCommand}" Key="S" Modifiers="Control"/>
         <KeyBinding Command="{Binding UndoCommand}" Key="Z" Modifiers="Control"/>
         <KeyBinding Command="{Binding RedoCommand}" Key="Y" Modifiers="Control"/>
-        <KeyBinding Command="{Binding AddBoxCommand}" Key="N" Modifiers="Control"/>
+        <KeyBinding Command="{Binding BtnAddClass}" Key="N" Modifiers="Control"/>
         <KeyBinding Command="{Binding BtnCopy}" Key="C" Modifiers="Control"/>
         <KeyBinding Command="{Binding BtnPaste}" Key="V" Modifiers="Control"/>
         <KeyBinding Key="X" Modifiers="Control"/>
+        <KeyBinding Command="{Binding BtnExportCommand}" CommandParameter="{Binding ElementName=MainCanvas}" Key="E" Modifiers="Control"/>
         <KeyBinding Key="Enter" Modifiers="Control"/>
         <KeyBinding Key="A" Modifiers="Alt"/>
         <KeyBinding Key="O" Modifiers="Alt"/>
         <KeyBinding Key="C" Modifiers="Alt"/>
-        <KeyBinding Command="{Binding DeleteBoxCommand}" Key="Delete"/>
+        <KeyBinding Command="{Binding DeleteCommand}" Key="Delete"/>
     </Window.InputBindings>
 
 
