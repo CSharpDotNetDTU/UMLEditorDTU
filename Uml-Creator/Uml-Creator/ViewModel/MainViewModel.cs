@@ -224,9 +224,10 @@ namespace Uml_Creator.ViewModel
 
           private void AddClass()
         {
-            FigureViewModel abc = new FigureViewModel(0, 0, 10, 20, "data", EFigure.ClassSquare, false,"testClass");
+            FigureViewModel newFigure = new FigureViewModel(0, 0, 10, 20, "data", EFigure.ClassSquare, false,"testClass");
+
+            undoRedoController.DoExecute(new AddBoxCommand(FiguresViewModels, newFigure));
             
-            FigureViewModels.Add(abc);
         }
 
         private void Load_Click()
