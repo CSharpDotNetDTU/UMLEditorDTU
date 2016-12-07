@@ -7,7 +7,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Uml_Creator.Model.ENUM;
 using Uml_Creator.Model.Interfaces;
-using Uml_Creator.ViewModel;
+using Uml_Creator;
 
 namespace Uml_Creator.Model
 {
@@ -25,7 +25,7 @@ namespace Uml_Creator.Model
         public string Name { get; set; }
         public bool IsSelected { get; set; }
 
-        public ObservableCollection<MethodViewModel> MethodCollection {get; set; } = new ObservableCollection<MethodViewModel>();
+        public ObservableCollection<MethodModel> MethodCollection {get; set; } = new ObservableCollection<MethodModel>();
 
         public void GetObjectData(SerializationInfo info, StreamingContext context)
         {

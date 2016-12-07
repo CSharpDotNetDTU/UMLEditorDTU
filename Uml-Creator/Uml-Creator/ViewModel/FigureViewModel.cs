@@ -17,6 +17,7 @@ using Uml_Creator.Model.ENUM;
 using Uml_Creator.Model.Interfaces;
 using Uml_Creator.UndoRedo;
 using Uml_Creator.UndoRedo.Commands;
+using Model;
 
 
 namespace Uml_Creator.ViewModel
@@ -110,12 +111,12 @@ namespace Uml_Creator.ViewModel
         private void OnAddMethod()
         {
             Debug.WriteLine("HEEEEEJ");
-            undoRedoController.DoExecute(new AddMethod(this, new MethodViewModel()));
+            undoRedoController.DoExecute(new AddMethod(this, new MethodModel()));
         }
 
         private void OnRemoveMethod()
         {
-            undoRedoController.DoExecute(new DeleteMethodCommand(this, new MethodViewModel()));
+            undoRedoController.DoExecute(new DeleteMethodCommand(this, new MethodModel()));
         }
 
         public FigureViewModel(double x, double y, double width, double height, string data, EFigure type, bool isSelected, string name) : this(new Figure())
@@ -244,7 +245,7 @@ namespace Uml_Creator.ViewModel
 
         }
 
-        public ObservableCollection<MethodViewModel> MethodCollection
+        public ObservableCollection<MethodModel> MethodCollection
         {
             get { return Figure.MethodCollection; }
 
@@ -252,6 +253,19 @@ namespace Uml_Creator.ViewModel
             {
                 Figure.MethodCollection = value;
                 OnPropertyChanged("MethodCollection");
+            }
+        }
+
+        ObservableCollection<MethodModel> IFigure.MethodCollection
+        {
+            get
+            {
+                throw new NotImplementedException();
+            }
+
+            set
+            {
+                throw new NotImplementedException();
             }
         }
 

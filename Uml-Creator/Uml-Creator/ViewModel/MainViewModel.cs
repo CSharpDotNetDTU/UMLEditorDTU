@@ -18,7 +18,7 @@ using System.Windows.Interactivity;
 using System.Windows.Media;
 using Uml_Creator.UndoRedo;
 using Uml_Creator.UndoRedo.Commands;
-using Folder = Uml_Creator.ViewModel.FigureViewModel;
+
 
 
 namespace Uml_Creator.ViewModel

@@ -553,7 +553,7 @@ namespace Uml_Creator.View
             {
                 var classVM = control.DataContext as ClassFolder.ClassViewModel;
 
-                classVM.MethodsCollection.Add(new ClassFolder.MethodViewModel() {Name = "Metode"});
+                classVM.MethodsCollection.Add(new ClassFolder.MethodModel() {Name = "Metode"});
             }
         }
 

@@ -41,6 +41,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Class1.cs" />
+    <Compile Include="Model\AttributeModel.cs" />
     <Compile Include="Model\ClassAttribute.cs" />
     <Compile Include="Model\ClassMethod.cs" />
     <Compile Include="Model\Diagram.cs" />
@@ -53,6 +54,7 @@
     <Compile Include="Model\Interfaces\IFigure.cs" />
     <Compile Include="Model\Interfaces\ILine.cs" />
     <Compile Include="Model\Line.cs" />
+    <Compile Include="Model\MethodModel.cs" />
     <Compile Include="Model\ToolboxSelection.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>

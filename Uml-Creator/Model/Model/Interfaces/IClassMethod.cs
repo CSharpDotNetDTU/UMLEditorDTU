@@ -7,7 +7,7 @@ using Uml_Creator.Model.ENUM;
 
 namespace Uml_Creator.Model.Interfaces
 {
-    interface IClassMethod
+    public interface IClassMethod
     {
         string Name { get; set; }
         EVisibility Visibility { get; set; }

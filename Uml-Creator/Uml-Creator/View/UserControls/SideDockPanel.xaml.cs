@@ -14,8 +14,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
-using Uml_Creator.Model;
-
+using Model;
 namespace Uml_Creator.View.UserControls
 {
     /// <summary>
@@ -24,18 +23,19 @@ namespace Uml_Creator.View.UserControls
     public partial class SideDockPanel : UserControl
     {
         
-        private readonly ObservableCollection<ToolboxSelection> _toolboxList;
+       // private readonly ObservableCollection<ToolboxSelection> _toolboxList;
         private string _selectedList;
 
 
 
         public SideDockPanel()
         {
-            var list = new ObservableCollection<ToolboxSelection>();
+           /* var list = new ObservableCollection<ToolboxSelection>();
             list.Add(new ToolboxSelection("test1"));
             list.Add(new ToolboxSelection("test2"));
             _toolboxList = list;
             
+            */
             InitializeComponent();
         }
 

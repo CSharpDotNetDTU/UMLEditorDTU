@@ -6,11 +6,12 @@ using System.Runtime.Serialization;
 using System.Text;
 using System.Threading.Tasks;
 using Uml_Creator.Model.ENUM;
-using Uml_Creator.ViewModel;
+
+
 
 namespace Uml_Creator.Model.Interfaces
 {
-    public interface IFigure: ISerializable
+    public interface IFigure : ISerializable
     {
         bool IsSelected { get; set; }
         EFigure Type { get; }
@@ -23,8 +24,6 @@ namespace Uml_Creator.Model.Interfaces
         string ToString();
         string Name { get; set; }
 
-        ObservableCollection<MethodViewModel> MethodCollection { get; set; }
-
-
+        ObservableCollection<MethodModel> MethodCollection { get; set; }
     }
 }
