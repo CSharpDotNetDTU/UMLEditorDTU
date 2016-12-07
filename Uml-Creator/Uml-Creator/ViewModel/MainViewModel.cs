@@ -190,7 +190,8 @@ namespace Uml_Creator.ViewModel
                 {
                     double offset = 20.0;
                     FigureViewModel newfigure = new FigureViewModel(figure.X + offset, figure.Y + offset, figure.Width, figure.Height, figure.Data, figure.Type, false, figure.Name);
-                    FiguresViewModels.Add(newfigure);
+                    undoRedoController.DoExecute(new AddBoxCommand(FiguresViewModels,newfigure));
+                
                     nrOfCopied++;
                 }
                 Debug.Print("Antal Objecter copieret:" + nrOfCopied);
