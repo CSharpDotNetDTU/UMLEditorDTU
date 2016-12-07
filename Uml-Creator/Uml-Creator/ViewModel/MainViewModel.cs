@@ -68,12 +68,13 @@ namespace Uml_Creator.ViewModel
         public ICommand UndoCommand { get; }
         public ICommand RedoCommand { get; }
         public ICommand AddCommand { get; }
-        
         public ICommand BtnAddClass { get; }
         UndoRedoController undoRedoController = UndoRedoController.Instance;
         public ObservableCollection<LineViewModel> lines { get; }
         public bool isAddingLineBtnPressed;
         public FigureViewModel _firstShapeToConnect;
+        public string FileName;
+        BackgroundWorker worker = new BackgroundWorker();
 
         public MainViewModel()
         {
@@ -236,10 +237,13 @@ namespace Uml_Creator.ViewModel
             OpenFileDialog loadfildialog = new OpenFileDialog();
             loadfildialog.Filter = "XML files (*.xml)|*.xml";
             if (loadfildialog.ShowDialog() != DialogResult.OK) return;
+            FileName = loadfildialog.FileName;
+            //worker.DoWork += worker_Load;
+            //worker.RunWorkerAsync();
             try
             {
                 XmlDocument xmlDocument = new XmlDocument();
-                xmlDocument.Load(loadfildialog.FileName);
+                xmlDocument.Load(FileName);
                 string xmlString = xmlDocument.OuterXml;
 
                 using (StringReader read = new StringReader(xmlString))
@@ -253,11 +257,10 @@ namespace Uml_Creator.ViewModel
                         FiguresViewModels.Clear();
                         for (int i = 0; i < temp.Count; i++)
                         {
-                          //  FiguresViewModels.Add(new FigureViewModel(temp[i].X, temp[i].Y, temp[i].Width, temp[i].Height, temp[i].Data, temp[i].Type,false,temp[i].Name));
-                            FiguresViewModels.Add( new FigureViewModel(temp[i]));
+                            //  FiguresViewModels.Add(new FigureViewModel(temp[i].X, temp[i].Y, temp[i].Width, temp[i].Height, temp[i].Data, temp[i].Type,false,temp[i].Name));
+                            FiguresViewModels.Add(new FigureViewModel(temp[i]));
                         }
-                        
-                        Console.WriteLine(FiguresViewModels[1].Data);
+
                         reader.Close();
                     }
 
@@ -269,8 +272,42 @@ namespace Uml_Creator.ViewModel
                 Console.WriteLine(ex.ToString());
                 //Log exception here
             }
-            //convert fra xml til diagram via serialization
-            //  textBox1.Text = File.ReadAllText(loadfildialog.FileName);
+        }
+
+        private void worker_Load(object sender, DoWorkEventArgs e)
+        {
+            try
+            {
+                XmlDocument xmlDocument = new XmlDocument();
+                xmlDocument.Load(FileName);
+                string xmlString = xmlDocument.OuterXml;
+
+                using (StringReader read = new StringReader(xmlString))
+                {
+                    ObservableCollection<FigureViewModel> temp;
+                    Type outType = typeof(ObservableCollection<FigureViewModel>); //skal være samme slags objekter som diagrammet
+                    XmlSerializer serializer = new XmlSerializer(outType);
+                    using (XmlReader reader = new XmlTextReader(read))
+                    {
+                        temp = (ObservableCollection<FigureViewModel>)serializer.Deserialize(reader);
+                        FiguresViewModels.Clear();
+                        for (int i = 0; i < temp.Count; i++)
+                        {
+                            //  FiguresViewModels.Add(new FigureViewModel(temp[i].X, temp[i].Y, temp[i].Width, temp[i].Height, temp[i].Data, temp[i].Type,false,temp[i].Name));
+                            FiguresViewModels.Add(new FigureViewModel(temp[i]));
+                        }
+
+                        reader.Close();
+                    }
+
+                    read.Close();
+                }
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.ToString());
+                //Log exception here
+            }
         }
 
         private void Save_Click()
@@ -278,6 +315,13 @@ namespace Uml_Creator.ViewModel
             SaveFileDialog gemfildialog = new SaveFileDialog();
             gemfildialog.Filter = "XML files (*.xml)|*.xml";
             if (gemfildialog.ShowDialog() != DialogResult.OK) return;
+            FileName = gemfildialog.FileName;
+            worker.DoWork += worker_Save;
+            worker.RunWorkerAsync();
+        }
+
+        private void worker_Save(object sender, DoWorkEventArgs e)
+        {
             var serialObject = FiguresViewModels; //skal importere diagrammets data
 
             if (serialObject == null) return;
@@ -290,7 +334,7 @@ namespace Uml_Creator.ViewModel
                     serializer.Serialize(stream, serialObject);
                     stream.Position = 0;
                     xmlDocument.Load(stream);
-                    xmlDocument.Save(gemfildialog.FileName);
+                    xmlDocument.Save(FileName);
                     stream.Close();
                 }
             }
@@ -299,7 +343,6 @@ namespace Uml_Creator.ViewModel
                 Console.WriteLine(ex.ToString());
                 //Log exception here
             }
-
         }
 
         private void Export_Click(Grid canvas)
