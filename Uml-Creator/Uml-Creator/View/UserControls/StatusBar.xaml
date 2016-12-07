@@ -6,29 +6,12 @@
              xmlns:local="clr-namespace:Uml_Creator"
              mc:Ignorable="d"
              d:DesignHeight="300" d:DesignWidth="300"
-             DataContext="{Binding RelativeSource={RelativeSource Self}}">
-    <Grid>
 
+             >
+    <Grid Name="StatusbarGrid">
 
-        <StatusBar>
-            <StatusBarItem>
-                <TextBlock Name="status" Text="{Binding TextBar}" Width="305" />
-            </StatusBarItem>
-
-            <StatusBarItem>
-                <Button x:Name="BtnZoomOut" ToolTip="Zoom-out">
-                    <Image Source="pack://application:,,,/Images/Minus Math -64.png" Stretch="Fill" Width="17" />
-
-                </Button>
-            </StatusBarItem>
-            <StatusBarItem Margin="0,0,0,0.2" Width="93">
-                <Slider x:Name="SliderZoom" Width="91" RenderTransformOrigin="0.496,0.564" />
-            </StatusBarItem>
-            <StatusBarItem Margin="0,0,0,0.2" Width="30">
-                <Button x:Name="BtnZoomIn" ToolTip="Zoom-in">
-                    <Image Source="pack://application:,,,/Images\Plus Math-64.png" Stretch="Fill" Width="17" />
-                </Button>
-            </StatusBarItem>
-        </StatusBar>
+                <TextBox x:Name="Box" Text="{Binding ElementName=StatusbarGrid,Path=DataContext.TextBar}"></TextBox>
+ 
+            
     </Grid>
 </UserControl>

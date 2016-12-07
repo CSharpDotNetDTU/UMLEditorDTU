@@ -41,14 +41,16 @@
     <DockPanel LastChildFill="True">
         <userControls:TopMenuBar DockPanel.Dock="Top" Margin="-5,0,5,0" />
         <userControls:ToolBarTray  DockPanel.Dock="Top" Height="24" Margin="0,0,0.2,0"/>
-        <Slider Width="100" DockPanel.Dock="Bottom" Value="1" Minimum="0.1" Maximum="2" Name="ZoomSlider"/>
+
+        <Slider Width="100" DockPanel.Dock="Bottom" Value="1" Minimum="0.1" Maximum="2" Name="ZoomSlider"></Slider>
+       
         <!--<userControls:StatusBar DockPanel.Dock="Bottom" Height="23" RenderTransformOrigin="0.5,0.5" HorizontalAlignment="Left" Width="464" SbMax="{Binding VmSbMax}"/>-->
         <!-- <userControls:SideDockPanel  DockPanel.Dock="Right" RenderTransformOrigin="0.5,0.5" Width="128" VerticalAlignment="Bottom"/>-->
 
         <userControls:Btns_AddClass_AddLine/>
+        <userControls:StatusBar DockPanel.Dock="Bottom"  />
 
-
-        <Grid x:Name="MainCanvas">
+        <Grid x:Name="MainCanvas" DockPanel.Dock="Right">
 
             <ListBox ItemsSource="{Binding FigureViewModels}" 
                      x:Name="FigureListBox"
@@ -76,7 +78,6 @@
                         Property="Canvas.Top"
                         Value="{Binding Y}"
                         />
-                        
                     </Style>
                 </ListBox.ItemContainerStyle>
                 
@@ -190,7 +191,7 @@
 
         </Grid>
 
-
+        
     </DockPanel>
 
 

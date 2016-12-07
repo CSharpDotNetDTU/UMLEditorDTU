@@ -29,15 +29,13 @@ namespace Uml_Creator.ViewModel
 
 
         #region copy members
-
         public ObservableCollection<FigureViewModel> copyFigures { get; private set; }
-
         #endregion
 
         #region data members
 
 
-       
+        private string _textBarText = "1234567890";
 
         public ObservableCollection<FigureViewModel> FiguresViewModels { get; private set; }
         
@@ -67,8 +65,6 @@ namespace Uml_Creator.ViewModel
         public ICommand BtnExportCommand { get; }
         public ICommand UndoCommand { get; }
         public ICommand RedoCommand { get; }
-        public ICommand AddCommand { get; }
-        
         public ICommand BtnAddClass { get; }
         UndoRedoController undoRedoController = UndoRedoController.Instance;
         public ObservableCollection<LineViewModel> lines { get; }
@@ -106,7 +102,6 @@ namespace Uml_Creator.ViewModel
             BtnPaste = new RelayCommand(Paste_Click);
             UndoCommand = new RelayCommand(undoRedoController.Undo, undoRedoController.canUndo);
             RedoCommand = new RelayCommand(undoRedoController.Redo, undoRedoController.canRedo);
-            AddCommand = new RelayCommand(AddFigure);
             BtnAddClass = new RelayCommand(AddClass);
 
 
@@ -150,11 +145,6 @@ namespace Uml_Creator.ViewModel
             }
         }
 
-        private void AddFigure()
-        {
-            undoRedoController.DoExecute(new AddBoxCommand(FiguresViewModels, new FigureViewModel(10.0, 80.0, 20.0, 30.0,
-                "Dette er en anden klasse, skriv noget andet tekst her!", EFigure.ClassSquare, false, "")));
-        }
 
         /// <summary>
         /// This method is used to take a copy of the selected objects on the canvas, that can be both lines and figures.
@@ -228,7 +218,8 @@ namespace Uml_Creator.ViewModel
             FigureViewModel newFigure = new FigureViewModel(0, 0, 10, 20, "data", EFigure.ClassSquare, false,"testClass");
 
             undoRedoController.DoExecute(new AddBoxCommand(FiguresViewModels, newFigure));
-            
+
+            //TextBar = "abekat";
         }
 
         private void Load_Click()
@@ -326,6 +317,15 @@ namespace Uml_Creator.ViewModel
             }
             }
 
+        private string TextBar
+        {
+            get { return _textBarText; }
+            set
+            {
+                _textBarText = value;
+                OnPropertyChanged("TextBar");
+            }
+        }
 
         public ObservableCollection<FigureViewModel> FigureViewModels
         {

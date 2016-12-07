@@ -85,6 +85,10 @@
     </ApplicationDefinition>
     <Compile Include="Converters\IsNotNullControlConverter.cs" />
     <Compile Include="Properties\Annotations.cs" />
+    <Compile Include="StolenStuff\pushBindings\FreezeableBinding.cs" />
+    <Compile Include="StolenStuff\pushBindings\PushBinding.cs" />
+    <Compile Include="StolenStuff\pushBindings\PushBindingCollection.cs" />
+    <Compile Include="StolenStuff\pushBindings\PushBindingManager.cs" />
     <Compile Include="UndoRedo\Commands\AddAttributeCommand.cs" />
     <Compile Include="UndoRedo\Commands\AddBoxCommand.cs" />
     <Compile Include="UndoRedo\Commands\AddLineCommand.cs" />
@@ -219,6 +223,7 @@
       <Name>Model</Name>
     </ProjectReference>
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Import Project="..\packages\Fody.1.29.2\build\dotnet\Fody.targets" Condition="Exists('..\packages\Fody.1.29.2\build\dotnet\Fody.targets')" />
   <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
