@@ -7,10 +7,6 @@
         xmlns:vm="clr-namespace:Uml_Creator.ViewModel"
         xmlns:stolenStuff="clr-namespace:Uml_Creator.StolenStuff"
         xmlns:tvm="clr-namespace:Uml_Creator.ViewModel"
-
-        MouseDown="Window_MouseDown"
-        MouseUp="Window_MouseUp"
-        MouseMove="Window_MouseMove"
         mc:Ignorable="d"
         Title="UML-Creator" Height="350" Width="600.0">
     <Window.DataContext>
@@ -62,7 +58,7 @@
             </ItemsControl>
             <ListBox ItemsSource="{Binding FigureViewModels}" 
                      x:Name="FigureListBox"
-                     SelectionMode="Extended" AllowDrop="True" Drop="FigureListBox_Drop">
+                     SelectionMode="Extended">
                 <ListBox.LayoutTransform>
                     <ScaleTransform
                         CenterX="0" CenterY="0"

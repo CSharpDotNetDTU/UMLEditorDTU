@@ -90,7 +90,7 @@
     <Compile Include="UndoRedo\Commands\AddLineCommand.cs" />
     <Compile Include="UndoRedo\Commands\AddMethod.cs" />
     <Compile Include="UndoRedo\Commands\DeleteAttribute.cs" />
-    <Compile Include="UndoRedo\Commands\DeleteBoxCommand.cs" />
+    <Compile Include="UndoRedo\Commands\DeleteFigureCommand.cs" />
     <Compile Include="UndoRedo\Commands\DeleteLineCommand.cs" />
     <Compile Include="UndoRedo\Commands\DeleteMethodCommand.cs" />
     <Compile Include="UndoRedo\Commands\EditAttributeName.cs" />

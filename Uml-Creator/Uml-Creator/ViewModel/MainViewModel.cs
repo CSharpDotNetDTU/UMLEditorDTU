@@ -228,7 +228,8 @@ namespace Uml_Creator.ViewModel
             {
                 if (Figure.IsSelected)
                 {
-                    FiguresViewModels.Remove(Figure);
+                    undoRedoController.DoExecute(new DeleteFigureCommand(FiguresViewModels, Figure));
+                   // FiguresViewModels.Remove(Figure);
 
                 }
                 
@@ -237,9 +238,10 @@ namespace Uml_Creator.ViewModel
 
           private void AddClass()
         {
-            FigureViewModel abc = new FigureViewModel(0, 0, 10, 20, "data", EFigure.ClassSquare, false,"testClass");
+            FigureViewModel newFigure = new FigureViewModel(0, 0, 10, 20, "data", EFigure.ClassSquare, false,"testClass");
+
+            undoRedoController.DoExecute(new AddBoxCommand(FiguresViewModels, newFigure));
             
-            FigureViewModels.Add(abc);
         }
 
         private void Load_Click()
@@ -338,10 +340,6 @@ namespace Uml_Creator.ViewModel
             }
             }
 
-        public void AddFigure(string dataString, Point p)
-        {
-            FiguresViewModels.Add(new FigureViewModel(p.X, p.Y, 200, 200, dataString, EFigure.ClassSquare, false,"className"));
-        }
 
         public ObservableCollection<FigureViewModel> FigureViewModels
         {

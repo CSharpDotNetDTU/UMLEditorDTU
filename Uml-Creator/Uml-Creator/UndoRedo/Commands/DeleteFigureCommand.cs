@@ -8,12 +8,12 @@ using Uml_Creator.ViewModel;
 
 namespace Uml_Creator.UndoRedo.Commands
 {
-    class DeleteBoxCommand : IUndoCommand
+    class DeleteFigureCommand : IUndoCommand
     {
         private ObservableCollection<FigureViewModel> boxes;
         private FigureViewModel box;
 
-        public DeleteBoxCommand(ObservableCollection<FigureViewModel> boxes, FigureViewModel box)
+        public DeleteFigureCommand(ObservableCollection<FigureViewModel> boxes, FigureViewModel box)
         {
             this.boxes = boxes;
             this.box = box;
