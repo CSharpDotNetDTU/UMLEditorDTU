@@ -27,7 +27,7 @@
                 </i:EventTrigger>
             </i:Interaction.Triggers>
        
-            <Grid x:Name="ClassGrid">
+            <Grid x:Name="ClassGrid" Background="Orange">
             
          
         <Grid.RowDefinitions>
@@ -51,9 +51,7 @@
                                     IsEnabled="{Binding SelectedMethod, Converter={StaticResource IsNotNullConverter}}"
                                     />-->
 
-        <Expander Grid.Column="0" Grid.Row="1"
-                                     Grid.ColumnSpan="3"
-                                     >
+        <Expander Grid.Column="0" Grid.Row="1" Grid.ColumnSpan="3" >
             <Expander.HeaderTemplate>
                     <DataTemplate >
                     <StackPanel FlowDirection="RightToLeft" Orientation="Horizontal">

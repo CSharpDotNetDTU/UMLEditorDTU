@@ -150,19 +150,11 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="View\UserControls\DraggableBox.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
     <Page Include="View\UserControls\FigureBox.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="View\UserControls\SideDockPanel.xaml">
     <Page Include="View\UserControls\Class.xaml">
-	  <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

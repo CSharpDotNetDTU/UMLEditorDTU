@@ -43,9 +43,9 @@ namespace Uml_Creator.ViewModel
         public ICommand AddAttribute => new RelayCommand(OnAddAttribute);
         public ICommand RemoveAttribute => new RelayCommand(OnRemoveAttribute);
 
-        public MethodViewModel SelectedMethod { get; set; }
+        public MethodModel SelectedMethod { get; set; }
 
-        public AttributeViewModel SelectedAttribute { get; set; }
+        public AttributeModel SelectedAttribute { get; set; }
 
         protected Figure Figure { get; }
 
@@ -113,14 +113,14 @@ namespace Uml_Creator.ViewModel
             Mouse.Capture(null);
             obj.Handled = true;
         }
-        */
+        
         
         private void OnAddAttribute()
         {
-            undoRedoController.DoExecute(new AddAttributeCommand(this, new AttributeViewModel()));
+            undoRedoController.DoExecute(new AddAttributeCommand(this, new AttributeModel()));
         }
             
-        }
+        
 
         private void OnRemoveAttribute()
         {
@@ -129,7 +129,7 @@ namespace Uml_Creator.ViewModel
 
         private void OnAddMethod()
         {
-            undoRedoController.DoExecute(new AddMethod(this, new MethodViewModel()));
+            undoRedoController.DoExecute(new AddMethod(this, new MethodModel()));
             
         }
 
@@ -273,7 +273,7 @@ namespace Uml_Creator.ViewModel
             }
         }
 
-        public ObservableCollection<AttributeViewModel> AttributeCollection
+        public ObservableCollection<AttributeModel> AttributeCollection
         {
             get { return Figure.AttributeCollection; }
 
