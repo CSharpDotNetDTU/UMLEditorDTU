@@ -106,14 +106,11 @@
     <Compile Include="ViewModel\Class\ClassViewModel.cs" />
     <Compile Include="ViewModel\Class\MethodViewModel.cs" />
     <Compile Include="ViewModel\Class\UmlControl.cs" />
+    <Compile Include="View\UserControls\Btns_AddClass_AddLine.xaml.cs">
+      <DependentUpon>Btns_AddClass_AddLine.xaml</DependentUpon>
+    </Compile>
     <Compile Include="View\UserControls\Class.xaml.cs">
       <DependentUpon>Class.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="View\UserControls\DraggableBox.xaml.cs">
-      <DependentUpon>DraggableBox.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="View\UserControls\SideDockPanel.xaml.cs">
-      <DependentUpon>SideDockPanel.xaml</DependentUpon>
     </Compile>
     <Compile Include="View\UserControls\StatusBar.xaml.cs">
       <DependentUpon>StatusBar.xaml</DependentUpon>
@@ -163,15 +160,11 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
+    <Page Include="View\UserControls\Btns_AddClass_AddLine.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="View\UserControls\Class.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="View\UserControls\DraggableBox.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="View\UserControls\SideDockPanel.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

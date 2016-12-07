@@ -49,18 +49,8 @@
         <!--<userControls:StatusBar DockPanel.Dock="Bottom" Height="23" RenderTransformOrigin="0.5,0.5" HorizontalAlignment="Left" Width="464" SbMax="{Binding VmSbMax}"/>-->
         <!-- <userControls:SideDockPanel  DockPanel.Dock="Right" RenderTransformOrigin="0.5,0.5" Width="128" VerticalAlignment="Bottom"/>-->
 
-        <Grid>
-            <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="1*" />
-                <ColumnDefinition Width="1*" />
-            </Grid.ColumnDefinitions>
-            <Grid.RowDefinitions>
-                <RowDefinition Height="*" />
-                <RowDefinition Height="*" />
-            </Grid.RowDefinitions>
-            <Button Content="Add class" Command="{Binding BtnAddClass}"/>
-            <Button Grid.Row="1"  Content="Add line" Command="{Binding IsAddingLineBtnPressed}"/>
-        </Grid>
+        <userControls:Btns_AddClass_AddLine/>
+
 
         <Grid x:Name="MainCanvas">
 
