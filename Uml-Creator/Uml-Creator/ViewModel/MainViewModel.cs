@@ -25,9 +25,7 @@ namespace Uml_Creator.ViewModel
 {
     public class MainViewModel : INotifyPropertyChanged
     {
-
-
-
+      
         #region copy members
 
         public ObservableCollection<FigureViewModel> copyFigures { get; private set; }
@@ -59,6 +57,21 @@ namespace Uml_Creator.ViewModel
             }
         }
 
+        private string _statusText ="ssssssss";
+
+        public string StatusText
+        {
+            get { return _statusText; }
+            set
+            {
+                if (value != _statusText)
+                {
+                    _statusText = value;
+                    Debug.WriteLine("Hej");
+                    OnPropertyChanged("StatusText");
+                }
+            }
+        }
 
         public ICommand BtnCopy { get; }
         public ICommand BtnPaste { get; }
