@@ -23,7 +23,7 @@
             </ResourceDictionary.MergedDictionaries>
         </ResourceDictionary>
     </Window.Resources>
-    
+
     <Window.InputBindings>
         <KeyBinding Command="{Binding BtnLoadCommand}" Key="O" Modifiers="Control"/>
         <KeyBinding Command="{Binding BtnGemCommand}" Key="S" Modifiers="Control"/>
@@ -53,7 +53,13 @@
 
 
         <Grid x:Name="MainCanvas">
-
+            <ItemsControl ItemsSource="{Binding lines}">
+                <ItemsControl.ItemsPanel>
+                    <ItemsPanelTemplate>
+                        <Canvas/>
+                    </ItemsPanelTemplate>
+                </ItemsControl.ItemsPanel>
+            </ItemsControl>
             <ListBox ItemsSource="{Binding FigureViewModels}" 
                      x:Name="FigureListBox"
                      SelectionMode="Extended" AllowDrop="True" Drop="FigureListBox_Drop">
@@ -80,23 +86,23 @@
                         Property="Canvas.Top"
                         Value="{Binding Y}"
                         />
-                        
+
                     </Style>
                 </ListBox.ItemContainerStyle>
-                
+
                 <ListBox.ItemTemplate>
                     <DataTemplate>
-                       
-                         <userControls:Class/>
+
+                        <userControls:Class/>
                         <!--
                         <userControls:FigureBox></userControls:FigureBox>
                           -->
                     </DataTemplate>
                 </ListBox.ItemTemplate>
-                
-                
+
+
             </ListBox>
-            
+
             <!--<ListBox
             x:Name="FigureListBox"
             ItemsSource="{Binding FigureViewModels}"
@@ -148,7 +154,7 @@
 
 
 
-                        <!-->
+            <!-->
                         <Border BorderBrush="Black" BorderThickness="1" Background="White">
                             <TextBlock Text="{Binding Data}"
                               MouseDown="Figure_MouseDown"
@@ -167,7 +173,7 @@
                             MouseUp="Figure_MouseUp"
                             MouseMove="Figure_MouseMove"
                                     /> <-->
-                    <!--</DataTemplate>
+            <!--</DataTemplate>
                 </ItemsControl.ItemTemplate>
             </ListBox>-->
 
@@ -184,14 +190,8 @@
                     Opacity="0.5"                  
                 />
             </Canvas>
-            <ItemsControl ItemsSource="{Binding lines}">
-                <ItemsControl.ItemsPanel>
-                    <ItemsPanelTemplate>
-                        <Canvas/>
-                    </ItemsPanelTemplate>
-                </ItemsControl.ItemsPanel>
-            </ItemsControl>
 
+        <userControls:Status/>
         </Grid>
 
 

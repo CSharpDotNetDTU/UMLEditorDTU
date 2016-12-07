@@ -25,9 +25,7 @@ namespace Uml_Creator.ViewModel
 {
     public class MainViewModel : INotifyPropertyChanged
     {
-
-
-
+      
         #region copy members
 
         public ObservableCollection<FigureViewModel> copyFigures { get; private set; }
@@ -59,6 +57,21 @@ namespace Uml_Creator.ViewModel
             }
         }
 
+        private string _statusText ="ssssssss";
+
+        public string StatusText
+        {
+            get { return _statusText; }
+            set
+            {
+                if (value != _statusText)
+                {
+                    _statusText = value;
+                    Debug.WriteLine("Hej");
+                    OnPropertyChanged("StatusText");
+                }
+            }
+        }
 
         public ICommand BtnCopy { get; }
         public ICommand BtnPaste { get; }
@@ -276,29 +289,30 @@ namespace Uml_Creator.ViewModel
             SaveFileDialog gemfildialog = new SaveFileDialog();
             gemfildialog.Filter = "XML files (*.xml)|*.xml";
             if (gemfildialog.ShowDialog() != DialogResult.OK) return;
+
             var serialObject = FiguresViewModels; //skal importere diagrammets data
 
-            if (serialObject == null) return;
-            try
-            {
-                XmlDocument xmlDocument = new XmlDocument();
-                XmlSerializer serializer = new XmlSerializer(serialObject.GetType());
-                using (MemoryStream stream = new MemoryStream())
+                if (serialObject == null) return;
+                try
                 {
-                    serializer.Serialize(stream, serialObject);
-                    stream.Position = 0;
-                    xmlDocument.Load(stream);
-                    xmlDocument.Save(gemfildialog.FileName);
-                    stream.Close();
+                    XmlDocument xmlDocument = new XmlDocument();
+                    XmlSerializer serializer = new XmlSerializer(serialObject.GetType());
+                    using (MemoryStream stream = new MemoryStream())
+                    {
+                        serializer.Serialize(stream, serialObject);
+                        stream.Position = 0;
+                        xmlDocument.Load(stream);
+                        xmlDocument.Save(gemfildialog.FileName);
+                        stream.Close();
+                    }
+                }
+                catch (Exception ex)
+                {
+                    Console.WriteLine(ex.ToString());
+                    //Log exception here
                 }
             }
-            catch (Exception ex)
-            {
-                Console.WriteLine(ex.ToString());
-                //Log exception here
-            }
-
-        }
+        
 
         private void Export_Click(Grid canvas)
         {
