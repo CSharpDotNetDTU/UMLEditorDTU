@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Linq;
 using System.Runtime.Serialization;
 using System.Text;
@@ -8,19 +9,18 @@ using Uml_Creator.Model;
 using Uml_Creator.Model.ENUM;
 using Uml_Creator.Model.Interfaces;
 
-namespace Uml_Creator.ViewModel
+namespace Uml_Creator.Model
 {
-    public class MethodViewModel : ISerializable, IClassMethod
+    public class AttributeModel : ISerializable, IClassAttribute
     {
-        public ClassMethod Method { get; }
+        public ClassAttribute Attribute { get; }
         public string Name { get; set; }
         public EVisibility Visibility { get; set; }
         public string Type { get; set; }
-        public List<string> Parameters { get; set; }
-
         public void GetObjectData(SerializationInfo info, StreamingContext context)
         {
-            throw new NotImplementedException();
+           // ((ISerializable)Attribute).GetObjectData(info, context);
         }
+
     }
 }

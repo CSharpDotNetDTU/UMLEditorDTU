@@ -6,6 +6,7 @@ using System.Windows.Input;
 using GalaSoft.MvvmLight.Command;
 using PropertyChanged;
 using Uml_Creator.Annotations;
+using Uml_Creator.Model;
 using Uml_Creator.Model.Interfaces;
 
 
@@ -20,11 +21,11 @@ namespace Uml_Creator.ViewModel.Class
 
         public ClassViewModel ParentClass { get; set; }
 
-        public ObservableCollection<MethodViewModel> MethodsCollection { get; set; } = new ObservableCollection<MethodViewModel>();
+        public ObservableCollection<MethodModel> MethodsCollection { get; set; } = new ObservableCollection<MethodModel>();
 
         public ObservableCollection<string> PropertiesCollection { get; set; } = new ObservableCollection<string>();
 
-        public MethodViewModel SelectedMethod { get; set; }
+        public MethodModel SelectedMethod { get; set; }
 
         #endregion
 
@@ -48,7 +49,7 @@ namespace Uml_Creator.ViewModel.Class
 
         public void ExecuteAddMethod()
         {
-            MethodsCollection.Add(new MethodViewModel() { Name = "Method" });
+            MethodsCollection.Add(new MethodModel() { Name = "Method" });
         }
 
         public void ExecuteRemoveMethod()

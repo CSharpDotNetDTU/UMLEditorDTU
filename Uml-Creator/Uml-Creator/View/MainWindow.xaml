@@ -86,7 +86,11 @@
                 
                 <ListBox.ItemTemplate>
                     <DataTemplate>
-                       <userControls:Class/>
+                       
+                         <userControls:Class/>
+                        <!--
+                        <userControls:FigureBox></userControls:FigureBox>
+                          -->
                     </DataTemplate>
                 </ListBox.ItemTemplate>
                 
@@ -99,7 +103,7 @@
             SelectionMode="Extended" AllowDrop="True" Drop="FigureListBox_Drop"
             
             >
-            <ListBox.ItemsPanel>
+                <ListBox.ItemsPanel>
                     <ItemsPanelTemplate>
                         <Canvas></Canvas>
 
@@ -135,7 +139,7 @@
                             <stolenStuff:EditableTextBlock
                             Text="{Binding Data, Mode=TwoWay}" 
                             IsInEditMode="{Binding Edit, Mode=TwoWay}"
-                             MouseDown="Figure_MouseDown"
+                                 MouseDown="Figure_MouseDown"
                             MouseUp="Figure_MouseUp"
                             MouseMove="Figure_MouseMove"
                             />

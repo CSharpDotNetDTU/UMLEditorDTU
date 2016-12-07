@@ -12,9 +12,9 @@ namespace Uml_Creator.UndoRedo.Commands
     class AddAttributeCommand : IUndoCommand
     {
         private FigureViewModel box;
-        private AttributeViewModel attribute;
+        private AttributeModel attribute;
 
-        public AddAttributeCommand(FigureViewModel box, AttributeViewModel attribute)
+        public AddAttributeCommand(FigureViewModel box, AttributeModel attribute)
         {
             this.box = box;
             this.attribute = attribute;

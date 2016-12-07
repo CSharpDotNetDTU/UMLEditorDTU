@@ -101,10 +101,7 @@
     <Compile Include="UndoRedo\Commands\PasteClassCommand.cs" />
     <Compile Include="UndoRedo\IUndoCommand.cs" />
     <Compile Include="UndoRedo\UndoRedoController.cs" />
-    <Compile Include="ViewModel\AttributeViewModel.cs" />
-    <Compile Include="ViewModel\MethodViewModel.cs" />
     <Compile Include="ViewModel\Class\ClassViewModel.cs" />
-    <Compile Include="ViewModel\Class\MethodViewModel.cs" />
     <Compile Include="ViewModel\Class\UmlControl.cs" />
     <Compile Include="View\UserControls\Btns_AddClass_AddLine.xaml.cs">
       <DependentUpon>Btns_AddClass_AddLine.xaml</DependentUpon>
@@ -112,6 +109,8 @@
     <Compile Include="View\UserControls\Class.xaml.cs">
       <DependentUpon>Class.xaml</DependentUpon>
     </Compile>
+
+    
     <Compile Include="View\UserControls\StatusBar.xaml.cs">
       <DependentUpon>StatusBar.xaml</DependentUpon>
     </Compile>
@@ -125,19 +124,6 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
-    <Compile Include="Model\ClassAttribute.cs" />
-    <Compile Include="Model\Diagram.cs" />
-    <Compile Include="Model\ENUM\EFigure.cs" />
-    <Compile Include="Model\ENUM\ELine.cs" />
-    <Compile Include="Model\ENUM\EVisibility.cs" />
-    <Compile Include="Model\Figure.cs" />
-    <Compile Include="Model\Interfaces\IClassAttribute.cs" />
-    <Compile Include="Model\Interfaces\IFigure.cs" />
-    <Compile Include="Model\Interfaces\ILine.cs" />
-    <Compile Include="Model\Interfaces\IClassMethod.cs" />
-    <Compile Include="Model\Line.cs" />
-    <Compile Include="Model\ClassMethod.cs" />
-    <Compile Include="Model\ToolboxSelection.cs" />
     <Compile Include="StolenStuff\EditableTextBlock.cs" />
     <Compile Include="StolenStuff\EditableTextBlockAdorner.cs" />
     <Compile Include="ViewModel\Gem_Load.cs" />
@@ -164,7 +150,19 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
+    <Page Include="View\UserControls\DraggableBox.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="View\UserControls\FigureBox.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="View\UserControls\SideDockPanel.xaml">
     <Page Include="View\UserControls\Class.xaml">
+	  <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -224,6 +222,12 @@
   </ItemGroup>
   <ItemGroup>
     <Resource Include="Images\Open Folder-64.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Model\Model.csproj">
+      <Project>{82976e99-8560-4513-965b-2c5db4e93da1}</Project>
+      <Name>Model</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Import Project="..\packages\Fody.1.29.2\build\dotnet\Fody.targets" Condition="Exists('..\packages\Fody.1.29.2\build\dotnet\Fody.targets')" />

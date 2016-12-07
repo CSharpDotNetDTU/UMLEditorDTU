@@ -14,11 +14,11 @@ using Uml_Creator.Model;
 using Uml_Creator.Model.ENUM;
 using System.Windows.Media.Imaging;
 using System.Windows.Controls;
+using System.Windows.Interactivity;
 using System.Windows.Media;
-using System.Windows;
 using Uml_Creator.UndoRedo;
 using Uml_Creator.UndoRedo.Commands;
-using Folder = Uml_Creator.ViewModel.FigureViewModel;
+
 
 
 namespace Uml_Creator.ViewModel
@@ -117,8 +117,8 @@ namespace Uml_Creator.ViewModel
         {
         //   MethodsCollection.Remove(SelectedMethod);
         }
-
       
+
         public bool IsAddingLineBtnPressed
         {
             get { return isAddingLineBtnPressed; }
@@ -153,7 +153,7 @@ namespace Uml_Creator.ViewModel
         private void AddFigure()
         {
             undoRedoController.DoExecute(new AddBoxCommand(FiguresViewModels, new FigureViewModel(10.0, 80.0, 20.0, 30.0,
-                "Dette er en anden klasse, skriv noget andet tekst her!", EFigure.ClassSquare, false)));
+                "Dette er en anden klasse, skriv noget andet tekst her!", EFigure.ClassSquare, false, "")));
         }
 
         /// <summary>
@@ -190,8 +190,9 @@ namespace Uml_Creator.ViewModel
                 foreach (FigureViewModel figure in copyFigures)
                 {
                     double offset = 20.0;
-                    FigureViewModel newfigure = new FigureViewModel(figure.X + offset, figure.Y + offset, figure.Width, figure.Height, figure.Data, figure.Type, false);
-                    FiguresViewModels.Add(newfigure);
+                    FigureViewModel newfigure = new FigureViewModel(figure.X + offset, figure.Y + offset, figure.Width, figure.Height, figure.Data, figure.Type, false, figure.Name);
+                    undoRedoController.DoExecute(new AddBoxCommand(FiguresViewModels,newfigure));
+                
                     nrOfCopied++;
                 }
                 Debug.Print("Antal Objecter copieret:" + nrOfCopied);
@@ -200,7 +201,9 @@ namespace Uml_Creator.ViewModel
             }
             else
             {
-                throw new NotImplementedException();
+                string text = "Nothing to copy in the copy list";
+                Debug.WriteLine(text);
+                //throw new NotImplementedException();
                 //No objects in copy list write to statusbar
             }
             
@@ -221,7 +224,9 @@ namespace Uml_Creator.ViewModel
 
           private void AddClass()
         {
-            FiguresViewModels.Add(new FigureViewModel() { Name = "Classname" });
+            FigureViewModel abc = new FigureViewModel(0, 0, 10, 20, "data", EFigure.ClassSquare, false,"testClass");
+            
+            FigureViewModels.Add(abc);
         }
 
         private void Load_Click()
@@ -246,7 +251,8 @@ namespace Uml_Creator.ViewModel
                         FiguresViewModels.Clear();
                         for (int i = 0; i < temp.Count; i++)
                         {
-                            FiguresViewModels.Add(new FigureViewModel(temp[i].X, temp[i].Y, temp[i].Width, temp[i].Height, temp[i].Data, temp[i].Type,false));
+                          //  FiguresViewModels.Add(new FigureViewModel(temp[i].X, temp[i].Y, temp[i].Width, temp[i].Height, temp[i].Data, temp[i].Type,false,temp[i].Name));
+                            FiguresViewModels.Add( new FigureViewModel(temp[i]));
                         }
                         
                         Console.WriteLine(FiguresViewModels[1].Data);
@@ -320,7 +326,7 @@ namespace Uml_Creator.ViewModel
 
         public void AddFigure(string dataString, Point p)
         {
-            FiguresViewModels.Add(new FigureViewModel(p.X, p.Y, 200, 200, dataString, EFigure.ClassSquare, false));
+            FiguresViewModels.Add(new FigureViewModel(p.X, p.Y, 200, 200, dataString, EFigure.ClassSquare, false,"className"));
         }
 
         public ObservableCollection<FigureViewModel> FigureViewModels
@@ -330,6 +336,24 @@ namespace Uml_Creator.ViewModel
                 return FiguresViewModels;
             }
         }
+        /*
+        public string StatusBarTextProperty
+        {
+            get { return (string) GetValue(StatusBarTextPropertyProperty); }
+            set { SetValue(StatusBarTextPropertyProperty, value); }
+        }
+        
+        private void SetValue(DependencyProperty statusBarTextPropertyProperty, string value)
+        {
+            statusBarTextPropertyProperty.Name = value;
+        }
+        */
+        private string GetValue(DependencyProperty statusBarTextPropertyProperty)
+        {
+            return statusBarTextPropertyProperty.Name;
+            //throw new NotImplementedException();
+        }
+
         public event PropertyChangedEventHandler PropertyChanged;
 
         private void OnPropertyChanged(string propertyName)

@@ -7,7 +7,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Uml_Creator.Model.ENUM;
 using Uml_Creator.Model.Interfaces;
-using Uml_Creator.ViewModel;
+using Uml_Creator;
 
 namespace Uml_Creator.Model
 {
