@@ -50,8 +50,14 @@
         <userControls:Btns_AddClass_AddLine/>
         <userControls:StatusBar DockPanel.Dock="Bottom"  />
 
-        <Grid x:Name="MainCanvas" DockPanel.Dock="Right">
-
+        <Grid x:Name="MainCanvas">
+            <ItemsControl ItemsSource="{Binding lines}">
+                <ItemsControl.ItemsPanel>
+                    <ItemsPanelTemplate>
+                        <Canvas/>
+                    </ItemsPanelTemplate>
+                </ItemsControl.ItemsPanel>
+            </ItemsControl>
             <ListBox ItemsSource="{Binding FigureViewModels}" 
                      x:Name="FigureListBox"
                      SelectionMode="Extended">
@@ -181,17 +187,11 @@
                     Opacity="0.5"                  
                 />
             </Canvas>
-            <ItemsControl ItemsSource="{Binding lines}">
-                <ItemsControl.ItemsPanel>
-                    <ItemsPanelTemplate>
-                        <Canvas/>
-                    </ItemsPanelTemplate>
-                </ItemsControl.ItemsPanel>
-            </ItemsControl>
 
+        <userControls:Status/>
         </Grid>
 
-        
+
     </DockPanel>
 
 
