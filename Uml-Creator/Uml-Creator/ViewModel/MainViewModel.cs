@@ -97,18 +97,17 @@ namespace Uml_Creator.ViewModel
           
             FiguresViewModels = new ObservableCollection<FigureViewModel>
             {
-                //new FigureViewModel() {20.0,20.0,50.0,60.0,"lars",EFigure.ClassSquare},
-               
-             //    new FigureViewModel(0.0,0.0,50.0,20.0,"Dette er en klasse her skriver jeg min tekst!",EFigure.ClassSquare,false),
+                new FigureViewModel(100,100,0,0," ",EFigure.ClassSquare, false,"hej"),
+                new FigureViewModel(300,200,0,0," ",EFigure.ClassSquare, false,"hej")
 
-               //  new FigureViewModel(30.0,80.0,20.0,20.0,"Dette er en anden klasse, skriv noget andet tekst her!",EFigure.ClassSquare,false)
+
+         };
+
+
+            lines = new ObservableCollection<LineViewModel>
+            {
+               new LineViewModel(new Line(), FiguresViewModels[0], FiguresViewModels[1], ELine.Solid)
             };
-
-          
-          //  lines = new ObservableCollection<LineViewModel>
-            //{
-            //    new LineViewModel(new Line(), FiguresViewModels[0], FiguresViewModels[1], ELine.Solid)
-            //};
 
 
             BtnLoadCommand = new RelayCommand(Load_Click);

@@ -32,6 +32,80 @@ namespace Uml_Creator.ViewModel
         public ICommand RemoveMethod => new RelayCommand(OnRemoveMethod);
         public double _width => Figure.Width;
         public double _height => Figure.Height;
+        private Point _topPoint;
+        private Point _leftPoint;
+        private Point _rightPoint;
+        private Point _bottomPoint;
+        private LineViewModel linevm;
+
+        public LineViewModel _line
+        {
+            get { return linevm; }
+            set { linevm = value; }
+        }
+
+
+        public Point topPoint
+        {
+            get     
+            {
+                _topPoint.X = X + (Width / 2);
+                _topPoint.Y = Y;
+                return _topPoint;
+            }
+            set
+            {
+                _topPoint = value;
+                OnPropertyChanged("topPoint");
+            }
+        }
+        public Point leftPoint
+        {
+            get
+            {
+                _leftPoint.X = X;
+                _leftPoint.Y = Y + (Height/2);
+
+                return _leftPoint;
+            }
+            set
+            {
+                _leftPoint = value;
+                OnPropertyChanged("leftPoint");
+            }
+        }
+        public Point rightPoint
+        {
+            get
+            {
+                _rightPoint.X = X + Width;
+                _rightPoint.Y = Y + (Height/2);
+
+                return _rightPoint;
+            }
+            set
+            {
+                _rightPoint = value;
+                OnPropertyChanged("rightPoint");
+            }
+        }
+        public Point bottomPoint
+        {
+            get
+            {
+                _bottomPoint.X = X + (Width/2);
+                _bottomPoint.Y = Y + Height;
+
+                return _bottomPoint;
+            }
+            set
+            {
+                _bottomPoint = value;
+                OnPropertyChanged("_bottomPoint");
+            }
+        }
+
+
 
 
         #region MouseMembers
@@ -58,6 +132,8 @@ namespace Uml_Creator.ViewModel
             Figure = figure;
         }
        
+
+
 
         public ICommand OnMouseLeftBtnDownCommand => new RelayCommand<MouseButtonEventArgs>(OnMouseLeftBtnDown);
         public ICommand OnMouseLeftBtnUpCommand => new RelayCommand<MouseButtonEventArgs>(OnMouseLeftUp);
@@ -201,7 +277,23 @@ namespace Uml_Creator.ViewModel
             set
             {
                 Figure.Height = value;
-                OnPropertyChanged("Height");
+                OnPropertyChanged("rightPoint");
+                OnPropertyChanged("leftPoint");
+
+                OnPropertyChanged("bottomPoint");
+
+                OnPropertyChanged("topPoint");
+                giveLineNewCords();
+                OnPropertyChanged(nameof(Height));
+
+            }
+        }
+
+        private void giveLineNewCords()
+        {
+            if (_line != null)
+            {
+                _line.calculateShortestLine();
             }
         }
 
@@ -224,8 +316,14 @@ namespace Uml_Creator.ViewModel
             set
             {
                 Figure.X = value;
-                Debug.WriteLine(value);
                 OnPropertyChanged("X");
+                OnPropertyChanged("rightPoint");
+                OnPropertyChanged("leftPoint");
+
+                OnPropertyChanged("bottomPoint");
+
+                OnPropertyChanged("topPoint");
+                giveLineNewCords();
                 OnPropertyChanged(nameof(CenterX));
             }
         }
