@@ -45,5 +45,11 @@ namespace Uml_Creator.UndoRedo
         {
             return redoStack.Any();
         }
+
+        public void ResetUndoRedoStacks()
+        {
+            undoStack.Clear();
+            redoStack.Clear();
+        }
     }
 }

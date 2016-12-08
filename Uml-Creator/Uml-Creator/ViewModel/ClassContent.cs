@@ -20,6 +20,11 @@ namespace Uml_Creator.ViewModel
         private UndoRedoController undoRedo = UndoRedoController.Instance;
 
 
+        public ClassContent()
+        {
+            
+        }
+
         public string ContextName
         {
             get { return _name; }

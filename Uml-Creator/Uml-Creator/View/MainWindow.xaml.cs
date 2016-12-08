@@ -7,7 +7,7 @@ using System.Windows.Controls;
 using System.Windows.Input;
 using PropertyChanged;
 using Uml_Creator.ViewModel;
-using ClassFolder = Uml_Creator.ViewModel.Class;
+
 
 namespace Uml_Creator.View
 {
