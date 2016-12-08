@@ -16,6 +16,7 @@ using System.Windows.Media.Imaging;
 using System.Windows.Controls;
 using System.Windows.Interactivity;
 using System.Windows.Media;
+using Model.Model;
 using Uml_Creator.UndoRedo;
 using Uml_Creator.UndoRedo.Commands;
 
@@ -163,7 +164,7 @@ namespace Uml_Creator.ViewModel
         private void Copy_Click()
         {
             copyFigures.Clear();
-            foreach (FigureViewModel Figure in FigureViewModels)
+            foreach (FigureViewModel Figure in FiguresViewModels)
             {
 
                 if (Figure.IsSelected)
@@ -211,7 +212,7 @@ namespace Uml_Creator.ViewModel
 
         private void Delete_Click()
         {
-            foreach (FigureViewModel Figure in FigureViewModels.Reverse())
+            foreach (FigureViewModel Figure in FiguresViewModels.Reverse())
             {
                 if (Figure.IsSelected)
                 {
@@ -224,9 +225,8 @@ namespace Uml_Creator.ViewModel
 
           private void AddClass()
         {
-            FigureViewModel abc = new FigureViewModel(0, 0, 10, 20, "data", EFigure.ClassSquare, false,"testClass");
             
-            FigureViewModels.Add(abc);
+            undoRedoController.DoExecute(new AddBoxCommand(FiguresViewModels,new FigureViewModel()));
         }
 
         private void Load_Click()
@@ -329,13 +329,7 @@ namespace Uml_Creator.ViewModel
             FiguresViewModels.Add(new FigureViewModel(p.X, p.Y, 200, 200, dataString, EFigure.ClassSquare, false,"className"));
         }
 
-        public ObservableCollection<FigureViewModel> FigureViewModels
-        {
-            get
-            {
-                return FiguresViewModels;
-            }
-        }
+
         /*
         public string StatusBarTextProperty
         {

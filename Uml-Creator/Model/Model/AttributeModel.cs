@@ -13,7 +13,6 @@ namespace Uml_Creator.Model
 {
     public class AttributeModel : ISerializable, IClassAttribute
     {
-        public ClassAttribute Attribute { get; }
         public string Name { get; set; }
         public EVisibility Visibility { get; set; }
         public string Type { get; set; }

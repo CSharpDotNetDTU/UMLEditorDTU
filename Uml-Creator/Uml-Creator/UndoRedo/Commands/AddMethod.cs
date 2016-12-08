@@ -12,9 +12,9 @@ namespace Uml_Creator.UndoRedo.Commands
     class AddMethod : IUndoCommand
     {
         private FigureViewModel box;
-        private MethodModel method;
+        private ClassContent method;
 
-        public AddMethod(FigureViewModel box, MethodModel method)
+        public AddMethod(FigureViewModel box,ClassContent method)
         {
             this.box = box;
             this.method = method;

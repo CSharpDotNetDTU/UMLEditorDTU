@@ -5,6 +5,7 @@ using System.Linq;
 using System.Runtime.CompilerServices;
 using System.Text;
 using System.Threading.Tasks;
+using Model.Model;
 using Uml_Creator.Model;
 using Uml_Creator.Model.ENUM;
 using Uml_Creator.Model.Interfaces;

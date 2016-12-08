@@ -10,11 +10,11 @@ namespace Uml_Creator.UndoRedo.Commands
 {
     class EditMethodName : IUndoCommand
     {
-        private MethodModel method;
+        private ClassContent method;
         private string oldName;
         private string newName;
 
-        public EditMethodName(MethodModel method, string oldName, string newName)
+        public EditMethodName(ClassContent method, string oldName, string newName)
         {
             this.method = method;
             this.oldName = oldName;
@@ -23,12 +23,12 @@ namespace Uml_Creator.UndoRedo.Commands
 
         public void Execute()
         {
-            method.Name = newName;
+            method.setNewName(newName);
         }
 
         public void Unexecute()
         {
-            method.Name = oldName;
+            method.setNewName(oldName);
         }
     }
 }

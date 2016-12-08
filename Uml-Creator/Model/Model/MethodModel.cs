@@ -12,7 +12,6 @@ namespace Uml_Creator.Model
 {
     public class MethodModel : ISerializable, IClassMethod
     {
-        public ClassMethod Method { get; }
         public string Name { get; set; }
         public EVisibility Visibility { get; set; }
         public string Type { get; set; }
