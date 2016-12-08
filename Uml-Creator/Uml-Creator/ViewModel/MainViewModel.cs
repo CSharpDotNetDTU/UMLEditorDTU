@@ -310,7 +310,7 @@ namespace Uml_Creator.ViewModel
             }
             catch (Exception ex)
             {
-                    StatusText = ex.ToString();
+                   // StatusText = ex.ToString();
                 Console.WriteLine(ex.ToString());
                 //Log exception here
             }

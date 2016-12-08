@@ -11,8 +11,8 @@ using Uml_Creator.UndoRedo.Commands;
 namespace Uml_Creator.ViewModel
 {
     public class ClassContent : ISerializable, INotifyPropertyChanged, IClassMethod, IClassAttribute
-
     {
+        public ClassContent() { }
 
         private string _name;
         private AttributeModel _attribute;
