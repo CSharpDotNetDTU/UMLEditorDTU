@@ -8,16 +8,20 @@
              d:DesignHeight="300" d:DesignWidth="300">
     <Grid x:Name="Btns_Grid">
             <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="1*" />
-                <ColumnDefinition Width="1*" />
-            </Grid.ColumnDefinitions>
+            <ColumnDefinition Width="1*" />
+        </Grid.ColumnDefinitions>
             <Grid.RowDefinitions>
                 <RowDefinition Height="*" />
                 <RowDefinition Height="*" />
-        </Grid.RowDefinitions> 
+                <RowDefinition Height="*" />
+
+        </Grid.RowDefinitions>
         <Button Content="Add class" Command="{Binding ElementName=Btns_Grid , Path=DataContext.BtnAddClass}"/>
-        <ToggleButton Grid.Row="1" Grid.Column="0" Content="Add line" IsChecked="{Binding ElementName=Btns_Grid,Path= DataContext.IsAddingLineBtnPressed , Mode=TwoWay}"/>
-        </Grid>
+        <ToggleButton Content="Add solid line" IsChecked="{Binding ElementName=Btns_Grid,Path= DataContext.IsAddingSolidLineBtnPressed , Mode=TwoWay}" Grid.Row="1"/>
+        <ToggleButton Content="Add solid line" IsChecked="{Binding ElementName=Btns_Grid,Path= DataContext.IsAddingDashedLineBtnPressed , Mode=TwoWay}" Grid.Row="2"/>
+
+
+    </Grid>
 
     
 </UserControl>
