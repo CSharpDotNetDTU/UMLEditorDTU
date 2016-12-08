@@ -17,8 +17,8 @@
 
         </Grid.RowDefinitions>
         <Button Content="Add class" Command="{Binding ElementName=Btns_Grid , Path=DataContext.BtnAddClass}"/>
-        <ToggleButton Content="Add solid line" IsChecked="{Binding ElementName=Btns_Grid,Path= DataContext.IsAddingSolidLineBtnPressed , Mode=TwoWay}" Grid.Row="1"/>
-        <ToggleButton Content="Add solid line" IsChecked="{Binding ElementName=Btns_Grid,Path= DataContext.IsAddingDashedLineBtnPressed , Mode=TwoWay}" Grid.Row="2"/>
+        <ToggleButton Content="Add Solid line" IsChecked="{Binding ElementName=Btns_Grid,Path= DataContext.IsAddingSolidLineBtnPressed , Mode=TwoWay}" Grid.Row="1"/>
+        <ToggleButton Content="Add Dashed line" IsChecked="{Binding ElementName=Btns_Grid,Path= DataContext.IsAddingDashedLineBtnPressed , Mode=TwoWay}" Grid.Row="2"/>
 
 
     </Grid>

@@ -70,6 +70,7 @@ namespace Uml_Creator.ViewModel
         private FigureViewModel _firstShapeToConnect;
         public string FileName;
         public string FileNamePic;
+        private ELine lineType;
         BackgroundWorker worker = new BackgroundWorker();
         public Grid canvas;
 
@@ -128,6 +129,8 @@ namespace Uml_Creator.ViewModel
                 isAddingLineBtnPressed = value;
                 if (!value)
                     _firstShapeToConnect = null;
+
+                lineType = ELine.Solid; 
                 OnPropertyChanged(nameof(isAddingLineBtnPressed));
             }
         }
@@ -141,6 +144,8 @@ namespace Uml_Creator.ViewModel
                 isAddingLineBtnPressed = value;
                 if (!value)
                     _firstShapeToConnect = null;
+
+                lineType = ELine.DashedLine;;
                 OnPropertyChanged(nameof(isAddingLineBtnPressed));
             }
         }
@@ -157,8 +162,9 @@ namespace Uml_Creator.ViewModel
                 if (fig != _firstShapeToConnect)
                 {
                     undoRedoController.DoExecute(new AddLineCommand(lines,
-                        new LineViewModel(new Line(), _firstShapeToConnect, fig, ELine.Solid)));
+                        new LineViewModel(new Line(), _firstShapeToConnect, fig, lineType)));
                         IsAddingSolidLineBtnPressed = false;
+                    IsAddingDashedLineBtnPressed = false;
                 }
             }
         }
