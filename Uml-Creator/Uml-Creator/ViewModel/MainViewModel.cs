@@ -170,15 +170,17 @@ namespace Uml_Creator.ViewModel
         private void Copy_Click()
         {
             copyFigures.Clear();
+            int nrOfObjectsCopied = 0;
             foreach (FigureViewModel Figure in FiguresViewModels)
             {
                 if (Figure.IsSelected)
                 {
                     //We create a new instance to make sure we get a new object, and so it dosent have the same FigureNr, also its added a little ofset from the original models
-                    
+                    nrOfObjectsCopied++;
                     copyFigures.Add(Figure);
                 }
             }
+            StatusText = "You have copied:" + nrOfObjectsCopied + "Objects";
         }
 
         /// <summary>
