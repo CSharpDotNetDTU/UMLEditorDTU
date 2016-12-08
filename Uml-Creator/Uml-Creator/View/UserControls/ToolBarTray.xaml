@@ -18,11 +18,11 @@
                     <Image Source="pack://application:,,,/Images\Save-64.png" Stretch="UniformToFill" Height="17"></Image>
 
                 </Button>
-                <Button x:Name="BtnUndo" ToolTip="Undo last change" >
+                <Button Command ="{Binding UndoCommand}" x:Name="BtnUndo" ToolTip="Undo last change" >
                     <Image Source="pack://application:,,,/Images\Left-64.png" Stretch="UniformToFill" Height="17"></Image>
 
                 </Button>
-                <Button x:Name="BtnRedo"  ToolTip="Redo last undo" >
+                <Button Command ="{Binding RedoCommand}" x:Name="BtnRedo"  ToolTip="Redo last undo" >
                     <Image Source="pack://application:,,,/Images\Right-64.png" Stretch="UniformToFill" Height="17"></Image>
 
                 </Button>
