@@ -62,6 +62,7 @@ namespace Uml_Creator.ViewModel
         public ICommand BtnAddClass { get; }
         public ICommand DeleteCommand { get; }
         public ICommand BtnCut { get; }
+        public ICommand OnMouseLeftBtnUpCommand { get; }
 
         UndoRedoController undoRedoController = UndoRedoController.Instance;
         public ObservableCollection<LineViewModel> lines { get; }
@@ -102,6 +103,17 @@ namespace Uml_Creator.ViewModel
             BtnAddClass = new RelayCommand(AddClass);
             DeleteCommand = new RelayCommand(Delete_Click);
             BtnNewCommand = new RelayCommand(NewClassDiagram);
+            OnMouseLeftBtnUpCommand = new RelayCommand(LeftClickUp);
+        }
+
+        private void LeftClickUp()
+        {
+            for (int i = 0; i < FiguresViewModels.Count; i++)
+            {
+                FiguresViewModels[i].IsSelected = false;
+                FiguresViewModels[i]._isDraggingFigure = false;
+            }
+            Mouse.Capture(null);
         }
 
         private void NewClassDiagram()

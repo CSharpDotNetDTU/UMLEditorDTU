@@ -118,7 +118,7 @@ namespace Uml_Creator.ViewModel
 
         #region MouseMembers
 
-        private bool _isDraggingFigure = false;
+        public bool _isDraggingFigure = false;
         private  Point _origMouseDownPoint;
         private Point _origShapePostion;
 
@@ -153,36 +153,20 @@ namespace Uml_Creator.ViewModel
         private void OnMouseLeave(UIElement obj)
         {
             if (obj == null){return;}
-            if (IsSelected)
+            if (IsSelected && _isDraggingFigure)
             {
-
                 var pos = Mouse.GetPosition(VisualTreeHelper.GetParent(obj) as IInputElement);
-                //X= pos.X - _origMouseDownPoint.X;
-                //Y = pos.Y - _origMouseDownPoint.Y;
                 X = X + pos.X - _origMouseDownPoint.X;
                 Y = Y + pos.Y - _origMouseDownPoint.Y;
 
             }
-            else
-            {
-                return;
-            }
-
-
-
         }
 
         private void OnMouseMove(UIElement obj)
         {
             if (!_isDraggingFigure) return;
-            if (obj == null)
-            {
-                return;
-            }
-
+            if (obj == null) return;
             var pos = Mouse.GetPosition(VisualTreeHelper.GetParent(obj) as IInputElement);
-            //X= pos.X - _origMouseDownPoint.X;
-            //Y = pos.Y - _origMouseDownPoint.Y;
             X = X + pos.X - _origMouseDownPoint.X;
             Y = Y + pos.Y - _origMouseDownPoint.Y;
         }
@@ -191,16 +175,12 @@ namespace Uml_Creator.ViewModel
         {
             var visual = obj.Source as UIElement;
             if (visual == null) return;
-
-
-
+            
             if (!IsSelected)
             {
                 IsSelected = true;
                 mainvm.OnAddLineBetweenShapes(this);;
                 visual.Focus();
-                obj.Handled = true;
-                return;
             }
 
             if (!IsSelected && obj.MouseDevice.Target.IsMouseCaptured) return;
@@ -214,15 +194,16 @@ namespace Uml_Creator.ViewModel
 
         private void OnMouseLeftUp(MouseButtonEventArgs obj)
         {
-            if (!_isDraggingFigure)
+            var visual = obj.Source as UIElement;
+            if (visual == null)
             {
                 return;
             }
-
+            if (!_isDraggingFigure) return;
+            
             UndoRedoController.Instance.DoExecute(new MoveBoxCommand(this, _origShapePostion, new Point(X, Y)));
             _isDraggingFigure = false;
             IsSelected = false;
-            //Ikke sikker på hvad dette gør...
             Mouse.Capture(null);
             obj.Handled = true;
         }

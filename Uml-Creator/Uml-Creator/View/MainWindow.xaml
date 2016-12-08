@@ -6,6 +6,8 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:vm="clr-namespace:Uml_Creator.ViewModel"
         xmlns:tvm="clr-namespace:Uml_Creator.ViewModel"
+        xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"
+        xmlns:command="http://www.galasoft.ch/mvvmlight"
         mc:Ignorable="d"
         Title="UML-Creator" Height="350" Width="600.0">
     <Window.DataContext>
@@ -80,7 +82,11 @@
                         />
                     </Style>
                 </ListBox.ItemContainerStyle>
-                
+                <i:Interaction.Triggers>
+                <i:EventTrigger EventName="MouseLeftButtonUp">
+                    <command:EventToCommand Command="{Binding OnMouseLeftBtnUpCommand}"/>
+                </i:EventTrigger>
+                    </i:Interaction.Triggers>
                 <ListBox.ItemTemplate>
                     <DataTemplate>
                        
