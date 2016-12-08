@@ -33,27 +33,9 @@ namespace Uml_Creator.ViewModel
 
         #region data members
 
-        private string _textBarText = "1234567890";
-       
         public ObservableCollection<FigureViewModel> FiguresViewModels { get; private set; }
         
-        public ObservableCollection<Line> Lines { get; private set; }
-
-        private string filename;
-        private double _x;
-        private object _content;
-       
         #endregion data members
-
-        public object Content
-        {
-            get { return _content; }
-            set
-            {
-                _content = value;
-                OnPropertyChanged(nameof(Content));
-            }
-        }
 
         private string _statusText = "Welcome to UML Editor";
 
@@ -62,13 +44,13 @@ namespace Uml_Creator.ViewModel
             get { return _statusText; }
             set
             {
-                if (value != _statusText)
-                {
                     _statusText = value;
                     OnPropertyChanged("StatusText");
+                
                 }
             }
-        }
+
+        public ICommand BtnNewCommand { get; }
 
         public ICommand BtnCopy { get; }
         public ICommand BtnPaste { get; }
@@ -80,8 +62,11 @@ namespace Uml_Creator.ViewModel
         public ICommand AddCommand { get; }
         public ICommand BtnAddClass { get; }
         public ICommand DeleteCommand { get; }
+        public ICommand BtnCut { get; }
+
         UndoRedoController undoRedoController = UndoRedoController.Instance;
         public ObservableCollection<LineViewModel> lines { get; }
+
         public bool isAddingLineBtnPressed;
         public FigureViewModel _firstShapeToConnect;
         public string FileName;
@@ -91,19 +76,15 @@ namespace Uml_Creator.ViewModel
 
         public MainViewModel()
         {
-             Content = new Gem_Load();
+             //Content = new Gem_Load();
 
             copyFigures = new ObservableCollection<FigureViewModel>();
           
             FiguresViewModels = new ObservableCollection<FigureViewModel>
             {
-                new FigureViewModel(100,100,0,0," ",EFigure.ClassSquare, false,"hej"),
-                new FigureViewModel(300,200,0,0," ",EFigure.ClassSquare, false,"hej")
+            };
 
-
-         };
-
-
+          
             lines = new ObservableCollection<LineViewModel>
             {
                new LineViewModel(new Line(), FiguresViewModels[0], FiguresViewModels[1], ELine.Solid)
@@ -115,16 +96,35 @@ namespace Uml_Creator.ViewModel
             BtnExportCommand = new RelayCommand<Grid>(Export_Click);
             BtnCopy = new RelayCommand(Copy_Click);
             BtnPaste = new RelayCommand(Paste_Click);
+            BtnCut = new RelayCommand(Cut_click);
             UndoCommand = new RelayCommand(undoRedoController.Undo, undoRedoController.canUndo);
             RedoCommand = new RelayCommand(undoRedoController.Redo, undoRedoController.canRedo);
             BtnAddClass = new RelayCommand(AddClass);
+            DeleteCommand = new RelayCommand(Delete_Click);
+            BtnNewCommand = new RelayCommand(NewClassDiagram);
         }
 
-        private void ExecuteRemoveMethod()
+        private void NewClassDiagram()
         {
-        //   MethodsCollection.Remove(SelectedMethod);
+           
+           ClearEverything();
+
+
+        }
+
+        private void ClearEverything()
+        {
+            copyFigures.Clear();
+            undoRedoController.ResetUndoRedoStacks();
+            FiguresViewModels.Clear();
+            if (lines != null)
+        {
+                lines.Clear();
         }
       
+
+
+        }
 
         public bool IsAddingLineBtnPressed
         {
@@ -165,15 +165,17 @@ namespace Uml_Creator.ViewModel
         private void Copy_Click()
         {
             copyFigures.Clear();
+            int nrOfObjectsCopied = 0;
             foreach (FigureViewModel Figure in FiguresViewModels)
             {
                 if (Figure.IsSelected)
                 {
                     //We create a new instance to make sure we get a new object, and so it dosent have the same FigureNr, also its added a little ofset from the original models
-                    
+                    nrOfObjectsCopied++;
                     copyFigures.Add(Figure);
                 }
             }
+            StatusText = "Nr of objects added to the copy List: " + nrOfObjectsCopied;
         }
 
         /// <summary>
@@ -189,9 +191,11 @@ namespace Uml_Creator.ViewModel
             
                 foreach (FigureViewModel figure in copyFigures)
                 {
+
+
                     double offset = 20.0;
                     FigureViewModel newfigure = new FigureViewModel(figure.X + offset, figure.Y + offset, figure.Width,
-                        figure.Height, figure.Data, figure.Type, false, figure.Name);
+                        figure.Height, figure.Data, figure.Type, false, figure.Name, figure.MethodCollection,figure.AttributeCollection);
                     undoRedoController.DoExecute(new AddBoxCommand(FiguresViewModels, newfigure));
                 
                     nrOfCopied++;
@@ -210,6 +214,35 @@ namespace Uml_Creator.ViewModel
                 //No objects in copy list write to statusbar
             }
         }
+        private void Cut_click()
+        {
+            copyFigures.Clear();
+
+            //Vi går igennem listen bagfra for at undgå enumeration error
+            for (int i = FiguresViewModels.Count -1; i >=0; i--)
+            {
+                FigureViewModel Figure = FiguresViewModels[i];
+                    if (Figure.IsSelected)
+                    {
+
+                    copyFigures.Add(Figure);
+                    undoRedoController.DoExecute(new DeleteFigureCommand(FiguresViewModels, Figure));
+                }
+                }
+            /*
+            foreach (FigureViewModel Figure in FiguresViewModels)
+            {
+                if (Figure.IsSelected)
+                {
+                    //We create a new instance to make sure we get a new object, and so it dosent have the same FigureNr, also its added a little ofset from the original models
+
+                    copyFigures.Add(Figure);
+                    undoRedoController.DoExecute(new DeleteFigureCommand(FiguresViewModels, Figure));
+                }
+            }*/
+        }
+
+
 
         private void Delete_Click()
         {
@@ -217,8 +250,10 @@ namespace Uml_Creator.ViewModel
             {
                 if (Figure.IsSelected)
                 {
+                    StatusText = "Deleted Objekt: " + Figure.Name;
                     undoRedoController.DoExecute(new DeleteFigureCommand(FiguresViewModels, Figure));
                    // FiguresViewModels.Remove(Figure);
+                  
                 }
             }
         }
@@ -228,12 +263,14 @@ namespace Uml_Creator.ViewModel
             //FigureViewModel newFigure = new FigureViewModel(0, 0, 10, 20, "data", EFigure.ClassSquare, false,"testClass");
             
             undoRedoController.DoExecute(new AddBoxCommand(FiguresViewModels, new FigureViewModel()));
+            StatusText = "New class has been added.";
             
-            //TextBar = "abekat";
         }
 
         private void Load_Click()
         {
+            ClearEverything();
+
             OpenFileDialog loadfildialog = new OpenFileDialog();
             loadfildialog.Filter = "XML files (*.xml)|*.xml";
             if (loadfildialog.ShowDialog() != DialogResult.OK) return;
@@ -309,7 +346,7 @@ namespace Uml_Creator.ViewModel
             }
             catch (Exception ex)
             {
-                    StatusText = ex.ToString();
+                   // StatusText = ex.ToString();
                 Console.WriteLine(ex.ToString());
                 //Log exception here
             }
