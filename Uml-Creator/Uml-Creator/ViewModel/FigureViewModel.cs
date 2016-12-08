@@ -36,7 +36,7 @@ namespace Uml_Creator.ViewModel
         private Point _leftPoint;
         private Point _rightPoint;
         private Point _bottomPoint;
-        private LineViewModel linevm;
+        private List<LineViewModel> connectedLines = new List<LineViewModel>();
         private MainViewModel mainvm;
 
         public MainViewModel Mainvm
@@ -45,10 +45,11 @@ namespace Uml_Creator.ViewModel
             set { mainvm = value; }
         }
 
-        public LineViewModel _line
+
+
+        public void addLine(LineViewModel line)
         {
-            get { return linevm; }
-            set { linevm = value; }
+            connectedLines.Add(line);
         }
 
 
@@ -325,10 +326,12 @@ namespace Uml_Creator.ViewModel
 
         private void giveLineNewCords()
         {
-            if (_line != null)
-            {
-                _line.calculateShortestLine();
-            }
+
+                for (int i = 0; i < connectedLines.Count; i++)
+                {
+                    connectedLines[i].calculateShortestLine();
+                }
+            
         }
 
         public double Width
