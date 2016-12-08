@@ -37,9 +37,37 @@ namespace Uml_Creator.View.UserControls
             double height = mainGrid.ActualHeight;
             double width = mainGrid.ActualWidth;
             var connectedFigure = (FigureViewModel) mainGrid.DataContext;
-     
-           vm.FiguresViewModels[connectedFigure.FigureNr].Height = height;
-           vm.FiguresViewModels[connectedFigure.FigureNr].Width = width;
+            int FigureViewModelNr = 0;
+            foreach (var figure in vm.FiguresViewModels)
+            {
+                if (figure == null)
+                {
+                    break; }
+                if (figure.FigureNr == connectedFigure.FigureNr)
+                {
+                   
+                    break;
+                }
+                else
+                {
+                    FigureViewModelNr++;
+                }
+            }
+
+
+            try
+            {
+                vm.FiguresViewModels[FigureViewModelNr].Height = height;
+                vm.FiguresViewModels[FigureViewModelNr].Width = width;
+                //vm.FiguresViewModels[connectedFigure.FigureNr].Height = height;
+                //vm.FiguresViewModels[connectedFigure.FigureNr].Width = width;
+            }
+            catch (Exception exception)
+            {
+                Debug.Print(exception.Message);
+            }
+
+           
 
         }
     }

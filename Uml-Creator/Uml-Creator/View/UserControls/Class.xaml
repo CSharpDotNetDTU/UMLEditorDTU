@@ -29,7 +29,7 @@
                 </i:EventTrigger>
                     
                    <i:EventTrigger EventName="MouseLeave">
-                       <command:EventToCommand Command="{Binding OnMouseLeave}" CommandParameter="{Binding ElementName=TextBlock, Mode=OneWay}"></command:EventToCommand>
+                       <command:EventToCommand Command="{Binding OnMouseLeaveCommand}" CommandParameter="{Binding ElementName=TextBlock, Mode=OneWay}"></command:EventToCommand>
                    </i:EventTrigger>
             </i:Interaction.Triggers>
        

@@ -80,6 +80,7 @@ namespace Uml_Creator.ViewModel
         public ICommand AddCommand { get; }
         public ICommand BtnAddClass { get; }
         public ICommand DeleteCommand { get; }
+        public ICommand BtnCut { get; }
         UndoRedoController undoRedoController = UndoRedoController.Instance;
         public ObservableCollection<LineViewModel> lines { get; }
         public bool isAddingLineBtnPressed;
@@ -116,11 +117,13 @@ namespace Uml_Creator.ViewModel
             BtnExportCommand = new RelayCommand<Grid>(Export_Click);
             BtnCopy = new RelayCommand(Copy_Click);
             BtnPaste = new RelayCommand(Paste_Click);
+            BtnCut = new RelayCommand(Cut_click);
             UndoCommand = new RelayCommand(undoRedoController.Undo, undoRedoController.canUndo);
             RedoCommand = new RelayCommand(undoRedoController.Redo, undoRedoController.canRedo);
             BtnAddClass = new RelayCommand(AddClass);
         }
 
+     
         private void ExecuteRemoveMethod()
         {
         //   MethodsCollection.Remove(SelectedMethod);
@@ -190,9 +193,11 @@ namespace Uml_Creator.ViewModel
             
                 foreach (FigureViewModel figure in copyFigures)
                 {
+
+
                     double offset = 20.0;
                     FigureViewModel newfigure = new FigureViewModel(figure.X + offset, figure.Y + offset, figure.Width,
-                        figure.Height, figure.Data, figure.Type, false, figure.Name);
+                        figure.Height, figure.Data, figure.Type, false, figure.Name, figure.MethodCollection,figure.AttributeCollection);
                     undoRedoController.DoExecute(new AddBoxCommand(FiguresViewModels, newfigure));
                 
                     nrOfCopied++;
@@ -211,6 +216,35 @@ namespace Uml_Creator.ViewModel
                 //No objects in copy list write to statusbar
             }
         }
+        private void Cut_click()
+        {
+            copyFigures.Clear();
+
+            //Vi går igennem listen bagfra for at undgå enumeration error
+            for (int i = FiguresViewModels.Count -1; i >=0; i--)
+            {
+                FigureViewModel Figure = FiguresViewModels[i];
+                    if (Figure.IsSelected)
+                    {
+
+                    copyFigures.Add(Figure);
+                    undoRedoController.DoExecute(new DeleteFigureCommand(FiguresViewModels, Figure));
+                }
+                }
+            /*
+            foreach (FigureViewModel Figure in FiguresViewModels)
+            {
+                if (Figure.IsSelected)
+                {
+                    //We create a new instance to make sure we get a new object, and so it dosent have the same FigureNr, also its added a little ofset from the original models
+
+                    copyFigures.Add(Figure);
+                    undoRedoController.DoExecute(new DeleteFigureCommand(FiguresViewModels, Figure));
+                }
+            }*/
+        }
+
+
 
         private void Delete_Click()
         {

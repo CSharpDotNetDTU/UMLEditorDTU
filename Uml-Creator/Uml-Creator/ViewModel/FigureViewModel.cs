@@ -68,7 +68,24 @@ namespace Uml_Creator.ViewModel
 
         private void OnMouseLeave(UIElement obj)
         {
-            Debug.WriteLine("Mouse Left object");
+            if (obj == null){return;}
+            if (IsSelected)
+            {
+
+                var pos = Mouse.GetPosition(VisualTreeHelper.GetParent(obj) as IInputElement);
+                //X= pos.X - _origMouseDownPoint.X;
+                //Y = pos.Y - _origMouseDownPoint.Y;
+                X = X + pos.X - _origMouseDownPoint.X;
+                Y = Y + pos.Y - _origMouseDownPoint.Y;
+
+            }
+            else
+            {
+                return;
+            }
+
+
+
         }
 
         private void OnMouseMove(UIElement obj)
@@ -150,7 +167,7 @@ namespace Uml_Creator.ViewModel
             undoRedoController.DoExecute(new DeleteMethodCommand(this, SelectedMethod));
         }
 
-        public FigureViewModel(double x, double y, double width, double height, string data, EFigure type, bool isSelected, string name) : this(new Figure())
+        public FigureViewModel(double x, double y, double width, double height, string data, EFigure type, bool isSelected, string name, ObservableCollection<Object> methods, ObservableCollection<Object> attributes) : this(new Figure())
         {
             Figure.X = x;
             Figure.Y = y;
@@ -160,6 +177,8 @@ namespace Uml_Creator.ViewModel
             Figure.Type = type;
             Figure.IsSelected = isSelected;
             Figure.Name = name;
+            Figure.MethodCollection = methods;
+            Figure.AttributeCollection = attributes;
 
         }
 
@@ -230,8 +249,7 @@ namespace Uml_Creator.ViewModel
             get { return Figure.X; }
             set
             {
-                Figure.X = value;
-                Debug.WriteLine(value);
+                Figure.X = value;   
                 OnPropertyChanged("X");
                 OnPropertyChanged(nameof(CenterX));
             }
