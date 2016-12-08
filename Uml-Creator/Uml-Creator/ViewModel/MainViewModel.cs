@@ -55,7 +55,7 @@ namespace Uml_Creator.ViewModel
             }
         }
 
-        private string _statusText ="ssssssss";
+        private string _statusText ="Welcome to UML Editor";
 
         public string StatusText
         {
@@ -65,7 +65,6 @@ namespace Uml_Creator.ViewModel
                 if (value != _statusText)
                 {
                     _statusText = value;
-                    Debug.WriteLine("Hej");
                     OnPropertyChanged("StatusText");
                 }
             }
@@ -203,8 +202,9 @@ namespace Uml_Creator.ViewModel
                 
                     nrOfCopied++;
                 }
-                Debug.Print("Antal Objecter copieret:" + nrOfCopied);
-                Debug.Print("nr of objects total ---->"+FiguresViewModels.Count);
+                StatusText = "you have copied " + nrOfCopied + " objects";
+               // Debug.Print("Antal Objecter copieret:" + nrOfCopied);
+               // Debug.Print("nr of objects total ---->"+FiguresViewModels.Count);
                 //Write to status bar that x objects were copied to the canvas
             }
             else
@@ -276,6 +276,7 @@ namespace Uml_Creator.ViewModel
             }
             catch (Exception ex)
             {
+                StatusText = ex.ToString();
                 Console.WriteLine(ex.ToString());
                 //Log exception here
             }
@@ -311,6 +312,7 @@ namespace Uml_Creator.ViewModel
                 }
                 catch (Exception ex)
                 {
+                    StatusText = ex.ToString();
                     Console.WriteLine(ex.ToString());
                     //Log exception here
                 }

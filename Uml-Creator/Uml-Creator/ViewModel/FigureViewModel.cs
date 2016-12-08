@@ -155,8 +155,6 @@ namespace Uml_Creator.ViewModel
         public FigureViewModel(FigureViewModel figure)
         {
             Figure = new Figure();
-            Figure.reset();
-            Debug.WriteLine(Figure.Name);
             Figure.X = figure.X;
             Figure.Y = figure.Y;
             Figure.Width = figure.Width;
