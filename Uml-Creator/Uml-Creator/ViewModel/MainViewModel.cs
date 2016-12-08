@@ -33,18 +33,16 @@ namespace Uml_Creator.ViewModel
 
         #region data members
 
-        private string _textBarText = "1234567890";
        
         public ObservableCollection<FigureViewModel> FiguresViewModels { get; private set; }
         
         public ObservableCollection<Line> Lines { get; private set; }
 
-        private string filename;
-        private double _x;
-        private object _content;
-       
-        #endregion data members
 
+
+        #endregion data members
+        /*
+        private object _content;
         public object Content
         {
             get { return _content; }
@@ -54,7 +52,7 @@ namespace Uml_Creator.ViewModel
                 OnPropertyChanged(nameof(Content));
             }
         }
-
+        */
         private string _statusText = "Welcome to UML Editor";
 
         public string StatusText
@@ -81,8 +79,10 @@ namespace Uml_Creator.ViewModel
         public ICommand BtnAddClass { get; }
         public ICommand DeleteCommand { get; }
         public ICommand BtnCut { get; }
+
         UndoRedoController undoRedoController = UndoRedoController.Instance;
         public ObservableCollection<LineViewModel> lines { get; }
+
         public bool isAddingLineBtnPressed;
         public FigureViewModel _firstShapeToConnect;
         public string FileName;
@@ -92,24 +92,15 @@ namespace Uml_Creator.ViewModel
 
         public MainViewModel()
         {
-             Content = new Gem_Load();
+             //Content = new Gem_Load();
 
             copyFigures = new ObservableCollection<FigureViewModel>();
           
             FiguresViewModels = new ObservableCollection<FigureViewModel>
             {
-                //new FigureViewModel() {20.0,20.0,50.0,60.0,"lars",EFigure.ClassSquare},
-               
-             //    new FigureViewModel(0.0,0.0,50.0,20.0,"Dette er en klasse her skriver jeg min tekst!",EFigure.ClassSquare,false),
-
-               //  new FigureViewModel(30.0,80.0,20.0,20.0,"Dette er en anden klasse, skriv noget andet tekst her!",EFigure.ClassSquare,false)
             };
 
-          
-          //  lines = new ObservableCollection<LineViewModel>
-            //{
-            //    new LineViewModel(new Line(), FiguresViewModels[0], FiguresViewModels[1], ELine.Solid)
-            //};
+      
 
 
             BtnLoadCommand = new RelayCommand(Load_Click);
@@ -180,7 +171,7 @@ namespace Uml_Creator.ViewModel
                     copyFigures.Add(Figure);
                 }
             }
-            StatusText = "You have copied:" + nrOfObjectsCopied + "Objects";
+            StatusText = "Nr of objects added to the copy List: " + nrOfObjectsCopied;
         }
 
         /// <summary>
@@ -268,8 +259,8 @@ namespace Uml_Creator.ViewModel
             //FigureViewModel newFigure = new FigureViewModel(0, 0, 10, 20, "data", EFigure.ClassSquare, false,"testClass");
             
             undoRedoController.DoExecute(new AddBoxCommand(FiguresViewModels, new FigureViewModel()));
+            StatusText = "New class has been added.";
             
-            //TextBar = "abekat";
         }
 
         private void Load_Click()
