@@ -46,7 +46,6 @@ namespace Uml_Creator.ViewModel
             {
                     _statusText = value;
                     OnPropertyChanged("StatusText");
-                
                 }
             }
 
@@ -82,11 +81,14 @@ namespace Uml_Creator.ViewModel
           
             FiguresViewModels = new ObservableCollection<FigureViewModel>
             {
+                new FigureViewModel() { Name = "lit"},
+                new FigureViewModel() { Name = "lit"}
             };
 
           
             lines = new ObservableCollection<LineViewModel>
             {
+                new LineViewModel(new Line(), FiguresViewModels[0], FiguresViewModels[1], ELine.Solid)
             };
 
 
@@ -105,10 +107,7 @@ namespace Uml_Creator.ViewModel
 
         private void NewClassDiagram()
         {
-           
            ClearEverything();
-
-
         }
 
         private void ClearEverything()
@@ -120,9 +119,6 @@ namespace Uml_Creator.ViewModel
         {
                 lines.Clear();
         }
-      
-
-
         }
 
         public bool IsAddingLineBtnPressed
@@ -154,7 +150,7 @@ namespace Uml_Creator.ViewModel
                     IsAddingLineBtnPressed = false;
                 }
             }
-            }
+        }
         }
 
 
@@ -191,11 +187,10 @@ namespace Uml_Creator.ViewModel
             
                 foreach (FigureViewModel figure in copyFigures)
                 {
-
-
                     double offset = 20.0;
                     FigureViewModel newfigure = new FigureViewModel(figure.X + offset, figure.Y + offset, figure.Width,
-                        figure.Height, figure.Data, figure.Type, false, figure.Name, figure.MethodCollection,figure.AttributeCollection);
+                        figure.Height, figure.Data, figure.Type, false, figure.Name, figure.MethodCollection,
+                        figure.AttributeCollection);
                     undoRedoController.DoExecute(new AddBoxCommand(FiguresViewModels, newfigure));
                 
                     nrOfCopied++;
@@ -214,17 +209,17 @@ namespace Uml_Creator.ViewModel
                 //No objects in copy list write to statusbar
             }
         }
+
         private void Cut_click()
         {
             copyFigures.Clear();
 
             //Vi går igennem listen bagfra for at undgå enumeration error
-            for (int i = FiguresViewModels.Count -1; i >=0; i--)
+            for (int i = FiguresViewModels.Count - 1; i >= 0; i--)
             {
                 FigureViewModel Figure = FiguresViewModels[i];
                     if (Figure.IsSelected)
                     {
-
                     copyFigures.Add(Figure);
                     undoRedoController.DoExecute(new DeleteFigureCommand(FiguresViewModels, Figure));
                 }
@@ -243,7 +238,6 @@ namespace Uml_Creator.ViewModel
         }
 
 
-
         private void Delete_Click()
         {
             foreach (FigureViewModel Figure in FiguresViewModels.Reverse())
@@ -253,7 +247,6 @@ namespace Uml_Creator.ViewModel
                     StatusText = "Deleted Objekt: " + Figure.Name;
                     undoRedoController.DoExecute(new DeleteFigureCommand(FiguresViewModels, Figure));
                    // FiguresViewModels.Remove(Figure);
-                  
                 }
             }
         }
@@ -330,7 +323,6 @@ namespace Uml_Creator.ViewModel
             FileName = gemfildialog.FileName;
             worker.DoWork += worker_Save;
             worker.RunWorkerAsync();
-
         }
 
         private void worker_Save(object sender, DoWorkEventArgs e)

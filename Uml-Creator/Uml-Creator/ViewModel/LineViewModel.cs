@@ -57,6 +57,15 @@ namespace Uml_Creator.ViewModel
         private FigureViewModel _from;
         private FigureViewModel _to;
 
+        public string StrokeStyle
+        {
+            get
+            {
+                if(Type==ELine.Solid) return "10,0";
+                return "5, 10";
+            }
+        }
+
         public FigureViewModel From
         {
             get { return _from; }
