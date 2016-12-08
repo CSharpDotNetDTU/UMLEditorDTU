@@ -96,9 +96,18 @@
             </ListBox>
 
             <ItemsControl ItemsSource="{Binding lines}">
+                
                 <ItemsControl.ItemsPanel>
                     <ItemsPanelTemplate>
-                        <Canvas/>
+                        <Canvas>
+                            <Canvas.LayoutTransform>
+                            <ScaleTransform
+                        CenterX="0" CenterY="0"
+                        ScaleX="{Binding ElementName=ZoomSlider, Path=Value}"
+                        ScaleY="{Binding ElementName=ZoomSlider, Path=Value}">
+                            </ScaleTransform>
+                            </Canvas.LayoutTransform>
+                        </Canvas>
                     </ItemsPanelTemplate>
                 </ItemsControl.ItemsPanel>
             </ItemsControl>
