@@ -97,6 +97,7 @@
 
             <ItemsControl ItemsSource="{Binding lines}">
                 <ItemsControl.ItemsPanel>
+                    
                     <ItemsPanelTemplate>
                         <Canvas/>
                     </ItemsPanelTemplate>

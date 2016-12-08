@@ -37,6 +37,13 @@ namespace Uml_Creator.ViewModel
         private Point _rightPoint;
         private Point _bottomPoint;
         private LineViewModel linevm;
+        private MainViewModel mainvm;
+
+        public MainViewModel Mainvm
+        {
+            get { return mainvm; }
+            set { mainvm = value; }
+        }
 
         public LineViewModel _line
         {
@@ -189,6 +196,7 @@ namespace Uml_Creator.ViewModel
             if (!IsSelected)
             {
                 IsSelected = true;
+                mainvm.OnAddLineBetweenShapes(this);;
                 visual.Focus();
                 obj.Handled = true;
                 return;

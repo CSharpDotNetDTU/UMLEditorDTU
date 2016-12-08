@@ -85,10 +85,6 @@
     </ApplicationDefinition>
     <Compile Include="Converters\IsNotNullControlConverter.cs" />
     <Compile Include="Properties\Annotations.cs" />
-    <Compile Include="StolenStuff\pushBindings\FreezeableBinding.cs" />
-    <Compile Include="StolenStuff\pushBindings\PushBinding.cs" />
-    <Compile Include="StolenStuff\pushBindings\PushBindingCollection.cs" />
-    <Compile Include="StolenStuff\pushBindings\PushBindingManager.cs" />
     <Compile Include="UndoRedo\Commands\AddAttributeCommand.cs" />
     <Compile Include="UndoRedo\Commands\AddBoxCommand.cs" />
     <Compile Include="UndoRedo\Commands\AddLineCommand.cs" />
@@ -125,8 +121,6 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
-    <Compile Include="StolenStuff\EditableTextBlock.cs" />
-    <Compile Include="StolenStuff\EditableTextBlockAdorner.cs" />
     <Compile Include="ViewModel\Gem_Load.cs" />
     <Compile Include="ViewModel\LineViewModel.cs" />
     <Compile Include="ViewModel\MainViewModel.cs" />

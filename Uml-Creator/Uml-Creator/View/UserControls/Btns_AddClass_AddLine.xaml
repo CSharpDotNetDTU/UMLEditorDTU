@@ -16,7 +16,7 @@
                 <RowDefinition Height="*" />
         </Grid.RowDefinitions> 
         <Button Content="Add class" Command="{Binding ElementName=Btns_Grid , Path=DataContext.BtnAddClass}"/>
-        <Button Grid.Row="1"  Content="Add line" Command="{Binding ElementName=Btns_Grid,Path= DataContext.IsAddingLineBtnPressed}"/>
+        <ToggleButton Grid.Row="1" Grid.Column="0" Content="Add line" IsChecked="{Binding ElementName=Btns_Grid,Path= DataContext.IsAddingLineBtnPressed , Mode=TwoWay}"/>
         </Grid>
 
     

@@ -67,8 +67,8 @@ namespace Uml_Creator.ViewModel
         UndoRedoController undoRedoController = UndoRedoController.Instance;
         public ObservableCollection<LineViewModel> lines { get; }
 
-        public bool isAddingLineBtnPressed;
-        public FigureViewModel _firstShapeToConnect;
+        private bool isAddingLineBtnPressed;
+        private FigureViewModel _firstShapeToConnect;
         public string FileName;
         public string FileNamePic;
         BackgroundWorker worker = new BackgroundWorker();
@@ -130,19 +130,19 @@ namespace Uml_Creator.ViewModel
             get { return isAddingLineBtnPressed; }
             set
             {
+                Debug.WriteLine("im on");
                 isAddingLineBtnPressed = value;
                 if (!value)
                     _firstShapeToConnect = null;
                 OnPropertyChanged(nameof(isAddingLineBtnPressed));
-                AddLineBetweenShapes.RaiseCanExecuteChanged();
             }
         }
 
-        public RelayCommand<FigureViewModel> AddLineBetweenShapes
-            => new RelayCommand<FigureViewModel>(OnAddLineBetweenShapes, lit => IsAddingLineBtnPressed);
 
         public void OnAddLineBetweenShapes(FigureViewModel fig)
         {
+
+            if (isAddingLineBtnPressed) { 
             if (_firstShapeToConnect == null)
                 _firstShapeToConnect = fig;
             else
@@ -153,6 +153,7 @@ namespace Uml_Creator.ViewModel
                         new LineViewModel(new Line(), _firstShapeToConnect, fig, ELine.Solid)));
                     IsAddingLineBtnPressed = false;
                 }
+            }
             }
         }
 
@@ -263,6 +264,14 @@ namespace Uml_Creator.ViewModel
             
             undoRedoController.DoExecute(new AddBoxCommand(FiguresViewModels, new FigureViewModel()));
             StatusText = "New class has been added.";
+
+            for (int i = 0; i < FiguresViewModels.Count; i++)
+            {
+                var tempfig = FiguresViewModels[i];
+
+                if(tempfig.Mainvm == null)
+                  tempfig.Mainvm = this;
+            }
             
         }
 
