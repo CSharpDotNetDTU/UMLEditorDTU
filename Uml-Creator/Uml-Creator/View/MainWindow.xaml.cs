@@ -19,6 +19,7 @@ namespace Uml_Creator.View
         public MainWindow()
         {
             InitializeComponent();
+            vm = (MainViewModel) this.DataContext;
         }
 
 

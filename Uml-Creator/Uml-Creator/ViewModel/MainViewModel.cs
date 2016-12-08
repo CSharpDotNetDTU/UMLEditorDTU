@@ -235,9 +235,9 @@ namespace Uml_Creator.ViewModel
 
           private void AddClass()
         {
-            FigureViewModel newFigure = new FigureViewModel(0, 0, 10, 20, "data", EFigure.ClassSquare, false,"testClass");
+            //FigureViewModel newFigure = new FigureViewModel(0, 0, 10, 20, "data", EFigure.ClassSquare, false,"testClass");
             
-            undoRedoController.DoExecute(new AddBoxCommand(FiguresViewModels, newFigure));
+            undoRedoController.DoExecute(new AddBoxCommand(FiguresViewModels, new FigureViewModel()));
             
             //TextBar = "abekat";
         }

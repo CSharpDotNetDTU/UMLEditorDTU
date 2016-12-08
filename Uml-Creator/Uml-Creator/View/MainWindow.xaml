@@ -59,7 +59,7 @@
                     </ItemsPanelTemplate>
                 </ItemsControl.ItemsPanel>
             </ItemsControl>
-            <ListBox ItemsSource="{Binding FigureViewModels}" 
+            <ListBox ItemsSource="{Binding FiguresViewModels}" 
                      x:Name="FigureListBox"
                      SelectionMode="Extended">
                 <ListBox.LayoutTransform>
