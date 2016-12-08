@@ -127,7 +127,6 @@
     </Page>
     <Compile Include="StolenStuff\EditableTextBlock.cs" />
     <Compile Include="StolenStuff\EditableTextBlockAdorner.cs" />
-    <Compile Include="ViewModel\Gem_Load.cs" />
     <Compile Include="ViewModel\LineViewModel.cs" />
     <Compile Include="ViewModel\MainViewModel.cs" />
     <Compile Include="ViewModel\FigureViewModel.cs" />

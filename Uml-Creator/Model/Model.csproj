@@ -66,7 +66,6 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Class1.cs" />
     <Compile Include="Model\AttributeModel.cs" />
     <Compile Include="Model\Diagram.cs" />
     <Compile Include="Model\ENUM\EFigure.cs" />
