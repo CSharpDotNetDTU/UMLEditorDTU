@@ -64,6 +64,13 @@ namespace Uml_Creator.ViewModel
 
         public ICommand OnMouseMoveCommand => new RelayCommand<UIElement>(OnMouseMove);
 
+        public ICommand OnMouseLeaveCommand => new RelayCommand<UIElement>(OnMouseLeave);
+
+        private void OnMouseLeave(UIElement obj)
+        {
+            Debug.WriteLine("Mouse Left object");
+        }
+
         private void OnMouseMove(UIElement obj)
         {
             if (!_isDraggingFigure) return;
