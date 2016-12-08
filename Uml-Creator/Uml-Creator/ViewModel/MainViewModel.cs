@@ -103,12 +103,12 @@ namespace Uml_Creator.ViewModel
         private void NewClassDiagram()
         {
            
-           clearEverything();
+           ClearEverything();
 
 
         }
 
-        private void clearEverything()
+        private void ClearEverything()
         {
             copyFigures.Clear();
             undoRedoController.ResetUndoRedoStacks();
@@ -265,7 +265,7 @@ namespace Uml_Creator.ViewModel
 
         private void Load_Click()
         {
-            clearEverything();
+            ClearEverything();
 
             OpenFileDialog loadfildialog = new OpenFileDialog();
             loadfildialog.Filter = "XML files (*.xml)|*.xml";

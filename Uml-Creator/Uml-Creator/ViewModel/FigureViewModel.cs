@@ -242,8 +242,6 @@ namespace Uml_Creator.ViewModel
             }
         }
 
-
-
         public double X
         {
             get { return Figure.X; }
