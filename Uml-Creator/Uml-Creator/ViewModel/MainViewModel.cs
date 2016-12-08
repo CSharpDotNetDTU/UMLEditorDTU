@@ -33,26 +33,10 @@ namespace Uml_Creator.ViewModel
 
         #region data members
 
-       
         public ObservableCollection<FigureViewModel> FiguresViewModels { get; private set; }
-        
-        public ObservableCollection<Line> Lines { get; private set; }
-
-
-
+ 
         #endregion data members
-        /*
-        private object _content;
-        public object Content
-        {
-            get { return _content; }
-            set
-            {
-                _content = value;
-                OnPropertyChanged(nameof(Content));
-            }
-        }
-        */
+   
         private string _statusText = "Welcome to UML Editor";
 
         public string StatusText
@@ -60,13 +44,13 @@ namespace Uml_Creator.ViewModel
             get { return _statusText; }
             set
             {
-                if (value != _statusText)
-                {
                     _statusText = value;
                     OnPropertyChanged("StatusText");
-                }
+                
             }
         }
+
+        public ICommand BtnNewCommand { get; }
 
         public ICommand BtnCopy { get; }
         public ICommand BtnPaste { get; }
@@ -113,14 +97,30 @@ namespace Uml_Creator.ViewModel
             RedoCommand = new RelayCommand(undoRedoController.Redo, undoRedoController.canRedo);
             BtnAddClass = new RelayCommand(AddClass);
             DeleteCommand = new RelayCommand(Delete_Click);
+            BtnNewCommand = new RelayCommand(NewClassDiagram);
         }
 
-     
-        private void ExecuteRemoveMethod()
+        private void NewClassDiagram()
         {
-        //   MethodsCollection.Remove(SelectedMethod);
+           
+           clearEverything();
+
+
         }
-      
+
+        private void clearEverything()
+        {
+            copyFigures.Clear();
+            undoRedoController.ResetUndoRedoStacks();
+            FiguresViewModels.Clear();
+            if (lines != null)
+            {
+                lines.Clear();
+            }
+            
+
+
+        }
 
         public bool IsAddingLineBtnPressed
         {
@@ -265,6 +265,8 @@ namespace Uml_Creator.ViewModel
 
         private void Load_Click()
         {
+            clearEverything();
+
             OpenFileDialog loadfildialog = new OpenFileDialog();
             loadfildialog.Filter = "XML files (*.xml)|*.xml";
             if (loadfildialog.ShowDialog() != DialogResult.OK) return;

@@ -10,7 +10,7 @@
         <Menu DockPanel.Dock ="Top"  x:Name="MenuBarTop" >
             <!-- http://www.wpf-tutorial.com/common-interface-controls/menu-control/  Guide til menu -->
             <MenuItem Header ="File">
-                <MenuItem Header ="New" InputGestureText="Ctrl+N"/>
+                <MenuItem Header ="New" InputGestureText="Ctrl+N" Command="{Binding BtnNewCommand}"/>
                 <MenuItem Header ="Load" InputGestureText="Ctrl+O" Command="{Binding BtnLoadCommand}"/>
                 <MenuItem Header ="Save" InputGestureText="Ctrl+S" Command="{Binding BtnGemCommand}"/>
                 <MenuItem Header ="Export as PNG" InputGestureText="Ctrl+E" Command="{Binding BtnExportCommand}" CommandParameter="{Binding ElementName=MainCanvas}"/>
