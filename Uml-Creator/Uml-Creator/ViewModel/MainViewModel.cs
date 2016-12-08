@@ -87,7 +87,6 @@ namespace Uml_Creator.ViewModel
           
             lines = new ObservableCollection<LineViewModel>
             {
-               new LineViewModel(new Line(), FiguresViewModels[0], FiguresViewModels[1], ELine.Solid)
             };
 
 
