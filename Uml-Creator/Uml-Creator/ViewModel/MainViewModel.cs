@@ -34,9 +34,9 @@ namespace Uml_Creator.ViewModel
         #region data members
 
         public ObservableCollection<FigureViewModel> FiguresViewModels { get; private set; }
- 
+
         #endregion data members
-   
+
         private string _statusText = "Welcome to UML Editor";
 
         public string StatusText
@@ -44,9 +44,8 @@ namespace Uml_Creator.ViewModel
             get { return _statusText; }
             set
             {
-                    _statusText = value;
-                    OnPropertyChanged("StatusText");
-                
+                _statusText = value;
+                OnPropertyChanged("StatusText");
             }
         }
 
@@ -76,15 +75,13 @@ namespace Uml_Creator.ViewModel
 
         public MainViewModel()
         {
-             //Content = new Gem_Load();
+            //Content = new Gem_Load();
 
             copyFigures = new ObservableCollection<FigureViewModel>();
-          
+
             FiguresViewModels = new ObservableCollection<FigureViewModel>
             {
             };
-
-      
 
 
             BtnLoadCommand = new RelayCommand(Load_Click);
@@ -102,10 +99,7 @@ namespace Uml_Creator.ViewModel
 
         private void NewClassDiagram()
         {
-           
-           ClearEverything();
-
-
+            ClearEverything();
         }
 
         private void ClearEverything()
@@ -117,9 +111,6 @@ namespace Uml_Creator.ViewModel
             {
                 lines.Clear();
             }
-            
-
-
         }
 
         public bool IsAddingLineBtnPressed
@@ -184,21 +175,20 @@ namespace Uml_Creator.ViewModel
             {
                 int nrOfCopied = 0;
 
-            
+
                 foreach (FigureViewModel figure in copyFigures)
                 {
-
-
                     double offset = 20.0;
                     FigureViewModel newfigure = new FigureViewModel(figure.X + offset, figure.Y + offset, figure.Width,
-                        figure.Height, figure.Data, figure.Type, false, figure.Name, figure.MethodCollection,figure.AttributeCollection);
+                        figure.Height, figure.Data, figure.Type, false, figure.Name, figure.MethodCollection,
+                        figure.AttributeCollection);
                     undoRedoController.DoExecute(new AddBoxCommand(FiguresViewModels, newfigure));
-                
+
                     nrOfCopied++;
                 }
                 StatusText = "you have copied " + nrOfCopied + " objects";
-               // Debug.Print("Antal Objecter copieret:" + nrOfCopied);
-               // Debug.Print("nr of objects total ---->"+FiguresViewModels.Count);
+                // Debug.Print("Antal Objecter copieret:" + nrOfCopied);
+                // Debug.Print("nr of objects total ---->"+FiguresViewModels.Count);
                 //Write to status bar that x objects were copied to the canvas
             }
             else
@@ -210,21 +200,21 @@ namespace Uml_Creator.ViewModel
                 //No objects in copy list write to statusbar
             }
         }
+
         private void Cut_click()
         {
             copyFigures.Clear();
 
             //Vi går igennem listen bagfra for at undgå enumeration error
-            for (int i = FiguresViewModels.Count -1; i >=0; i--)
+            for (int i = FiguresViewModels.Count - 1; i >= 0; i--)
             {
                 FigureViewModel Figure = FiguresViewModels[i];
-                    if (Figure.IsSelected)
-                    {
-
+                if (Figure.IsSelected)
+                {
                     copyFigures.Add(Figure);
                     undoRedoController.DoExecute(new DeleteFigureCommand(FiguresViewModels, Figure));
                 }
-                }
+            }
             /*
             foreach (FigureViewModel Figure in FiguresViewModels)
             {
@@ -239,7 +229,6 @@ namespace Uml_Creator.ViewModel
         }
 
 
-
         private void Delete_Click()
         {
             foreach (FigureViewModel Figure in FiguresViewModels.Reverse())
@@ -248,19 +237,17 @@ namespace Uml_Creator.ViewModel
                 {
                     StatusText = "Deleted Objekt: " + Figure.Name;
                     undoRedoController.DoExecute(new DeleteFigureCommand(FiguresViewModels, Figure));
-                   // FiguresViewModels.Remove(Figure);
-                  
+                    // FiguresViewModels.Remove(Figure);
                 }
             }
         }
 
-          private void AddClass()
+        private void AddClass()
         {
             //FigureViewModel newFigure = new FigureViewModel(0, 0, 10, 20, "data", EFigure.ClassSquare, false,"testClass");
-            
+
             undoRedoController.DoExecute(new AddBoxCommand(FiguresViewModels, new FigureViewModel()));
             StatusText = "New class has been added.";
-            
         }
 
         private void Load_Click()
@@ -281,7 +268,7 @@ namespace Uml_Creator.ViewModel
                 {
                     ObservableCollection<FigureViewModel> temp;
                     Type outType = typeof(ObservableCollection<FigureViewModel>);
-                        //skal være samme slags objekter som diagrammet
+                    //skal være samme slags objekter som diagrammet
                     XmlSerializer serializer = new XmlSerializer(outType);
                     using (XmlReader reader = new XmlTextReader(read))
                     {
@@ -289,10 +276,10 @@ namespace Uml_Creator.ViewModel
                         FiguresViewModels.Clear();
                         for (int i = 0; i < temp.Count; i++)
                         {
-                          //  FiguresViewModels.Add(new FigureViewModel(temp[i].X, temp[i].Y, temp[i].Width, temp[i].Height, temp[i].Data, temp[i].Type,false,temp[i].Name));
+                            //  FiguresViewModels.Add(new FigureViewModel(temp[i].X, temp[i].Y, temp[i].Width, temp[i].Height, temp[i].Data, temp[i].Type,false,temp[i].Name));
                             FiguresViewModels.Add(new FigureViewModel(temp[i]));
                         }
-                        
+
                         reader.Close();
                     }
 
@@ -318,7 +305,6 @@ namespace Uml_Creator.ViewModel
             FileName = gemfildialog.FileName;
             worker.DoWork += worker_Save;
             worker.RunWorkerAsync();
-
         }
 
         private void worker_Save(object sender, DoWorkEventArgs e)
@@ -342,7 +328,7 @@ namespace Uml_Creator.ViewModel
             }
             catch (Exception ex)
             {
-                   // StatusText = ex.ToString();
+                // StatusText = ex.ToString();
                 Console.WriteLine(ex.ToString());
                 //Log exception here
             }
@@ -359,25 +345,6 @@ namespace Uml_Creator.ViewModel
 
             RenderTargetBitmap rtb = new RenderTargetBitmap((int) canvas.RenderSize.Width,
                 (int) canvas.RenderSize.Height, 96d, 96d, PixelFormats.Default);
-                rtb.Render(canvas);
-
-                //var crop = new CroppedBitmap(rtb, new Int32Rect(0, 0, 1000, 1000));
-
-                BitmapEncoder pngEncoder = new PngBitmapEncoder();
-                pngEncoder.Frames.Add(BitmapFrame.Create(rtb));
-            using (var fs = File.OpenWrite(FileNamePic))
-                {
-                    pngEncoder.Save(fs);
-                }
-            //worker.DoWork += worker_Export;
-            //worker.RunWorkerAsync();
-            }
-
-       /* private void worker_Export(object sender, DoWorkEventArgs e)
-        {
-            Grid canvas = this.canvas;
-            RenderTargetBitmap rtb = new RenderTargetBitmap((int)canvas.RenderSize.Width,
-                                           (int)canvas.RenderSize.Height, 96d, 96d, PixelFormats.Default);
             rtb.Render(canvas);
 
             //var crop = new CroppedBitmap(rtb, new Int32Rect(0, 0, 1000, 1000));
@@ -385,10 +352,29 @@ namespace Uml_Creator.ViewModel
             BitmapEncoder pngEncoder = new PngBitmapEncoder();
             pngEncoder.Frames.Add(BitmapFrame.Create(rtb));
             using (var fs = File.OpenWrite(FileNamePic))
-        {
+            {
                 pngEncoder.Save(fs);
+            }
+            //worker.DoWork += worker_Export;
+            //worker.RunWorkerAsync();
         }
-        }*/
+
+        /* private void worker_Export(object sender, DoWorkEventArgs e)
+         {
+             Grid canvas = this.canvas;
+             RenderTargetBitmap rtb = new RenderTargetBitmap((int)canvas.RenderSize.Width,
+                                            (int)canvas.RenderSize.Height, 96d, 96d, PixelFormats.Default);
+             rtb.Render(canvas);
+ 
+             //var crop = new CroppedBitmap(rtb, new Int32Rect(0, 0, 1000, 1000));
+ 
+             BitmapEncoder pngEncoder = new PngBitmapEncoder();
+             pngEncoder.Frames.Add(BitmapFrame.Create(rtb));
+             using (var fs = File.OpenWrite(FileNamePic))
+         {
+                 pngEncoder.Save(fs);
+         }
+         }*/
 
 
         /*
