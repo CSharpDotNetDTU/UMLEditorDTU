@@ -119,7 +119,20 @@ namespace Uml_Creator.ViewModel
         }
         }
 
-        public bool IsAddingLineBtnPressed
+        public bool IsAddingSolidLineBtnPressed
+        {
+            get { return isAddingLineBtnPressed; }
+            set
+            {
+                Debug.WriteLine("im on");
+                isAddingLineBtnPressed = value;
+                if (!value)
+                    _firstShapeToConnect = null;
+                OnPropertyChanged(nameof(isAddingLineBtnPressed));
+            }
+        }
+
+        public bool IsAddingDashedLineBtnPressed
         {
             get { return isAddingLineBtnPressed; }
             set
@@ -145,11 +158,13 @@ namespace Uml_Creator.ViewModel
                 {
                     undoRedoController.DoExecute(new AddLineCommand(lines,
                         new LineViewModel(new Line(), _firstShapeToConnect, fig, ELine.Solid)));
-                    IsAddingLineBtnPressed = false;
+                        IsAddingSolidLineBtnPressed = false;
                 }
             }
         }
         }
+
+
 
 
         /// <summary>
