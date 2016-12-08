@@ -158,6 +158,7 @@ namespace Uml_Creator.ViewModel
 
         public FigureViewModel(FigureViewModel figure)
         {
+            Figure = new Figure();
             Figure.X = figure.X;
             Figure.Y = figure.Y;
             Figure.Width = figure.Width;
@@ -166,6 +167,8 @@ namespace Uml_Creator.ViewModel
             Figure.Type = figure.Type;
             Figure.IsSelected = false;
             Figure.Name = figure.Name;
+            Figure.AttributeCollection = figure.AttributeCollection;
+            Figure.MethodCollection = figure.MethodCollection;
         }
 
         public FigureViewModel()

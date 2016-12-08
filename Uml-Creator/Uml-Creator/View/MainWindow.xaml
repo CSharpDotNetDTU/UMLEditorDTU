@@ -7,10 +7,6 @@
         xmlns:vm="clr-namespace:Uml_Creator.ViewModel"
         xmlns:stolenStuff="clr-namespace:Uml_Creator.StolenStuff"
         xmlns:tvm="clr-namespace:Uml_Creator.ViewModel"
-
-        MouseDown="Window_MouseDown"
-        MouseUp="Window_MouseUp"
-        MouseMove="Window_MouseMove"
         mc:Ignorable="d"
         Title="UML-Creator" Height="350" Width="600.0">
     <Window.DataContext>
@@ -29,15 +25,16 @@
         <KeyBinding Command="{Binding BtnGemCommand}" Key="S" Modifiers="Control"/>
         <KeyBinding Command="{Binding UndoCommand}" Key="Z" Modifiers="Control"/>
         <KeyBinding Command="{Binding RedoCommand}" Key="Y" Modifiers="Control"/>
-        <KeyBinding Command="{Binding AddBoxCommand}" Key="N" Modifiers="Control"/>
+        <KeyBinding Command="{Binding BtnAddClass}" Key="N" Modifiers="Control"/>
         <KeyBinding Command="{Binding BtnCopy}" Key="C" Modifiers="Control"/>
         <KeyBinding Command="{Binding BtnPaste}" Key="V" Modifiers="Control"/>
         <KeyBinding Key="X" Modifiers="Control"/>
+        <KeyBinding Command="{Binding BtnExportCommand}" CommandParameter="{Binding ElementName=MainCanvas}" Key="E" Modifiers="Control"/>
         <KeyBinding Key="Enter" Modifiers="Control"/>
         <KeyBinding Key="A" Modifiers="Alt"/>
         <KeyBinding Key="O" Modifiers="Alt"/>
         <KeyBinding Key="C" Modifiers="Alt"/>
-        <KeyBinding Command="{Binding DeleteBoxCommand}" Key="Delete"/>
+        <KeyBinding Command="{Binding DeleteCommand}" Key="Delete"/>
     </Window.InputBindings>
 
 
@@ -45,18 +42,26 @@
     <DockPanel LastChildFill="True">
         <userControls:TopMenuBar DockPanel.Dock="Top" Margin="-5,0,5,0" />
         <userControls:ToolBarTray  DockPanel.Dock="Top" Height="24" Margin="0,0,0.2,0"/>
-        <Slider Width="100" DockPanel.Dock="Bottom" Value="1" Minimum="0.1" Maximum="2" Name="ZoomSlider"/>
+
+        <Slider Width="100" DockPanel.Dock="Bottom" Value="1" Minimum="0.1" Maximum="2" Name="ZoomSlider"></Slider>
+       
         <!--<userControls:StatusBar DockPanel.Dock="Bottom" Height="23" RenderTransformOrigin="0.5,0.5" HorizontalAlignment="Left" Width="464" SbMax="{Binding VmSbMax}"/>-->
         <!-- <userControls:SideDockPanel  DockPanel.Dock="Right" RenderTransformOrigin="0.5,0.5" Width="128" VerticalAlignment="Bottom"/>-->
 
         <userControls:Btns_AddClass_AddLine/>
-
+        <userControls:StatusBar DockPanel.Dock="Bottom"  /> 
 
         <Grid x:Name="MainCanvas">
-
-            <ListBox ItemsSource="{Binding FiguresViewModels}" 
+            <ItemsControl ItemsSource="{Binding lines}">
+                <ItemsControl.ItemsPanel>
+                    <ItemsPanelTemplate>
+                        <Canvas/>
+                    </ItemsPanelTemplate>
+                </ItemsControl.ItemsPanel>
+            </ItemsControl>
+            <ListBox ItemsSource="{Binding FigureViewModels}" 
                      x:Name="FigureListBox"
-                     SelectionMode="Extended" AllowDrop="True" Drop="FigureListBox_Drop">
+                     SelectionMode="Extended">
                 <ListBox.LayoutTransform>
                     <ScaleTransform
                         CenterX="0" CenterY="0"
@@ -80,7 +85,6 @@
                         Property="Canvas.Top"
                         Value="{Binding Y}"
                         />
-                        
                     </Style>
                 </ListBox.ItemContainerStyle>
                 
@@ -184,14 +188,8 @@
                     Opacity="0.5"                  
                 />
             </Canvas>
-            <ItemsControl ItemsSource="{Binding lines}">
-                <ItemsControl.ItemsPanel>
-                    <ItemsPanelTemplate>
-                        <Canvas/>
-                    </ItemsPanelTemplate>
-                </ItemsControl.ItemsPanel>
-            </ItemsControl>
 
+      
         </Grid>
 
 

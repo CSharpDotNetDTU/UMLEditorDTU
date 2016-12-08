@@ -27,19 +27,15 @@ namespace Uml_Creator.ViewModel
     public class MainViewModel : INotifyPropertyChanged
     {
 
-
-
         #region copy members
-
         public ObservableCollection<FigureViewModel> copyFigures { get; private set; }
-
         #endregion
 
         #region data members
 
 
+        private string _textBarText = "1234567890";
        
-
         public ObservableCollection<FigureViewModel> FiguresViewModels { get; private set; }
         
         public ObservableCollection<Line> Lines { get; private set; }
@@ -60,6 +56,20 @@ namespace Uml_Creator.ViewModel
             }
         }
 
+        private string _statusText ="Welcome to UML Editor";
+
+        public string StatusText
+        {
+            get { return _statusText; }
+            set
+            {
+                if (value != _statusText)
+                {
+                    _statusText = value;
+                    OnPropertyChanged("StatusText");
+                }
+            }
+        }
 
         public ICommand BtnCopy { get; }
         public ICommand BtnPaste { get; }
@@ -69,12 +79,16 @@ namespace Uml_Creator.ViewModel
         public ICommand UndoCommand { get; }
         public ICommand RedoCommand { get; }
         public ICommand AddCommand { get; }
-        
         public ICommand BtnAddClass { get; }
+        public ICommand DeleteCommand { get; }
         UndoRedoController undoRedoController = UndoRedoController.Instance;
         public ObservableCollection<LineViewModel> lines { get; }
         public bool isAddingLineBtnPressed;
         public FigureViewModel _firstShapeToConnect;
+        public string FileName;
+        public string FileNamePic;
+        BackgroundWorker worker = new BackgroundWorker();
+        public Grid canvas;
 
         public MainViewModel()
         {
@@ -107,9 +121,7 @@ namespace Uml_Creator.ViewModel
             BtnPaste = new RelayCommand(Paste_Click);
             UndoCommand = new RelayCommand(undoRedoController.Undo, undoRedoController.canUndo);
             RedoCommand = new RelayCommand(undoRedoController.Redo, undoRedoController.canRedo);
-            AddCommand = new RelayCommand(AddFigure);
             BtnAddClass = new RelayCommand(AddClass);
-
 
 
         }
@@ -151,11 +163,6 @@ namespace Uml_Creator.ViewModel
             }
         }
 
-        private void AddFigure()
-        {
-            undoRedoController.DoExecute(new AddBoxCommand(FiguresViewModels, new FigureViewModel(10.0, 80.0, 20.0, 30.0,
-                "Dette er en anden klasse, skriv noget andet tekst her!", EFigure.ClassSquare, false, "")));
-        }
 
         /// <summary>
         /// This method is used to take a copy of the selected objects on the canvas, that can be both lines and figures.
@@ -196,14 +203,16 @@ namespace Uml_Creator.ViewModel
                 
                     nrOfCopied++;
                 }
-                Debug.Print("Antal Objecter copieret:" + nrOfCopied);
-                Debug.Print("nr of objects total ---->"+FiguresViewModels.Count);
+                StatusText = "you have copied " + nrOfCopied + " objects";
+               // Debug.Print("Antal Objecter copieret:" + nrOfCopied);
+               // Debug.Print("nr of objects total ---->"+FiguresViewModels.Count);
                 //Write to status bar that x objects were copied to the canvas
             }
             else
             {
                 string text = "Nothing to copy in the copy list";
-                Debug.WriteLine(text);
+                StatusText = text;
+                //Debug.WriteLine(text);
                 //throw new NotImplementedException();
                 //No objects in copy list write to statusbar
             }
@@ -216,7 +225,8 @@ namespace Uml_Creator.ViewModel
             {
                 if (Figure.IsSelected)
                 {
-                    FiguresViewModels.Remove(Figure);
+                    undoRedoController.DoExecute(new DeleteFigureCommand(FiguresViewModels, Figure));
+                   // FiguresViewModels.Remove(Figure);
 
                 }
                 
@@ -225,8 +235,11 @@ namespace Uml_Creator.ViewModel
 
           private void AddClass()
         {
+            FigureViewModel newFigure = new FigureViewModel(0, 0, 10, 20, "data", EFigure.ClassSquare, false,"testClass");
             
-            undoRedoController.DoExecute(new AddBoxCommand(FiguresViewModels,new FigureViewModel()));
+            undoRedoController.DoExecute(new AddBoxCommand(FiguresViewModels, newFigure));
+            
+            //TextBar = "abekat";
         }
 
         private void Load_Click()
@@ -234,10 +247,11 @@ namespace Uml_Creator.ViewModel
             OpenFileDialog loadfildialog = new OpenFileDialog();
             loadfildialog.Filter = "XML files (*.xml)|*.xml";
             if (loadfildialog.ShowDialog() != DialogResult.OK) return;
+            FileName = loadfildialog.FileName;
             try
             {
                 XmlDocument xmlDocument = new XmlDocument();
-                xmlDocument.Load(loadfildialog.FileName);
+                xmlDocument.Load(FileName);
                 string xmlString = xmlDocument.OuterXml;
 
                 using (StringReader read = new StringReader(xmlString))
@@ -252,10 +266,9 @@ namespace Uml_Creator.ViewModel
                         for (int i = 0; i < temp.Count; i++)
                         {
                           //  FiguresViewModels.Add(new FigureViewModel(temp[i].X, temp[i].Y, temp[i].Width, temp[i].Height, temp[i].Data, temp[i].Type,false,temp[i].Name));
-                            FiguresViewModels.Add( new FigureViewModel(temp[i]));
+                            FiguresViewModels.Add(new FigureViewModel(temp[i]));
                         }
                         
-                        Console.WriteLine(FiguresViewModels[1].Data);
                         reader.Close();
                     }
 
@@ -264,11 +277,10 @@ namespace Uml_Creator.ViewModel
             }
             catch (Exception ex)
             {
+                StatusText = ex.ToString();
                 Console.WriteLine(ex.ToString());
                 //Log exception here
             }
-            //convert fra xml til diagram via serialization
-            //  textBox1.Text = File.ReadAllText(loadfildialog.FileName);
         }
 
         private void Save_Click()
@@ -276,6 +288,13 @@ namespace Uml_Creator.ViewModel
             SaveFileDialog gemfildialog = new SaveFileDialog();
             gemfildialog.Filter = "XML files (*.xml)|*.xml";
             if (gemfildialog.ShowDialog() != DialogResult.OK) return;
+            FileName = gemfildialog.FileName;
+            worker.DoWork += worker_Save;
+            worker.RunWorkerAsync();
+        }
+
+        private void worker_Save(object sender, DoWorkEventArgs e)
+        {
             var serialObject = FiguresViewModels; //skal importere diagrammets data
 
             if (serialObject == null) return;
@@ -288,26 +307,27 @@ namespace Uml_Creator.ViewModel
                     serializer.Serialize(stream, serialObject);
                     stream.Position = 0;
                     xmlDocument.Load(stream);
-                    xmlDocument.Save(gemfildialog.FileName);
+                    xmlDocument.Save(FileName);
                     stream.Close();
                 }
             }
             catch (Exception ex)
             {
+                    StatusText = ex.ToString();
                 Console.WriteLine(ex.ToString());
                 //Log exception here
             }
-
         }
 
         private void Export_Click(Grid canvas)
         {
-            
+            this.canvas = canvas;
             SaveFileDialog exportfildialog = new SaveFileDialog();
             exportfildialog.Filter = "PNG files (*.png)|*.png";
 
-            if (exportfildialog.ShowDialog() == DialogResult.OK)
-            {
+            if (!(exportfildialog.ShowDialog() == DialogResult.OK)) return;
+            FileNamePic = exportfildialog.FileName;
+
                 RenderTargetBitmap rtb = new RenderTargetBitmap((int)canvas.RenderSize.Width,
                                             (int)canvas.RenderSize.Height, 96d, 96d, PixelFormats.Default);
                 rtb.Render(canvas);
@@ -316,18 +336,30 @@ namespace Uml_Creator.ViewModel
 
                 BitmapEncoder pngEncoder = new PngBitmapEncoder();
                 pngEncoder.Frames.Add(BitmapFrame.Create(rtb));
-
-                using (var fs = File.OpenWrite(exportfildialog.FileName))
+            using (var fs = File.OpenWrite(FileNamePic))
                 {
                     pngEncoder.Save(fs);
                 }
-            }
+            //worker.DoWork += worker_Export;
+            //worker.RunWorkerAsync();
             }
 
-        public void AddFigure(string dataString, Point p)
+       /* private void worker_Export(object sender, DoWorkEventArgs e)
         {
-            FiguresViewModels.Add(new FigureViewModel(p.X, p.Y, 200, 200, dataString, EFigure.ClassSquare, false,"className"));
+            Grid canvas = this.canvas;
+            RenderTargetBitmap rtb = new RenderTargetBitmap((int)canvas.RenderSize.Width,
+                                           (int)canvas.RenderSize.Height, 96d, 96d, PixelFormats.Default);
+            rtb.Render(canvas);
+
+            //var crop = new CroppedBitmap(rtb, new Int32Rect(0, 0, 1000, 1000));
+
+            BitmapEncoder pngEncoder = new PngBitmapEncoder();
+            pngEncoder.Frames.Add(BitmapFrame.Create(rtb));
+            using (var fs = File.OpenWrite(FileNamePic))
+        {
+                pngEncoder.Save(fs);
         }
+        }*/
 
 
         /*
