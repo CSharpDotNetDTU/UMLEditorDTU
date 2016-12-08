@@ -6,6 +6,7 @@
         <Setter Property="Y1" Value="{Binding FromPoint.Y}"/>
         <Setter Property="X2" Value="{Binding ToPoint.X}"/>
         <Setter Property="Y2" Value="{Binding ToPoint.Y}"/>
+        <Setter Property="StrokeDashArray" Value="{Binding StrokeStyle}"/>
         <Setter Property="StrokeThickness" Value="1"/>
         <Setter Property="Stroke" Value="Black"/>
     </Style>
