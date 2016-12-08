@@ -10,11 +10,11 @@ namespace Uml_Creator.UndoRedo.Commands
 {
     class EditAttributeName : IUndoCommand
     {
-        private AttributeModel attribute;
-        public string oldName;
-        public string newName;
+        private ClassContent attribute;
+        private string oldName;
+        private string newName;
 
-        public EditAttributeName(AttributeModel attribute, string oldName, string newName)
+        public EditAttributeName(ClassContent attribute, string oldName, string newName)
         {
             this.attribute = attribute;
             this.oldName = oldName;
@@ -23,12 +23,12 @@ namespace Uml_Creator.UndoRedo.Commands
 
         public void Execute()
         {
-            attribute.Name = newName;
+            attribute.setNewName(newName); 
         }
 
         public void Unexecute()
         {
-            attribute.Name = oldName;
+            attribute.setNewName(oldName);
         }
     }
 }

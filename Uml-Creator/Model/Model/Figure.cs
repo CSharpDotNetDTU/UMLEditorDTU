@@ -1,15 +1,11 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using System.Linq;
 using System.Runtime.Serialization;
-using System.Text;
-using System.Threading.Tasks;
+using Uml_Creator.Model;
 using Uml_Creator.Model.ENUM;
 using Uml_Creator.Model.Interfaces;
-using Uml_Creator;
 
-namespace Uml_Creator.Model
+namespace Model.Model
 {
     public class Figure :IFigure
     {
@@ -24,8 +20,8 @@ namespace Uml_Creator.Model
         public string Name { get; set; }
         public bool IsSelected { get; set; }
 
-        public ObservableCollection<MethodModel> MethodCollection {get; set; } = new ObservableCollection<MethodModel>();
-        public ObservableCollection<AttributeModel> AttributeCollection { get; set; } = new ObservableCollection<AttributeModel>();
+        public ObservableCollection<Object> MethodCollection {get; set; } = new ObservableCollection<Object>();
+        public ObservableCollection<Object> AttributeCollection { get; set; } = new ObservableCollection<Object>();
 
 
         public void GetObjectData(SerializationInfo info, StreamingContext context)

@@ -105,6 +105,7 @@
     <Compile Include="UndoRedo\Commands\PasteClassCommand.cs" />
     <Compile Include="UndoRedo\IUndoCommand.cs" />
     <Compile Include="UndoRedo\UndoRedoController.cs" />
+    <Compile Include="ViewModel\ClassContent.cs" />
     <Compile Include="ViewModel\Class\ClassViewModel.cs" />
     <Compile Include="ViewModel\Class\UmlControl.cs" />
     <Compile Include="View\UserControls\Btns_AddClass_AddLine.xaml.cs">

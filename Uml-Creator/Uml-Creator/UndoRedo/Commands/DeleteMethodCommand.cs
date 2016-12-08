@@ -11,9 +11,9 @@ namespace Uml_Creator.UndoRedo.Commands
     class DeleteMethodCommand : IUndoCommand
     {
         private FigureViewModel box;
-        private MethodModel method;
+        private ClassContent method;
 
-        public DeleteMethodCommand(FigureViewModel box, MethodModel method)
+        public DeleteMethodCommand(FigureViewModel box, ClassContent method)
         {
             this.box = box;
             this.method = method;

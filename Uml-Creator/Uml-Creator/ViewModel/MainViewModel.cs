@@ -16,6 +16,7 @@ using System.Windows.Media.Imaging;
 using System.Windows.Controls;
 using System.Windows.Interactivity;
 using System.Windows.Media;
+using Model.Model;
 using Uml_Creator.UndoRedo;
 using Uml_Creator.UndoRedo.Commands;
 
@@ -33,15 +34,15 @@ namespace Uml_Creator.ViewModel
         #region data members
 
         private string _textBarText = "1234567890";
-
+       
         public ObservableCollection<FigureViewModel> FiguresViewModels { get; private set; }
-
+        
         public ObservableCollection<Line> Lines { get; private set; }
 
         private string filename;
         private double _x;
         private object _content;
-
+       
         #endregion data members
 
         public object Content
@@ -90,21 +91,21 @@ namespace Uml_Creator.ViewModel
 
         public MainViewModel()
         {
-            Content = new Gem_Load();
+             Content = new Gem_Load();
 
             copyFigures = new ObservableCollection<FigureViewModel>();
-
+          
             FiguresViewModels = new ObservableCollection<FigureViewModel>
             {
                 //new FigureViewModel() {20.0,20.0,50.0,60.0,"lars",EFigure.ClassSquare},
                
-                //    new FigureViewModel(0.0,0.0,50.0,20.0,"Dette er en klasse her skriver jeg min tekst!",EFigure.ClassSquare,false),
+             //    new FigureViewModel(0.0,0.0,50.0,20.0,"Dette er en klasse her skriver jeg min tekst!",EFigure.ClassSquare,false),
 
-                //  new FigureViewModel(30.0,80.0,20.0,20.0,"Dette er en anden klasse, skriv noget andet tekst her!",EFigure.ClassSquare,false)
+               //  new FigureViewModel(30.0,80.0,20.0,20.0,"Dette er en anden klasse, skriv noget andet tekst her!",EFigure.ClassSquare,false)
             };
 
-
-            //  lines = new ObservableCollection<LineViewModel>
+          
+          //  lines = new ObservableCollection<LineViewModel>
             //{
             //    new LineViewModel(new Line(), FiguresViewModels[0], FiguresViewModels[1], ELine.Solid)
             //};
@@ -122,9 +123,9 @@ namespace Uml_Creator.ViewModel
 
         private void ExecuteRemoveMethod()
         {
-            //   MethodsCollection.Remove(SelectedMethod);
+        //   MethodsCollection.Remove(SelectedMethod);
         }
-
+      
 
         public bool IsAddingLineBtnPressed
         {
@@ -165,12 +166,12 @@ namespace Uml_Creator.ViewModel
         private void Copy_Click()
         {
             copyFigures.Clear();
-            foreach (FigureViewModel Figure in FigureViewModels)
+            foreach (FigureViewModel Figure in FiguresViewModels)
             {
                 if (Figure.IsSelected)
                 {
                     //We create a new instance to make sure we get a new object, and so it dosent have the same FigureNr, also its added a little ofset from the original models
-
+                    
                     copyFigures.Add(Figure);
                 }
             }
@@ -186,19 +187,19 @@ namespace Uml_Creator.ViewModel
             {
                 int nrOfCopied = 0;
 
-
+            
                 foreach (FigureViewModel figure in copyFigures)
                 {
                     double offset = 20.0;
                     FigureViewModel newfigure = new FigureViewModel(figure.X + offset, figure.Y + offset, figure.Width,
                         figure.Height, figure.Data, figure.Type, false, figure.Name);
                     undoRedoController.DoExecute(new AddBoxCommand(FiguresViewModels, newfigure));
-
+                
                     nrOfCopied++;
                 }
                 StatusText = "you have copied " + nrOfCopied + " objects";
-                // Debug.Print("Antal Objecter copieret:" + nrOfCopied);
-                // Debug.Print("nr of objects total ---->"+FiguresViewModels.Count);
+               // Debug.Print("Antal Objecter copieret:" + nrOfCopied);
+               // Debug.Print("nr of objects total ---->"+FiguresViewModels.Count);
                 //Write to status bar that x objects were copied to the canvas
             }
             else
@@ -213,23 +214,23 @@ namespace Uml_Creator.ViewModel
 
         private void Delete_Click()
         {
-            foreach (FigureViewModel Figure in FigureViewModels.Reverse())
+            foreach (FigureViewModel Figure in FiguresViewModels.Reverse())
             {
                 if (Figure.IsSelected)
                 {
                     undoRedoController.DoExecute(new DeleteFigureCommand(FiguresViewModels, Figure));
-                    // FiguresViewModels.Remove(Figure);
+                   // FiguresViewModels.Remove(Figure);
                 }
             }
         }
 
-        private void AddClass()
+          private void AddClass()
         {
             FigureViewModel newFigure = new FigureViewModel(0, 0, 10, 20, "data", EFigure.ClassSquare, false,
                 "testClass");
 
             undoRedoController.DoExecute(new AddBoxCommand(FiguresViewModels, newFigure));
-
+            
             //TextBar = "abekat";
         }
 
@@ -257,10 +258,10 @@ namespace Uml_Creator.ViewModel
                         FiguresViewModels.Clear();
                         for (int i = 0; i < temp.Count; i++)
                         {
-                            //  FiguresViewModels.Add(new FigureViewModel(temp[i].X, temp[i].Y, temp[i].Width, temp[i].Height, temp[i].Data, temp[i].Type,false,temp[i].Name));
+                          //  FiguresViewModels.Add(new FigureViewModel(temp[i].X, temp[i].Y, temp[i].Width, temp[i].Height, temp[i].Data, temp[i].Type,false,temp[i].Name));
                             FiguresViewModels.Add(new FigureViewModel(temp[i]));
                         }
-
+                        
                         reader.Close();
                     }
 
@@ -293,29 +294,29 @@ namespace Uml_Creator.ViewModel
         {
             var serialObject = FiguresViewModels; //skal importere diagrammets data
 
-            if (serialObject == null) return;
-            try
-            {
-                XmlDocument xmlDocument = new XmlDocument();
-                XmlSerializer serializer = new XmlSerializer(serialObject.GetType());
-                using (MemoryStream stream = new MemoryStream())
+                if (serialObject == null) return;
+                try
                 {
-                    serializer.Serialize(stream, serialObject);
-                    stream.Position = 0;
-                    xmlDocument.Load(stream);
+                    XmlDocument xmlDocument = new XmlDocument();
+                    XmlSerializer serializer = new XmlSerializer(serialObject.GetType());
+                    using (MemoryStream stream = new MemoryStream())
+                    {
+                        serializer.Serialize(stream, serialObject);
+                        stream.Position = 0;
+                        xmlDocument.Load(stream);
                     xmlDocument.Save(FileName);
-                    stream.Close();
+                        stream.Close();
                     StatusText = "The document has been saved.";
+                    }
+                }
+                catch (Exception ex)
+                {
+                    StatusText = ex.ToString();
+                    Console.WriteLine(ex.ToString());
+                    //Log exception here
                 }
             }
-            catch (Exception ex)
-            {
-                StatusText = ex.ToString();
-                Console.WriteLine(ex.ToString());
-                //Log exception here
-            }
-        }
-
+        
         private void Export_Click(Grid canvas)
         {
             this.canvas = canvas;
@@ -327,6 +328,25 @@ namespace Uml_Creator.ViewModel
 
             RenderTargetBitmap rtb = new RenderTargetBitmap((int) canvas.RenderSize.Width,
                 (int) canvas.RenderSize.Height, 96d, 96d, PixelFormats.Default);
+                rtb.Render(canvas);
+
+                //var crop = new CroppedBitmap(rtb, new Int32Rect(0, 0, 1000, 1000));
+
+                BitmapEncoder pngEncoder = new PngBitmapEncoder();
+                pngEncoder.Frames.Add(BitmapFrame.Create(rtb));
+            using (var fs = File.OpenWrite(FileNamePic))
+                {
+                    pngEncoder.Save(fs);
+                }
+            //worker.DoWork += worker_Export;
+            //worker.RunWorkerAsync();
+            }
+
+       /* private void worker_Export(object sender, DoWorkEventArgs e)
+        {
+            Grid canvas = this.canvas;
+            RenderTargetBitmap rtb = new RenderTargetBitmap((int)canvas.RenderSize.Width,
+                                           (int)canvas.RenderSize.Height, 96d, 96d, PixelFormats.Default);
             rtb.Render(canvas);
 
             //var crop = new CroppedBitmap(rtb, new Int32Rect(0, 0, 1000, 1000));
@@ -337,44 +357,21 @@ namespace Uml_Creator.ViewModel
             {
                 pngEncoder.Save(fs);
             }
-            //worker.DoWork += worker_Export;
-            //worker.RunWorkerAsync();
-        }
+        }*/
 
-        /* private void worker_Export(object sender, DoWorkEventArgs e)
-         {
-             Grid canvas = this.canvas;
-             RenderTargetBitmap rtb = new RenderTargetBitmap((int)canvas.RenderSize.Width,
-                                            (int)canvas.RenderSize.Height, 96d, 96d, PixelFormats.Default);
-             rtb.Render(canvas);
- 
-             //var crop = new CroppedBitmap(rtb, new Int32Rect(0, 0, 1000, 1000));
- 
-             BitmapEncoder pngEncoder = new PngBitmapEncoder();
-             pngEncoder.Frames.Add(BitmapFrame.Create(rtb));
-             using (var fs = File.OpenWrite(FileNamePic))
-             {
-                 pngEncoder.Save(fs);
-             }
-         }*/
 
-        public ObservableCollection<FigureViewModel> FigureViewModels
+        /*
+        public string StatusBarTextProperty
         {
-            get { return FiguresViewModels; }
+            get { return (string) GetValue(StatusBarTextPropertyProperty); }
+            set { SetValue(StatusBarTextPropertyProperty, value); }
         }
-
-/*
-                                                                                public string StatusBarTextProperty
-                                                                                {
-                                                                                    get { return (string) GetValue(StatusBarTextPropertyProperty); }
-                                                                                    set { SetValue(StatusBarTextPropertyProperty, value); }
-                                                                                }
-                                                                                
-                                                                                private void SetValue(DependencyProperty statusBarTextPropertyProperty, string value)
-                                                                                {
-                                                                                    statusBarTextPropertyProperty.Name = value;
-                                                                                }
-                                                                                */
+        
+        private void SetValue(DependencyProperty statusBarTextPropertyProperty, string value)
+        {
+            statusBarTextPropertyProperty.Name = value;
+        }
+        */
 
         private string GetValue(DependencyProperty statusBarTextPropertyProperty)
         {

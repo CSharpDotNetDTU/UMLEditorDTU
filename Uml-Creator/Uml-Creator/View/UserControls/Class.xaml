@@ -29,14 +29,14 @@
                 </i:EventTrigger>
             </i:Interaction.Triggers>
        
-            <Grid x:Name="ClassGrid" Background="Orange">
+            <Grid x:Name="ClassGrid" Background="Orange" SizeChanged="ClassGrid_OnSizeChanged">
             
                 
                 
          
-        <Grid.RowDefinitions>
-            <RowDefinition Height="20"/>
-            <RowDefinition Height="Auto"/>
+        <Grid.RowDefinitions >
+            <RowDefinition  Height="20"  />
+            <RowDefinition  Height="Auto"/>
             <RowDefinition Height="Auto"/>
         </Grid.RowDefinitions>
         <Grid.ColumnDefinitions>
@@ -55,7 +55,7 @@
                                     IsEnabled="{Binding SelectedMethod, Converter={StaticResource IsNotNullConverter}}"
                                     />-->
 
-        <Expander Grid.Column="0" Grid.Row="1" Grid.ColumnSpan="3" >
+        <Expander Grid.Column="0" Grid.Row="1" Grid.ColumnSpan="3"  >
             <Expander.HeaderTemplate>
                     <DataTemplate >
                     <StackPanel FlowDirection="RightToLeft" Orientation="Horizontal">
@@ -68,8 +68,8 @@
             </Expander.HeaderTemplate>
             <ListBox ItemsSource="{Binding Path=MethodCollection}" SelectedItem="{Binding SelectedMethod}">
                 <ListBox.ItemTemplate>
-                    <DataTemplate>
-                        <TextBox Background="LightSteelBlue" Text="{Binding Name}"/>
+                    <DataTemplate  DataType="{x:Type viewModel:ClassContent}">
+                        <TextBox Background="LightSteelBlue" Text="{Binding ContextName}"/>
                     </DataTemplate>
                 </ListBox.ItemTemplate>
             </ListBox>
@@ -90,8 +90,8 @@
             </Expander.HeaderTemplate>
                 <ListBox ItemsSource="{Binding Path=AttributeCollection}" SelectedItem="{Binding SelectedAttribute}" >
                 <ListBox.ItemTemplate>
-                    <DataTemplate>
-                            <TextBox Background="LightSteelBlue" Text="{Binding .}"/>
+                    <DataTemplate  DataType="{x:Type viewModel:ClassContent}">
+                            <TextBox Background="LightSteelBlue" Text="{Binding ContextName}"/>
                     </DataTemplate>
                 </ListBox.ItemTemplate>
             </ListBox>

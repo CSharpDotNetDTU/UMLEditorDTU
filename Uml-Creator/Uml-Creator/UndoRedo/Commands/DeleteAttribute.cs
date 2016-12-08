@@ -13,9 +13,9 @@ namespace Uml_Creator.UndoRedo.Commands
     class DeleteAttribute : IUndoCommand
     {
         private FigureViewModel box;
-        private AttributeModel attribute;
+        private ClassContent attribute;
 
-        public DeleteAttribute(FigureViewModel box, AttributeModel attribute)
+        public DeleteAttribute(FigureViewModel box, ClassContent attribute)
         {
             this.box = box;
             this.attribute = attribute;

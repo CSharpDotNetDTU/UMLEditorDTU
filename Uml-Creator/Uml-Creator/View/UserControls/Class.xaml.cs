@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -12,6 +13,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using Uml_Creator.ViewModel;
 
 namespace Uml_Creator.View.UserControls
 {
@@ -20,9 +22,48 @@ namespace Uml_Creator.View.UserControls
     /// </summary>
     public partial class Class : UserControl
     {
+        private MainViewModel vm;
+
         public Class()
         {
             InitializeComponent();
+            vm = MainWindow.vm;
+        }
+
+        private void ClassGrid_OnSizeChanged(object sender, SizeChangedEventArgs e)
+        {
+            Grid mainGrid = (Grid) sender;
+
+            double height = mainGrid.ActualHeight;
+            double width = mainGrid.ActualWidth;
+
+
+
+
+            var connectedFigure = (FigureViewModel) mainGrid.DataContext;
+
+           var sird = vm.FiguresViewModels;
+            var sird1 = vm.FiguresViewModels[0];
+            var srid2 = vm.FiguresViewModels[0].FigureNr;
+
+
+            try
+            {
+                vm.FiguresViewModels[connectedFigure.FigureNr].Height = height;
+                vm.FiguresViewModels[connectedFigure.FigureNr].Width = width;
+            }
+            catch (Exception)
+            {
+                
+               
+            }
+
+
+
+
+
+
+
         }
     }
 }
