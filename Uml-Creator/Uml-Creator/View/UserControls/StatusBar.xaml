@@ -9,9 +9,6 @@
 
              >
     <Grid Name="StatusbarGrid">
-
-                <TextBox x:Name="Box" Text="{Binding ElementName=StatusbarGrid,Path=DataContext.TextBar}"></TextBox>
- 
-            
+        <TextBlock x:Name="textBox" Background="White" TextWrapping="Wrap" Text="{Binding Path=DataContext.StatusText, ElementName=StatusbarGrid}"/>
     </Grid>
 </UserControl>

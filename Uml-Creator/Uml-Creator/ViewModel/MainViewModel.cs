@@ -210,7 +210,8 @@ namespace Uml_Creator.ViewModel
             else
             {
                 string text = "Nothing to copy in the copy list";
-                Debug.WriteLine(text);
+                StatusText = text;
+                //Debug.WriteLine(text);
                 //throw new NotImplementedException();
                 //No objects in copy list write to statusbar
             }
@@ -356,16 +357,6 @@ namespace Uml_Creator.ViewModel
                 pngEncoder.Save(fs);
             }
         }*/
-
-        private string TextBar
-        {
-            get { return _textBarText; }
-            set
-            {
-                _textBarText = value;
-                OnPropertyChanged("TextBar");
-            }
-        }
 
         public ObservableCollection<FigureViewModel> FigureViewModels
         {

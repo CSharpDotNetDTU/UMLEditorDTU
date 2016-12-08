@@ -49,7 +49,7 @@
         <!-- <userControls:SideDockPanel  DockPanel.Dock="Right" RenderTransformOrigin="0.5,0.5" Width="128" VerticalAlignment="Bottom"/>-->
 
         <userControls:Btns_AddClass_AddLine/>
-        <userControls:StatusBar DockPanel.Dock="Bottom"  />
+        <userControls:StatusBar DockPanel.Dock="Bottom"  /> 
 
         <Grid x:Name="MainCanvas">
             <ItemsControl ItemsSource="{Binding lines}">
@@ -189,7 +189,7 @@
                 />
             </Canvas>
 
-        <userControls:Status/>
+      
         </Grid>
 
 
