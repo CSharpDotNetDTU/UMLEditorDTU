@@ -21,18 +21,17 @@ using Uml_Creator.UndoRedo;
 using Uml_Creator.UndoRedo.Commands;
 
 
-
 namespace Uml_Creator.ViewModel
 {
     public class MainViewModel : INotifyPropertyChanged
     {
-
         #region copy members
+
         public ObservableCollection<FigureViewModel> copyFigures { get; private set; }
+
         #endregion
 
         #region data members
-
 
         private string _textBarText = "1234567890";
        
@@ -56,7 +55,7 @@ namespace Uml_Creator.ViewModel
             }
         }
 
-        private string _statusText ="Welcome to UML Editor";
+        private string _statusText = "Welcome to UML Editor";
 
         public string StatusText
         {
@@ -92,14 +91,12 @@ namespace Uml_Creator.ViewModel
 
         public MainViewModel()
         {
-            
              Content = new Gem_Load();
 
             copyFigures = new ObservableCollection<FigureViewModel>();
           
             FiguresViewModels = new ObservableCollection<FigureViewModel>
             {
-               
                 //new FigureViewModel() {20.0,20.0,50.0,60.0,"lars",EFigure.ClassSquare},
                
              //    new FigureViewModel(0.0,0.0,50.0,20.0,"Dette er en klasse her skriver jeg min tekst!",EFigure.ClassSquare,false),
@@ -108,11 +105,11 @@ namespace Uml_Creator.ViewModel
             };
 
           
-
           //  lines = new ObservableCollection<LineViewModel>
             //{
             //    new LineViewModel(new Line(), FiguresViewModels[0], FiguresViewModels[1], ELine.Solid)
             //};
+
 
             BtnLoadCommand = new RelayCommand(Load_Click);
             BtnGemCommand = new RelayCommand(Save_Click);
@@ -122,8 +119,6 @@ namespace Uml_Creator.ViewModel
             UndoCommand = new RelayCommand(undoRedoController.Undo, undoRedoController.canUndo);
             RedoCommand = new RelayCommand(undoRedoController.Redo, undoRedoController.canRedo);
             BtnAddClass = new RelayCommand(AddClass);
-
-
         }
 
         private void ExecuteRemoveMethod()
@@ -143,10 +138,10 @@ namespace Uml_Creator.ViewModel
                 OnPropertyChanged(nameof(isAddingLineBtnPressed));
                 AddLineBetweenShapes.RaiseCanExecuteChanged();
             }
-
         }
 
-        public RelayCommand<FigureViewModel> AddLineBetweenShapes => new RelayCommand<FigureViewModel>(OnAddLineBetweenShapes, lit => IsAddingLineBtnPressed);
+        public RelayCommand<FigureViewModel> AddLineBetweenShapes
+            => new RelayCommand<FigureViewModel>(OnAddLineBetweenShapes, lit => IsAddingLineBtnPressed);
 
         public void OnAddLineBetweenShapes(FigureViewModel fig)
         {
@@ -173,7 +168,6 @@ namespace Uml_Creator.ViewModel
             copyFigures.Clear();
             foreach (FigureViewModel Figure in FiguresViewModels)
             {
-
                 if (Figure.IsSelected)
                 {
                     //We create a new instance to make sure we get a new object, and so it dosent have the same FigureNr, also its added a little ofset from the original models
@@ -189,7 +183,6 @@ namespace Uml_Creator.ViewModel
         /// </summary>
         private void Paste_Click()
         {
-
             if (copyFigures.Count > 0)
             {
                 int nrOfCopied = 0;
@@ -198,8 +191,9 @@ namespace Uml_Creator.ViewModel
                 foreach (FigureViewModel figure in copyFigures)
                 {
                     double offset = 20.0;
-                    FigureViewModel newfigure = new FigureViewModel(figure.X + offset, figure.Y + offset, figure.Width, figure.Height, figure.Data, figure.Type, false, figure.Name);
-                    undoRedoController.DoExecute(new AddBoxCommand(FiguresViewModels,newfigure));
+                    FigureViewModel newfigure = new FigureViewModel(figure.X + offset, figure.Y + offset, figure.Width,
+                        figure.Height, figure.Data, figure.Type, false, figure.Name);
+                    undoRedoController.DoExecute(new AddBoxCommand(FiguresViewModels, newfigure));
                 
                     nrOfCopied++;
                 }
@@ -216,7 +210,6 @@ namespace Uml_Creator.ViewModel
                 //throw new NotImplementedException();
                 //No objects in copy list write to statusbar
             }
-            
         }
 
         private void Delete_Click()
@@ -227,9 +220,7 @@ namespace Uml_Creator.ViewModel
                 {
                     undoRedoController.DoExecute(new DeleteFigureCommand(FiguresViewModels, Figure));
                    // FiguresViewModels.Remove(Figure);
-
                 }
-                
             }
         }
 
@@ -257,11 +248,12 @@ namespace Uml_Creator.ViewModel
                 using (StringReader read = new StringReader(xmlString))
                 {
                     ObservableCollection<FigureViewModel> temp;
-                    Type outType = typeof(ObservableCollection<FigureViewModel>); //skal være samme slags objekter som diagrammet
+                    Type outType = typeof(ObservableCollection<FigureViewModel>);
+                        //skal være samme slags objekter som diagrammet
                     XmlSerializer serializer = new XmlSerializer(outType);
                     using (XmlReader reader = new XmlTextReader(read))
                     {
-                        temp = (ObservableCollection<FigureViewModel>)serializer.Deserialize(reader);
+                        temp = (ObservableCollection<FigureViewModel>) serializer.Deserialize(reader);
                         FiguresViewModels.Clear();
                         for (int i = 0; i < temp.Count; i++)
                         {
@@ -273,6 +265,7 @@ namespace Uml_Creator.ViewModel
                     }
 
                     read.Close();
+                    StatusText = "The file has been loaded";
                 }
             }
             catch (Exception ex)
@@ -285,12 +278,15 @@ namespace Uml_Creator.ViewModel
 
         private void Save_Click()
         {
+            StatusText = "Saving your work now";
+
             SaveFileDialog gemfildialog = new SaveFileDialog();
             gemfildialog.Filter = "XML files (*.xml)|*.xml";
             if (gemfildialog.ShowDialog() != DialogResult.OK) return;
             FileName = gemfildialog.FileName;
             worker.DoWork += worker_Save;
             worker.RunWorkerAsync();
+
         }
 
         private void worker_Save(object sender, DoWorkEventArgs e)
@@ -309,6 +305,7 @@ namespace Uml_Creator.ViewModel
                     xmlDocument.Load(stream);
                     xmlDocument.Save(FileName);
                     stream.Close();
+                    StatusText = "The document has been saved.";
                 }
             }
             catch (Exception ex)
@@ -328,8 +325,8 @@ namespace Uml_Creator.ViewModel
             if (!(exportfildialog.ShowDialog() == DialogResult.OK)) return;
             FileNamePic = exportfildialog.FileName;
 
-                RenderTargetBitmap rtb = new RenderTargetBitmap((int)canvas.RenderSize.Width,
-                                            (int)canvas.RenderSize.Height, 96d, 96d, PixelFormats.Default);
+            RenderTargetBitmap rtb = new RenderTargetBitmap((int) canvas.RenderSize.Width,
+                (int) canvas.RenderSize.Height, 96d, 96d, PixelFormats.Default);
                 rtb.Render(canvas);
 
                 //var crop = new CroppedBitmap(rtb, new Int32Rect(0, 0, 1000, 1000));
@@ -374,6 +371,7 @@ namespace Uml_Creator.ViewModel
             statusBarTextPropertyProperty.Name = value;
         }
         */
+
         private string GetValue(DependencyProperty statusBarTextPropertyProperty)
         {
             return statusBarTextPropertyProperty.Name;
@@ -387,10 +385,5 @@ namespace Uml_Creator.ViewModel
             if (PropertyChanged != null)
                 PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
         }
-
-      
     }
-
-
-  
 }
