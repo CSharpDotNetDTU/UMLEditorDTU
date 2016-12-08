@@ -121,6 +121,7 @@ namespace Uml_Creator.ViewModel
             UndoCommand = new RelayCommand(undoRedoController.Undo, undoRedoController.canUndo);
             RedoCommand = new RelayCommand(undoRedoController.Redo, undoRedoController.canRedo);
             BtnAddClass = new RelayCommand(AddClass);
+            DeleteCommand = new RelayCommand(Delete_Click);
         }
 
      
@@ -252,8 +253,10 @@ namespace Uml_Creator.ViewModel
             {
                 if (Figure.IsSelected)
                 {
+                    StatusText = "Deleted Objekt: " + Figure.Name;
                     undoRedoController.DoExecute(new DeleteFigureCommand(FiguresViewModels, Figure));
                    // FiguresViewModels.Remove(Figure);
+                  
                 }
             }
         }
