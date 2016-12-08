@@ -19,12 +19,6 @@ namespace Uml_Creator.ViewModel
         private MethodModel _method;
         private UndoRedoController undoRedo = UndoRedoController.Instance;
 
-
-        public ClassContent()
-        {
-            
-        }
-
         public string ContextName
         {
             get { return _name; }
