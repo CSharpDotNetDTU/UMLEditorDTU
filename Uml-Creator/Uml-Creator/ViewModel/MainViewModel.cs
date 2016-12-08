@@ -34,7 +34,7 @@ namespace Uml_Creator.ViewModel
 
 
         private string _textBarText = "1234567890";
-
+       
         public ObservableCollection<FigureViewModel> FiguresViewModels { get; private set; }
         
         public ObservableCollection<Line> Lines { get; private set; }
@@ -78,11 +78,17 @@ namespace Uml_Creator.ViewModel
         public ICommand BtnExportCommand { get; }
         public ICommand UndoCommand { get; }
         public ICommand RedoCommand { get; }
+        public ICommand AddCommand { get; }
         public ICommand BtnAddClass { get; }
+        public ICommand DeleteCommand { get; }
         UndoRedoController undoRedoController = UndoRedoController.Instance;
         public ObservableCollection<LineViewModel> lines { get; }
         public bool isAddingLineBtnPressed;
         public FigureViewModel _firstShapeToConnect;
+        public string FileName;
+        public string FileNamePic;
+        BackgroundWorker worker = new BackgroundWorker();
+        public Grid canvas;
 
         public MainViewModel()
         {
@@ -116,7 +122,6 @@ namespace Uml_Creator.ViewModel
             UndoCommand = new RelayCommand(undoRedoController.Undo, undoRedoController.canUndo);
             RedoCommand = new RelayCommand(undoRedoController.Redo, undoRedoController.canRedo);
             BtnAddClass = new RelayCommand(AddClass);
-
 
 
         }
@@ -231,7 +236,7 @@ namespace Uml_Creator.ViewModel
             FigureViewModel newFigure = new FigureViewModel(0, 0, 10, 20, "data", EFigure.ClassSquare, false,"testClass");
 
             undoRedoController.DoExecute(new AddBoxCommand(FiguresViewModels, newFigure));
-
+            
             //TextBar = "abekat";
         }
 
@@ -240,10 +245,11 @@ namespace Uml_Creator.ViewModel
             OpenFileDialog loadfildialog = new OpenFileDialog();
             loadfildialog.Filter = "XML files (*.xml)|*.xml";
             if (loadfildialog.ShowDialog() != DialogResult.OK) return;
+            FileName = loadfildialog.FileName;
             try
             {
                 XmlDocument xmlDocument = new XmlDocument();
-                xmlDocument.Load(loadfildialog.FileName);
+                xmlDocument.Load(FileName);
                 string xmlString = xmlDocument.OuterXml;
 
                 using (StringReader read = new StringReader(xmlString))
@@ -258,10 +264,9 @@ namespace Uml_Creator.ViewModel
                         for (int i = 0; i < temp.Count; i++)
                         {
                           //  FiguresViewModels.Add(new FigureViewModel(temp[i].X, temp[i].Y, temp[i].Width, temp[i].Height, temp[i].Data, temp[i].Type,false,temp[i].Name));
-                            FiguresViewModels.Add( new FigureViewModel(temp[i]));
+                            FiguresViewModels.Add(new FigureViewModel(temp[i]));
                         }
                         
-                        Console.WriteLine(FiguresViewModels[1].Data);
                         reader.Close();
                     }
 
@@ -273,8 +278,6 @@ namespace Uml_Creator.ViewModel
                 Console.WriteLine(ex.ToString());
                 //Log exception here
             }
-            //convert fra xml til diagram via serialization
-            //  textBox1.Text = File.ReadAllText(loadfildialog.FileName);
         }
 
         private void Save_Click()
@@ -282,7 +285,13 @@ namespace Uml_Creator.ViewModel
             SaveFileDialog gemfildialog = new SaveFileDialog();
             gemfildialog.Filter = "XML files (*.xml)|*.xml";
             if (gemfildialog.ShowDialog() != DialogResult.OK) return;
+            FileName = gemfildialog.FileName;
+            worker.DoWork += worker_Save;
+            worker.RunWorkerAsync();
+        }
 
+        private void worker_Save(object sender, DoWorkEventArgs e)
+        {
             var serialObject = FiguresViewModels; //skal importere diagrammets data
 
                 if (serialObject == null) return;
@@ -295,7 +304,7 @@ namespace Uml_Creator.ViewModel
                         serializer.Serialize(stream, serialObject);
                         stream.Position = 0;
                         xmlDocument.Load(stream);
-                        xmlDocument.Save(gemfildialog.FileName);
+                    xmlDocument.Save(FileName);
                         stream.Close();
                     }
                 }
@@ -306,15 +315,15 @@ namespace Uml_Creator.ViewModel
                 }
             }
         
-
         private void Export_Click(Grid canvas)
         {
-            
+            this.canvas = canvas;
             SaveFileDialog exportfildialog = new SaveFileDialog();
             exportfildialog.Filter = "PNG files (*.png)|*.png";
 
-            if (exportfildialog.ShowDialog() == DialogResult.OK)
-            {
+            if (!(exportfildialog.ShowDialog() == DialogResult.OK)) return;
+            FileNamePic = exportfildialog.FileName;
+
                 RenderTargetBitmap rtb = new RenderTargetBitmap((int)canvas.RenderSize.Width,
                                             (int)canvas.RenderSize.Height, 96d, 96d, PixelFormats.Default);
                 rtb.Render(canvas);
@@ -323,13 +332,30 @@ namespace Uml_Creator.ViewModel
 
                 BitmapEncoder pngEncoder = new PngBitmapEncoder();
                 pngEncoder.Frames.Add(BitmapFrame.Create(rtb));
-
-                using (var fs = File.OpenWrite(exportfildialog.FileName))
+            using (var fs = File.OpenWrite(FileNamePic))
                 {
                     pngEncoder.Save(fs);
                 }
+            //worker.DoWork += worker_Export;
+            //worker.RunWorkerAsync();
             }
+
+       /* private void worker_Export(object sender, DoWorkEventArgs e)
+        {
+            Grid canvas = this.canvas;
+            RenderTargetBitmap rtb = new RenderTargetBitmap((int)canvas.RenderSize.Width,
+                                           (int)canvas.RenderSize.Height, 96d, 96d, PixelFormats.Default);
+            rtb.Render(canvas);
+
+            //var crop = new CroppedBitmap(rtb, new Int32Rect(0, 0, 1000, 1000));
+
+            BitmapEncoder pngEncoder = new PngBitmapEncoder();
+            pngEncoder.Frames.Add(BitmapFrame.Create(rtb));
+            using (var fs = File.OpenWrite(FileNamePic))
+            {
+                pngEncoder.Save(fs);
             }
+        }*/
 
         private string TextBar
         {
