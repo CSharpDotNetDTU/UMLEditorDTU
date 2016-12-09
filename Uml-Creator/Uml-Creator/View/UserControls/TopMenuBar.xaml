@@ -5,15 +5,20 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:Uml_Creator.View.UserControls"
              mc:Ignorable="d" 
-             d:DesignHeight="300" d:DesignWidth="300">
-    <Grid>
+             d:DesignHeight="300" d:DesignWidth="300"
+             x:Name="TopMenuBarGrid">
+    
+    <Grid >
         <Menu DockPanel.Dock ="Top"  x:Name="MenuBarTop" >
             <!-- http://www.wpf-tutorial.com/common-interface-controls/menu-control/  Guide til menu -->
             <MenuItem Header ="File">
                 <MenuItem Header ="New" InputGestureText="Ctrl+N" Command="{Binding BtnNewCommand}"/>
                 <MenuItem Header ="Load" InputGestureText="Ctrl+O" Command="{Binding BtnLoadCommand}"/>
-                <MenuItem Header ="Save" InputGestureText="Ctrl+S" Command="{Binding BtnGemCommand}"/>
-                <MenuItem Header ="Export as PNG" InputGestureText="Ctrl+E" Command="{Binding BtnExportCommand}" CommandParameter="{Binding ElementName=MainCanvas}"/>
+                <MenuItem Header ="Save" InputGestureText="Ctrl+S" Command="{Binding BtnGemCommand}"/>'
+                <!--Virker ikke :( -->
+               <!-- <MenuItem Header ="Export as PNG" InputGestureText="Ctrl+E" Command="{Binding BtnExportCommand}" CommandParameter="{Binding ElementName=MainCanvas}"/>-->
+              <!--  <MenuItem Header ="Export as PNG" InputGestureText="Ctrl+E" Command="{Binding BtnExportCommand}" CommandParameter="{Binding ElementName=TopMenuBarGrid, Path=mainCanvasProp}"/> -->
+                <!--  <TextBlock x:Name="textBox" Background="White" TextWrapping="Wrap" Text="{Binding Path=DataContext.StatusText, ElementName=StatusbarGrid}"/> -->
                 <Separator />
                 <MenuItem Header ="Exit"></MenuItem>
             </MenuItem>

@@ -52,7 +52,13 @@
         <userControls:StatusBar DockPanel.Dock="Bottom"  /> 
 
         <Grid x:Name="MainCanvas">
-
+            <ItemsControl ItemsSource="{Binding lines}">
+                <ItemsControl.ItemsPanel>
+                    <ItemsPanelTemplate>
+                        <Canvas/>
+                    </ItemsPanelTemplate>
+                </ItemsControl.ItemsPanel>
+            </ItemsControl>
             <ListBox ItemsSource="{Binding FiguresViewModels}" 
                      x:Name="FigureListBox"
                      SelectionMode="Extended">
@@ -94,15 +100,7 @@
                 
                 
             </ListBox>
-
-            <ItemsControl ItemsSource="{Binding lines}">
-                <ItemsControl.ItemsPanel>
-                    <ItemsPanelTemplate>
-                        <Canvas/>
-                    </ItemsPanelTemplate>
-                </ItemsControl.ItemsPanel>
-            </ItemsControl>
-
+            
             <!--<ListBox
             x:Name="FigureListBox"
             ItemsSource="{Binding FigureViewModels}"
