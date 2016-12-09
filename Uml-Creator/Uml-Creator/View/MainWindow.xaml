@@ -37,7 +37,24 @@
         <KeyBinding Key="C" Modifiers="Alt"/>
         <KeyBinding Command="{Binding DeleteCommand}" Key="Delete"/>
     </Window.InputBindings>
+    <i:Interaction.Triggers>
+        <i:EventTrigger EventName="PreviewMouseLeftButtonDown">
+            <command:EventToCommand Command="{Binding OnMouseLeftBtnDownCommand}" CommandParameter="{Binding ElementName=MainCanvas, Mode=OneWay}"/>
+        </i:EventTrigger>
 
+        <i:EventTrigger EventName="MouseMove">
+            <command:EventToCommand Command="{Binding OnMouseMoveCommand}"
+                                        CommandParameter="{Binding ElementName=MainCanvas, Mode=OneWay}" />
+        </i:EventTrigger>
+
+        <i:EventTrigger EventName="MouseLeftButtonUp">
+            <command:EventToCommand Command="{Binding OnMouseLeftBtnUpCommand}" PassEventArgsToCommand="True" />
+        </i:EventTrigger>
+
+        <i:EventTrigger EventName="MouseLeave">
+            <command:EventToCommand Command="{Binding OnMouseLeaveCommand}" CommandParameter="{Binding ElementName=MainCanvas, Mode=OneWay}"></command:EventToCommand>
+        </i:EventTrigger>
+    </i:Interaction.Triggers>
 
 
     <DockPanel LastChildFill="True">
@@ -80,20 +97,15 @@
                         Property="Canvas.Top"
                         Value="{Binding Y}"
                         />
+                        <Setter
+                        Property="IsSelected"
+                        Value="{Binding IsSelected}"/>
                     </Style>
                 </ListBox.ItemContainerStyle>
-                <i:Interaction.Triggers>
-                <i:EventTrigger EventName="MouseLeftButtonUp">
-                    <command:EventToCommand Command="{Binding OnMouseLeftBtnUpCommand}"/>
-                </i:EventTrigger>
-                    </i:Interaction.Triggers>
-                <ListBox.ItemTemplate>
+                
+                    <ListBox.ItemTemplate>
                     <DataTemplate>
-                       
-                         <userControls:Class/>
-                        <!--
-                        <userControls:FigureBox></userControls:FigureBox>
-                          -->
+                        <userControls:Class/>
                     </DataTemplate>
                 </ListBox.ItemTemplate>
                 

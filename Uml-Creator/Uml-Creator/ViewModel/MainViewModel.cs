@@ -62,7 +62,6 @@ namespace Uml_Creator.ViewModel
         public ICommand BtnAddClass { get; }
         public ICommand DeleteCommand { get; }
         public ICommand BtnCut { get; }
-        public ICommand OnMouseLeftBtnUpCommand { get; }
 
         UndoRedoController undoRedoController = UndoRedoController.Instance;
         public ObservableCollection<LineViewModel> lines { get; }
@@ -103,17 +102,95 @@ namespace Uml_Creator.ViewModel
             BtnAddClass = new RelayCommand(AddClass);
             DeleteCommand = new RelayCommand(Delete_Click);
             BtnNewCommand = new RelayCommand(NewClassDiagram);
-            OnMouseLeftBtnUpCommand = new RelayCommand(LeftClickUp);
         }
 
-        private void LeftClickUp()
+        public static bool IsDragging;
+        public ICommand OnMouseLeftBtnDownCommand => new RelayCommand<UIElement>(OnMouseLeftBtnDown);
+        public ICommand OnMouseLeftBtnUpCommand => new RelayCommand<MouseButtonEventArgs>(OnMouseLeftUp);
+
+        public ICommand OnMouseMoveCommand => new RelayCommand<UIElement>(OnMouseMove);
+
+        //public ICommand OnMouseLeaveCommand => new RelayCommand<UIElement>(OnMouseLeave);
+
+        private void OnMouseLeave(UIElement obj)
         {
-            for (int i = 0; i < FiguresViewModels.Count; i++)
+            if (obj == null) return;
+            if (!IsDragging) return;
+            foreach (FigureViewModel t in FiguresViewModels)
             {
-                FiguresViewModels[i].IsSelected = false;
-                FiguresViewModels[i]._isDraggingFigure = false;
+                if (t.IsSelected && IsDragging)
+                {
+                    var pos = Mouse.GetPosition(VisualTreeHelper.GetParent(obj) as IInputElement);
+                    t.X = t.X + pos.X;
+                    t.Y = t.Y + pos.Y;
+
+                }
             }
+        }
+
+        private void OnMouseMove(UIElement obj)
+        {
+            if (!IsDragging) return;
+            if (obj == null) return;
+            var pos = Mouse.GetPosition(obj);
+            foreach (FigureViewModel t in FiguresViewModels)
+            {
+                //Debug.WriteLine(IsDragging);
+                //if (!t.IsSelected) IsDragging= false;
+                if (t.IsSelected)
+                {
+                    var xOffest = t.X - pos.X;
+                    var yOffest = t.Y - pos.Y;
+                    Debug.WriteLine(t.X);
+                    Debug.WriteLine(pos.X);
+                    t.X = pos.X - t.XOffset;
+                    t.Y = pos.Y - t.YOffset;
+                }
+            }
+        }
+
+        private void OnMouseLeftBtnDown(UIElement obj)
+        {
+            if (obj == null) return;
+            
+
+            Debug.WriteLine(obj.GetType());
+            foreach (FigureViewModel t in FiguresViewModels)
+            {
+                Debug.WriteLine("fam");
+                if (!t.IsSelected)
+                {
+
+                    OnAddLineBetweenShapes(t);
+                    obj.Focus();
+                }
+                Debug.WriteLine(t.Width);
+                t.XOffset = Mouse.GetPosition(obj).X - t.X;
+                t.YOffset = Mouse.GetPosition(obj).Y - t.Y;
+                //if (!FiguresViewModels[i].IsSelected && obj.MouseDevice.Target.IsMouseCaptured) return;
+                //obj.MouseDevice.Target.CaptureMouse();
+
+                //t.OrigShapePostion = new Point(t.X, t.Y);
+                //IsDragging = true;
+            }
+        }
+
+
+        private void OnMouseLeftUp(MouseButtonEventArgs obj)
+        {
+            IsDragging = false;
+            var visual = obj.Source as UIElement;
+            if (visual == null) return;
+            Debug.WriteLine("ok ok ok");
+            foreach (FigureViewModel t in FiguresViewModels)
+            {
+                if (IsDragging) return;
+
+                if(t.IsSelected) UndoRedoController.Instance.DoExecute(new MoveBoxCommand(t, t.OrigShapePostion, new Point(t.X, t.Y)));
+            }
+            
             Mouse.Capture(null);
+            obj.Handled = true;
         }
 
         private void NewClassDiagram()
