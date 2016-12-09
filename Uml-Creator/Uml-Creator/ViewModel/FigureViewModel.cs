@@ -36,12 +36,20 @@ namespace Uml_Creator.ViewModel
         private Point _leftPoint;
         private Point _rightPoint;
         private Point _bottomPoint;
-        private LineViewModel linevm;
+        private List<LineViewModel> connectedLines = new List<LineViewModel>();
+        private MainViewModel mainvm;
 
-        public LineViewModel _line
+        public MainViewModel Mainvm
         {
-            get { return linevm; }
-            set { linevm = value; }
+            get { return mainvm; }
+            set { mainvm = value; }
+        }
+
+
+
+        public void addLine(LineViewModel line)
+        {
+            connectedLines.Add(line);
         }
 
 
@@ -110,9 +118,11 @@ namespace Uml_Creator.ViewModel
 
         #region MouseMembers
 
-        private bool _isDraggingFigure = false;
+        
         private  Point _origMouseDownPoint;
-        private Point _origShapePostion;
+        public Point OrigShapePostion;
+        public double XOffset;
+        public double YOffset;
 
 
         #endregion
@@ -138,82 +148,63 @@ namespace Uml_Creator.ViewModel
         public ICommand OnMouseLeftBtnDownCommand => new RelayCommand<MouseButtonEventArgs>(OnMouseLeftBtnDown);
         public ICommand OnMouseLeftBtnUpCommand => new RelayCommand<MouseButtonEventArgs>(OnMouseLeftUp);
 
-        public ICommand OnMouseMoveCommand => new RelayCommand<UIElement>(OnMouseMove);
+        //public ICommand OnMouseMoveCommand => new RelayCommand<UIElement>(OnMouseMove);
 
         public ICommand OnMouseLeaveCommand => new RelayCommand<UIElement>(OnMouseLeave);
 
         private void OnMouseLeave(UIElement obj)
         {
-            if (obj == null){return;}
-            if (IsSelected)
+            if (obj == null) return;
+            if (IsSelected && MainViewModel.IsDragging)
             {
-
                 var pos = Mouse.GetPosition(VisualTreeHelper.GetParent(obj) as IInputElement);
-                //X= pos.X - _origMouseDownPoint.X;
-                //Y = pos.Y - _origMouseDownPoint.Y;
                 X = X + pos.X - _origMouseDownPoint.X;
                 Y = Y + pos.Y - _origMouseDownPoint.Y;
 
             }
-            else
-            {
-                return;
-            }
-
-
-
         }
 
-        private void OnMouseMove(UIElement obj)
+        /*private void OnMouseMove(UIElement obj)
         {
+            if (!IsSelected) _isDraggingFigure = false;
             if (!_isDraggingFigure) return;
-            if (obj == null)
-            {
-                return;
-            }
-
+            if (obj == null) return;
             var pos = Mouse.GetPosition(VisualTreeHelper.GetParent(obj) as IInputElement);
-            //X= pos.X - _origMouseDownPoint.X;
-            //Y = pos.Y - _origMouseDownPoint.Y;
             X = X + pos.X - _origMouseDownPoint.X;
             Y = Y + pos.Y - _origMouseDownPoint.Y;
-        }
+        }*/
 
         private void OnMouseLeftBtnDown(MouseButtonEventArgs obj)
         {
             var visual = obj.Source as UIElement;
             if (visual == null) return;
-
-
-
+            
             if (!IsSelected)
             {
-                IsSelected = true;
-                visual.Focus();
-                obj.Handled = true;
-                return;
+                //null reference
+                mainvm.OnAddLineBetweenShapes(this);;
+                //visual.Focus();
             }
 
-            if (!IsSelected && obj.MouseDevice.Target.IsMouseCaptured) return;
-            obj.MouseDevice.Target.CaptureMouse();
-
+            //if (!IsSelected && obj.MouseDevice.Target.IsMouseCaptured) return;
+           // obj.MouseDevice.Target.CaptureMouse();
             _origMouseDownPoint = Mouse.GetPosition(visual);
-            _origShapePostion = new Point(X, Y);
-            _isDraggingFigure = true;
+            OrigShapePostion = new Point(X, Y);
+            MainViewModel.IsDragging = true;
         }
 
 
         private void OnMouseLeftUp(MouseButtonEventArgs obj)
         {
-            if (!_isDraggingFigure)
+            var visual = obj.Source as UIElement;
+            if (visual == null)
             {
                 return;
             }
-
-            UndoRedoController.Instance.DoExecute(new MoveBoxCommand(this, _origShapePostion, new Point(X, Y)));
-            _isDraggingFigure = false;
-            IsSelected = false;
-            //Ikke sikker på hvad dette gør...
+            if (!MainViewModel.IsDragging) return;
+            
+            UndoRedoController.Instance.DoExecute(new MoveBoxCommand(this, OrigShapePostion, new Point(X, Y)));
+            MainViewModel.IsDragging = false;
             Mouse.Capture(null);
             obj.Handled = true;
         }
@@ -317,10 +308,12 @@ namespace Uml_Creator.ViewModel
 
         private void giveLineNewCords()
         {
-            if (_line != null)
-            {
-                _line.calculateShortestLine();
-            }
+
+                for (int i = 0; i < connectedLines.Count; i++)
+                {
+                    connectedLines[i].calculateShortestLine();
+                }
+            
         }
 
         public double Width

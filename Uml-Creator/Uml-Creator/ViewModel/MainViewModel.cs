@@ -34,9 +34,9 @@ namespace Uml_Creator.ViewModel
         #region data members
 
         public ObservableCollection<FigureViewModel> FiguresViewModels { get; private set; }
- 
+        
         #endregion data members
-   
+
         private string _statusText = "Welcome to UML Editor";
 
         public string StatusText
@@ -46,8 +46,8 @@ namespace Uml_Creator.ViewModel
             {
                     _statusText = value;
                     OnPropertyChanged("StatusText");
+                }
             }
-        }
 
         public ICommand BtnNewCommand { get; }
 
@@ -66,10 +66,11 @@ namespace Uml_Creator.ViewModel
         UndoRedoController undoRedoController = UndoRedoController.Instance;
         public ObservableCollection<LineViewModel> lines { get; }
 
-        public bool isAddingLineBtnPressed;
-        public FigureViewModel _firstShapeToConnect;
+        private bool isAddingLineBtnPressed;
+        private FigureViewModel _firstShapeToConnect;
         public string FileName;
         public string FileNamePic;
+        private ELine lineType;
         BackgroundWorker worker = new BackgroundWorker();
         public Grid canvas;
 
@@ -81,9 +82,10 @@ namespace Uml_Creator.ViewModel
           
             FiguresViewModels = new ObservableCollection<FigureViewModel>
             {
+
             };
 
-      
+          
             lines = new ObservableCollection<LineViewModel>
             {
             };
@@ -102,6 +104,95 @@ namespace Uml_Creator.ViewModel
             BtnNewCommand = new RelayCommand(NewClassDiagram);
         }
 
+        public static bool IsDragging;
+        public ICommand OnMouseLeftBtnDownCommand => new RelayCommand<UIElement>(OnMouseLeftBtnDown);
+        public ICommand OnMouseLeftBtnUpCommand => new RelayCommand<MouseButtonEventArgs>(OnMouseLeftUp);
+
+        public ICommand OnMouseMoveCommand => new RelayCommand<UIElement>(OnMouseMove);
+
+        //public ICommand OnMouseLeaveCommand => new RelayCommand<UIElement>(OnMouseLeave);
+
+        private void OnMouseLeave(UIElement obj)
+        {
+            if (obj == null) return;
+            if (!IsDragging) return;
+            foreach (FigureViewModel t in FiguresViewModels)
+            {
+                if (t.IsSelected && IsDragging)
+                {
+                    var pos = Mouse.GetPosition(VisualTreeHelper.GetParent(obj) as IInputElement);
+                    t.X = t.X + pos.X;
+                    t.Y = t.Y + pos.Y;
+
+                }
+            }
+        }
+
+        private void OnMouseMove(UIElement obj)
+        {
+            if (!IsDragging) return;
+            if (obj == null) return;
+            var pos = Mouse.GetPosition(obj);
+            foreach (FigureViewModel t in FiguresViewModels)
+            {
+                //Debug.WriteLine(IsDragging);
+                //if (!t.IsSelected) IsDragging= false;
+                if (t.IsSelected)
+                {
+                    var xOffest = t.X - pos.X;
+                    var yOffest = t.Y - pos.Y;
+                    Debug.WriteLine(t.X);
+                    Debug.WriteLine(pos.X);
+                    t.X = pos.X - t.XOffset;
+                    t.Y = pos.Y - t.YOffset;
+                }
+            }
+        }
+
+        private void OnMouseLeftBtnDown(UIElement obj)
+        {
+            if (obj == null) return;
+            
+
+            Debug.WriteLine(obj.GetType());
+            foreach (FigureViewModel t in FiguresViewModels)
+            {
+                Debug.WriteLine("fam");
+                if (!t.IsSelected)
+                {
+
+                    OnAddLineBetweenShapes(t);
+                    obj.Focus();
+                }
+                Debug.WriteLine(t.Width);
+                t.XOffset = Mouse.GetPosition(obj).X - t.X;
+                t.YOffset = Mouse.GetPosition(obj).Y - t.Y;
+                //if (!FiguresViewModels[i].IsSelected && obj.MouseDevice.Target.IsMouseCaptured) return;
+                //obj.MouseDevice.Target.CaptureMouse();
+
+                //t.OrigShapePostion = new Point(t.X, t.Y);
+                //IsDragging = true;
+            }
+        }
+
+
+        private void OnMouseLeftUp(MouseButtonEventArgs obj)
+        {
+            IsDragging = false;
+            var visual = obj.Source as UIElement;
+            if (visual == null) return;
+            Debug.WriteLine("ok ok ok");
+            foreach (FigureViewModel t in FiguresViewModels)
+            {
+                if (IsDragging) return;
+
+                if(t.IsSelected) UndoRedoController.Instance.DoExecute(new MoveBoxCommand(t, t.OrigShapePostion, new Point(t.X, t.Y)));
+            }
+            
+            Mouse.Capture(null);
+            obj.Handled = true;
+        }
+
         private void NewClassDiagram()
         {
            ClearEverything();
@@ -113,29 +204,46 @@ namespace Uml_Creator.ViewModel
             undoRedoController.ResetUndoRedoStacks();
             FiguresViewModels.Clear();
             if (lines != null)
-            {
+        {
                 lines.Clear();
-            }
+        }
         }
 
-        public bool IsAddingLineBtnPressed
+        public bool IsAddingSolidLineBtnPressed
         {
             get { return isAddingLineBtnPressed; }
             set
             {
+                Debug.WriteLine("im on");
                 isAddingLineBtnPressed = value;
                 if (!value)
                     _firstShapeToConnect = null;
+
+                lineType = ELine.Solid; 
                 OnPropertyChanged(nameof(isAddingLineBtnPressed));
-                AddLineBetweenShapes.RaiseCanExecuteChanged();
             }
         }
 
-        public RelayCommand<FigureViewModel> AddLineBetweenShapes
-            => new RelayCommand<FigureViewModel>(OnAddLineBetweenShapes, lit => IsAddingLineBtnPressed);
+        public bool IsAddingDashedLineBtnPressed
+        {
+            get { return isAddingLineBtnPressed; }
+            set
+            {
+                Debug.WriteLine("im on");
+                isAddingLineBtnPressed = value;
+                if (!value)
+                    _firstShapeToConnect = null;
+
+                lineType = ELine.DashedLine;;
+                OnPropertyChanged(nameof(isAddingLineBtnPressed));
+            }
+        }
+
 
         public void OnAddLineBetweenShapes(FigureViewModel fig)
         {
+
+            if (isAddingLineBtnPressed) { 
             if (_firstShapeToConnect == null)
                 _firstShapeToConnect = fig;
             else
@@ -143,11 +251,15 @@ namespace Uml_Creator.ViewModel
                 if (fig != _firstShapeToConnect)
                 {
                     undoRedoController.DoExecute(new AddLineCommand(lines,
-                        new LineViewModel(new Line(), _firstShapeToConnect, fig, ELine.Solid)));
-                    IsAddingLineBtnPressed = false;
+                        new LineViewModel(new Line(), _firstShapeToConnect, fig, lineType)));
+                        IsAddingSolidLineBtnPressed = false;
+                    IsAddingDashedLineBtnPressed = false;
                 }
             }
         }
+        }
+
+
 
 
         /// <summary>
@@ -253,6 +365,15 @@ namespace Uml_Creator.ViewModel
             
             undoRedoController.DoExecute(new AddBoxCommand(FiguresViewModels, new FigureViewModel()));
             StatusText = "New class has been added.";
+
+            for (int i = 0; i < FiguresViewModels.Count; i++)
+            {
+                var tempfig = FiguresViewModels[i];
+
+                if(tempfig.Mainvm == null)
+                  tempfig.Mainvm = this;
+            }
+            
         }
 
         private void Load_Click()

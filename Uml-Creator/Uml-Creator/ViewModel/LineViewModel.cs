@@ -42,8 +42,8 @@ namespace Uml_Creator.ViewModel
             From = _from;
             To = _to;
             Type = _type;
-            From._line = this;
-            To._line = this;
+            From.addLine(this);
+            To.addLine(this);
 
         }
 
@@ -56,6 +56,15 @@ namespace Uml_Creator.ViewModel
         public ELine Type { get; set; }
         private FigureViewModel _from;
         private FigureViewModel _to;
+
+        public string StrokeStyle
+        {
+            get
+            {
+                if(Type==ELine.Solid) return "10,0";
+                return "5, 10";
+            }
+        }
 
         public FigureViewModel From
         {
@@ -225,22 +234,15 @@ namespace Uml_Creator.ViewModel
                     {
                         _newLength = calculateLineLength(fromPoint[i], toPoint[j]);
                         Debug.WriteLine(_newLength);
-
-
                         if (_newLength < _oldLength)
                         {
                             _oldLength = _newLength;
                             FromPoint = fromPoint[i];
                             ToPoint = toPoint[j];
                         }
-
                     }
 
-
                 }
-
-
-
             
             }
 
