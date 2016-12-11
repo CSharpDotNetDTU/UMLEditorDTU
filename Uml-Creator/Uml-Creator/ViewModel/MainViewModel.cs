@@ -111,24 +111,6 @@ namespace Uml_Creator.ViewModel
 
         public ICommand OnMouseMoveCommand => new RelayCommand<UIElement>(OnMouseMove);
 
-        //public ICommand OnMouseLeaveCommand => new RelayCommand<UIElement>(OnMouseLeave);
-
-        private void OnMouseLeave(UIElement obj)
-        {
-            if (obj == null) return;
-            if (!IsDragging) return;
-            foreach (FigureViewModel t in FiguresViewModels)
-            {
-                if (t.IsSelected && IsDragging)
-                {
-                    var pos = Mouse.GetPosition(VisualTreeHelper.GetParent(obj) as IInputElement);
-                    t.X = t.X + pos.X;
-                    t.Y = t.Y + pos.Y;
-
-                }
-            }
-        }
-
         private void OnMouseMove(UIElement obj)
         {
             if (!IsDragging) return;
@@ -202,7 +184,7 @@ namespace Uml_Creator.ViewModel
                 {
                     t.IsSelected = false;
                 }
-                Debug.WriteLine("im on");
+                //Debug.WriteLine("im on");
                 _isAddingLineBtnPressed = value;
                 if (!value)
                     _firstShapeToConnect = null;
@@ -221,7 +203,7 @@ namespace Uml_Creator.ViewModel
                 {
                     t.IsSelected = false;
                 }
-                Debug.WriteLine("im on");
+                //Debug.WriteLine("im on");
                 _isAddingLineBtnPressed = value;
                 if (!value)
                     _firstShapeToConnect = null;
@@ -234,7 +216,6 @@ namespace Uml_Creator.ViewModel
 
         public void OnAddLineBetweenShapes(FigureViewModel fig)
         {
-            Debug.WriteLine("adding");
             if (_isAddingLineBtnPressed) { 
             if (_firstShapeToConnect == null)
                 _firstShapeToConnect = fig;

@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
+using System.Diagnostics;
 using System.Runtime.Serialization;
 using System.Windows;
 using System.Windows.Input;
@@ -125,19 +126,6 @@ namespace Uml_Creator.ViewModel
 
         public ICommand OnMouseLeftBtnDownCommand => new RelayCommand<MouseButtonEventArgs>(OnMouseLeftBtnDown);
         public ICommand OnMouseLeftBtnUpCommand => new RelayCommand<MouseButtonEventArgs>(OnMouseLeftUp);
-        public ICommand OnMouseLeaveCommand => new RelayCommand<UIElement>(OnMouseLeave);
-
-        private void OnMouseLeave(UIElement obj)
-        {
-            if (obj == null) return;
-            if (IsSelected && MainViewModel.IsDragging)
-            {
-                var pos = Mouse.GetPosition(VisualTreeHelper.GetParent(obj) as IInputElement);
-                X = X + pos.X - _origMouseDownPoint.X;
-                Y = Y + pos.Y - _origMouseDownPoint.Y;
-
-            }
-        }
 
         private void OnMouseLeftBtnDown(MouseButtonEventArgs obj)
         {
