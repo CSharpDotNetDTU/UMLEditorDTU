@@ -2,22 +2,15 @@
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
-using System.Diagnostics;
-using System.Linq;
 using System.Runtime.Serialization;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows;
-using System.Windows.Controls;
 using System.Windows.Input;
 using System.Windows.Media;
 using GalaSoft.MvvmLight.CommandWpf;
-using Uml_Creator.Model;
 using Uml_Creator.Model.ENUM;
 using Uml_Creator.Model.Interfaces;
 using Uml_Creator.UndoRedo;
 using Uml_Creator.UndoRedo.Commands;
-using Model;
 using Model.Model;
 
 
@@ -38,17 +31,13 @@ namespace Uml_Creator.ViewModel
         private Point _bottomPoint;
         private List<LineViewModel> connectedLines = new List<LineViewModel>();
 
-        
-
-
-
         public void addLine(LineViewModel line)
         {
             connectedLines.Add(line);
         }
 
 
-        public Point topPoint
+        public Point TopPoint
         {
             get     
             {
@@ -62,7 +51,8 @@ namespace Uml_Creator.ViewModel
                 OnPropertyChanged("topPoint");
             }
         }
-        public Point leftPoint
+
+        public Point LeftPoint
         {
             get
             {
@@ -77,7 +67,8 @@ namespace Uml_Creator.ViewModel
                 OnPropertyChanged("leftPoint");
             }
         }
-        public Point rightPoint
+
+        public Point RightPoint
         {
             get
             {
@@ -92,7 +83,8 @@ namespace Uml_Creator.ViewModel
                 OnPropertyChanged("rightPoint");
             }
         }
-        public Point bottomPoint
+
+        public Point BottomPoint
         {
             get
             {
@@ -108,9 +100,6 @@ namespace Uml_Creator.ViewModel
             }
         }
 
-
-
-
         #region MouseMembers
 
         
@@ -125,26 +114,17 @@ namespace Uml_Creator.ViewModel
         public ObservableCollection<string> AttributesCollection { get; set; } = new ObservableCollection<string>();
         public ICommand AddAttribute => new RelayCommand(OnAddAttribute);
         public ICommand RemoveAttribute => new RelayCommand(OnRemoveAttribute);
-
         public ClassContent SelectedMethod { get; set; }
-
         public ClassContent SelectedAttribute { get; set; }
-
         protected Figure Figure { get; }
 
         protected FigureViewModel(Figure figure)
         {
             Figure = figure;
         }
-       
-
-
 
         public ICommand OnMouseLeftBtnDownCommand => new RelayCommand<MouseButtonEventArgs>(OnMouseLeftBtnDown);
         public ICommand OnMouseLeftBtnUpCommand => new RelayCommand<MouseButtonEventArgs>(OnMouseLeftUp);
-
-        //public ICommand OnMouseMoveCommand => new RelayCommand<UIElement>(OnMouseMove);
-
         public ICommand OnMouseLeaveCommand => new RelayCommand<UIElement>(OnMouseLeave);
 
         private void OnMouseLeave(UIElement obj)
@@ -159,28 +139,14 @@ namespace Uml_Creator.ViewModel
             }
         }
 
-        /*private void OnMouseMove(UIElement obj)
-        {
-            if (!IsSelected) _isDraggingFigure = false;
-            if (!_isDraggingFigure) return;
-            if (obj == null) return;
-            var pos = Mouse.GetPosition(VisualTreeHelper.GetParent(obj) as IInputElement);
-            X = X + pos.X - _origMouseDownPoint.X;
-            Y = Y + pos.Y - _origMouseDownPoint.Y;
-        }*/
-
         private void OnMouseLeftBtnDown(MouseButtonEventArgs obj)
         {
             var visual = obj.Source as UIElement;
             if (visual == null) return;
-
-            //if (!IsSelected && obj.MouseDevice.Target.IsMouseCaptured) return;
-           // obj.MouseDevice.Target.CaptureMouse();
             _origMouseDownPoint = Mouse.GetPosition(visual);
             OrigShapePostion = new Point(X, Y);
             MainViewModel.IsDragging = true;
         }
-
 
         private void OnMouseLeftUp(MouseButtonEventArgs obj)
         {
@@ -197,13 +163,10 @@ namespace Uml_Creator.ViewModel
             obj.Handled = true;
         }
         
-        
         private void OnAddAttribute()
         {
             undoRedoController.DoExecute(new AddAttributeCommand(this, new ClassContent("Attribute")));
         }
-            
-        
 
         private void OnRemoveAttribute()
         {
@@ -270,10 +233,7 @@ namespace Uml_Creator.ViewModel
 
         public EFigure Type => Figure.Type;
 
-        public int FigureNr
-        {
-            get { return Figure.FigureNr; }
-        }
+        public int FigureNr => Figure.FigureNr;
 
         public double Height
         {
@@ -388,8 +348,6 @@ namespace Uml_Creator.ViewModel
                 OnPropertyChanged("AttributeCollection");
             }
         }
-
-
 
         public event PropertyChangedEventHandler PropertyChanged;
 

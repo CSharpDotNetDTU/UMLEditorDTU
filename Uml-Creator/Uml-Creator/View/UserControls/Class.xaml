@@ -21,11 +21,6 @@
                     <command:EventToCommand Command="{Binding OnMouseLeftBtnDownCommand}" PassEventArgsToCommand="True" />
                 </i:EventTrigger>
 
-                <i:EventTrigger EventName="MouseMove">
-                    <command:EventToCommand Command="{Binding OnMouseMoveCommand}"
-                                        CommandParameter="{Binding ElementName=TextBlock, Mode=OneWay}" />
-                </i:EventTrigger>
-
                 <i:EventTrigger EventName="MouseLeftButtonUp">
                     <command:EventToCommand Command="{Binding OnMouseLeftBtnUpCommand}" PassEventArgsToCommand="True" />
                 </i:EventTrigger>

@@ -4,6 +4,7 @@ using System.ComponentModel;
 using System.Diagnostics;
 using System.Linq;
 using System.Runtime.CompilerServices;
+using System.Runtime.Serialization;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
@@ -14,17 +15,30 @@ using Uml_Creator.Model.Interfaces;
 
 namespace Uml_Creator.ViewModel
 {
-    public class LineViewModel : INotifyPropertyChanged, ILine
+    public class LineViewModel : INotifyPropertyChanged, ILine, ISerializable
     {
         
         protected Line Line { get; }
         private Point _fromPoint;
         private Point _toPoint;
 
+        protected LineViewModel()
+        {
+        }
 
         protected LineViewModel(Line line)
         {
-            Line = Line;
+            Line = line;
+        }
+
+        public LineViewModel(LineViewModel line)
+        {
+            Line = line.Line;
+            From = line._from;
+            To = line.To;
+            Type = line.Type;
+            From.addLine(this);
+            To.addLine(this);
         }
 
         public LineViewModel(int targetFigureNr, int originFigureNr, string targetLabel, string originLabel, ELine type) : this(new Line())
@@ -37,11 +51,11 @@ namespace Uml_Creator.ViewModel
 
         }
 
-        public LineViewModel(Line line, FigureViewModel _from, FigureViewModel _to, ELine _type) : this(line)
+        public LineViewModel(Line line, FigureViewModel from, FigureViewModel to, ELine type) : this(line)
         {
-            From = _from;
-            To = _to;
-            Type = _type;
+            From = from;
+            To = to;
+            Type = type;
             From.addLine(this);
             To.addLine(this);
 
@@ -206,16 +220,16 @@ namespace Uml_Creator.ViewModel
         public void calculateShortestLine()
         {
             List<Point> fromPoint = new List<Point>();
-            fromPoint.Add(_from.bottomPoint);
-            fromPoint.Add(_from.topPoint);
-            fromPoint.Add(_from.leftPoint);
-            fromPoint.Add(_from.rightPoint);
+            fromPoint.Add(_from.BottomPoint);
+            fromPoint.Add(_from.TopPoint);
+            fromPoint.Add(_from.LeftPoint);
+            fromPoint.Add(_from.RightPoint);
 
             List<Point> toPoint = new List<Point>();
-            toPoint.Add(_to.bottomPoint);
-            toPoint.Add(_to.topPoint);
-            toPoint.Add(_to.leftPoint);
-            toPoint.Add(_to.rightPoint);
+            toPoint.Add(_to.BottomPoint);
+            toPoint.Add(_to.TopPoint);
+            toPoint.Add(_to.LeftPoint);
+            toPoint.Add(_to.RightPoint);
             double _newLength = 0;
             double _oldLength = 0;
 
@@ -263,6 +277,11 @@ namespace Uml_Creator.ViewModel
             {
                 handler(this, new PropertyChangedEventArgs(name));
             }
+        }
+
+        public void GetObjectData(SerializationInfo info, StreamingContext context)
+        {
+            throw new NotImplementedException();
         }
     }
 }

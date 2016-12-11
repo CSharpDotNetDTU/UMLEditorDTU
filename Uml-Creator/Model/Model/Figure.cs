@@ -10,7 +10,7 @@ namespace Model.Model
     public class Figure :IFigure
     {
         private static int _figureNr;
-        public int FigureNr { get; } = _figureNr++;
+        public int FigureNr { get; set; } = _figureNr++;
         public EFigure Type { get; set; }
         public double Height { get; set; }
         public double Width { get; set; }
