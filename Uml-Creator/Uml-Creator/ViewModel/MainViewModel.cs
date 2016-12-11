@@ -384,7 +384,7 @@ namespace Uml_Creator.ViewModel
                             //  FiguresViewModels.Add(new FigureViewModel(temp[i].X, temp[i].Y, temp[i].Width, temp[i].Height, temp[i].Data, temp[i].Type,false,temp[i].Name));
                             lines.Add(new LineViewModel(temp.Lines[i]));
                         }
-                        Debug.WriteLine(lines[0].OriginFigureNr);
+                        undoRedoController.reset();
                         reader.Close();
                     }
 
