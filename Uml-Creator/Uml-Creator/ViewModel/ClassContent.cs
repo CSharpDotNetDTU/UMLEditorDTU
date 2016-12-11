@@ -17,7 +17,7 @@ namespace Uml_Creator.ViewModel
         private string _name;
         private AttributeModel _attribute;
         private MethodModel _method;
-        private UndoRedoController undoRedo = UndoRedoController.Instance;
+        private readonly UndoRedoController undoRedo = UndoRedoController.Instance;
 
         public string ContextName
         {
@@ -28,7 +28,7 @@ namespace Uml_Creator.ViewModel
             }
         }
 
-        public void setNewName(string newName)
+        public void SetNewName(string newName)
         {
             _name = newName;
             OnPropertyChanged(nameof(ContextName));

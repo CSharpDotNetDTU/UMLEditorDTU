@@ -71,14 +71,7 @@ namespace Uml_Creator.ViewModel
         private FigureViewModel _from;
         private FigureViewModel _to;
 
-        public string StrokeStyle
-        {
-            get
-            {
-                if(Type==ELine.Solid) return "10,0";
-                return "5, 10";
-            }
-        }
+        public string StrokeStyle => Type==ELine.Solid ? "10,0" : "5, 10";
 
         public FigureViewModel From
         {
@@ -230,32 +223,31 @@ namespace Uml_Creator.ViewModel
             toPoint.Add(_to.TopPoint);
             toPoint.Add(_to.LeftPoint);
             toPoint.Add(_to.RightPoint);
-            double _newLength = 0;
-            double _oldLength = 0;
+            double oldLength = 0;
 
             for (int i = 0; i < fromPoint.Count; i++)
             {
                 for (int j = 0; j < toPoint.Count; j++)
                 {
+                    double newLength = 0;
                     if (i == 0 && j == 0)
                     {
-                        _newLength = calculateLineLength(fromPoint[i], toPoint[j]);
-                        _oldLength = _newLength;
+                        newLength = calculateLineLength(fromPoint[i], toPoint[j]);
+                        oldLength = newLength;
                         FromPoint = fromPoint[i];
                         ToPoint = toPoint[j];
                     }
                     else
                     {
-                        _newLength = calculateLineLength(fromPoint[i], toPoint[j]);
-                        Debug.WriteLine(_newLength);
-                        if (_newLength < _oldLength)
+                        newLength = calculateLineLength(fromPoint[i], toPoint[j]);
+                        Debug.WriteLine(newLength);
+                        if (newLength < oldLength)
                         {
-                            _oldLength = _newLength;
+                            oldLength = newLength;
                             FromPoint = fromPoint[i];
                             ToPoint = toPoint[j];
                         }
                     }
-
                 }
             
             }

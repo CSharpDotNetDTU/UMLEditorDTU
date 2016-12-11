@@ -23,12 +23,12 @@ namespace Uml_Creator.UndoRedo.Commands
 
         public void Execute()
         {
-            attribute.setNewName(newName); 
+            attribute.SetNewName(newName); 
         }
 
         public void Unexecute()
         {
-            attribute.setNewName(oldName);
+            attribute.SetNewName(oldName);
         }
     }
 }

@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
-using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Windows;
@@ -10,11 +9,9 @@ using GalaSoft.MvvmLight.CommandWpf;
 using System.Windows.Input;
 using System.Xml;
 using System.Xml.Serialization;
-using Uml_Creator.Model;
 using Uml_Creator.Model.ENUM;
 using System.Windows.Media.Imaging;
 using System.Windows.Controls;
-using System.Windows.Interactivity;
 using System.Windows.Media;
 using Model.Model;
 using Uml_Creator.UndoRedo;
@@ -28,7 +25,7 @@ namespace Uml_Creator.ViewModel
     {
         #region copy members
 
-        public ObservableCollection<FigureViewModel> copyFigures { get; private set; }
+        public ObservableCollection<FigureViewModel> CopyFigures { get; private set; }
 
         #endregion
 
@@ -72,25 +69,14 @@ namespace Uml_Creator.ViewModel
         public string FileName;
         public string FileNamePic;
         private ELine _lineType;
-        BackgroundWorker worker = new BackgroundWorker();
-        public Grid canvas;
+        readonly BackgroundWorker worker = new BackgroundWorker();
+        public Grid Canvas;
 
         public MainViewModel()
         {
-             //Content = new Gem_Load();
-
-            copyFigures = new ObservableCollection<FigureViewModel>();
-          
-            FiguresViewModels = new ObservableCollection<FigureViewModel>
-            {
-
-            };
-
-          
-            lines = new ObservableCollection<LineViewModel>
-            {
-            };
-
+            CopyFigures = new ObservableCollection<FigureViewModel>();
+            FiguresViewModels = new ObservableCollection<FigureViewModel>();
+            lines = new ObservableCollection<LineViewModel>();
 
             BtnLoadCommand = new RelayCommand(Load_Click);
             BtnGemCommand = new RelayCommand(Save_Click);
@@ -108,7 +94,6 @@ namespace Uml_Creator.ViewModel
         public static bool IsDragging;
         public ICommand OnMouseLeftBtnDownCommand => new RelayCommand<UIElement>(OnMouseLeftBtnDown);
         public ICommand OnMouseLeftBtnUpCommand => new RelayCommand<MouseButtonEventArgs>(OnMouseLeftUp);
-
         public ICommand OnMouseMoveCommand => new RelayCommand<UIElement>(OnMouseMove);
 
         private void OnMouseMove(UIElement obj)
@@ -166,13 +151,10 @@ namespace Uml_Creator.ViewModel
 
         private void ClearEverything()
         {
-            copyFigures.Clear();
+            CopyFigures.Clear();
             undoRedoController.ResetUndoRedoStacks();
             FiguresViewModels.Clear();
-            if (lines != null)
-            {
-                lines.Clear();
-            }
+            lines?.Clear();
         }
 
         public bool IsAddingSolidLineBtnPressed
@@ -184,7 +166,6 @@ namespace Uml_Creator.ViewModel
                 {
                     t.IsSelected = false;
                 }
-                //Debug.WriteLine("im on");
                 _isAddingLineBtnPressed = value;
                 if (!value)
                     _firstShapeToConnect = null;
@@ -203,7 +184,6 @@ namespace Uml_Creator.ViewModel
                 {
                     t.IsSelected = false;
                 }
-                //Debug.WriteLine("im on");
                 _isAddingLineBtnPressed = value;
                 if (!value)
                     _firstShapeToConnect = null;
@@ -242,7 +222,7 @@ namespace Uml_Creator.ViewModel
         /// </summary>
         private void Copy_Click()
         {
-            copyFigures.Clear();
+            CopyFigures.Clear();
             int nrOfObjectsCopied = 0;
             foreach (FigureViewModel Figure in FiguresViewModels)
             {
@@ -250,7 +230,7 @@ namespace Uml_Creator.ViewModel
                 {
                     //We create a new instance to make sure we get a new object, and so it dosent have the same FigureNr, also its added a little ofset from the original models
                     nrOfObjectsCopied++;
-                    copyFigures.Add(Figure);
+                    CopyFigures.Add(Figure);
                 }
             }
             StatusText = nrOfObjectsCopied + " items copied";
@@ -262,12 +242,12 @@ namespace Uml_Creator.ViewModel
         /// </summary>
         private void Paste_Click()
         {
-            if (copyFigures.Count > 0)
+            if (CopyFigures.Count > 0)
             {
                 int nrOfCopied = 0;
 
             
-                foreach (FigureViewModel figure in copyFigures)
+                foreach (FigureViewModel figure in CopyFigures)
                 {
                     double offset = 20.0;
                     FigureViewModel newfigure = new FigureViewModel(figure.X + offset, figure.Y + offset, figure.Width,
@@ -287,7 +267,7 @@ namespace Uml_Creator.ViewModel
 
         private void Cut_click()
         {
-            copyFigures.Clear();
+            CopyFigures.Clear();
 
             //Vi går igennem listen bagfra for at undgå enumeration error
             for (int i = FiguresViewModels.Count - 1; i >= 0; i--)
@@ -295,7 +275,7 @@ namespace Uml_Creator.ViewModel
                 FigureViewModel Figure = FiguresViewModels[i];
                 if (Figure.IsSelected)
                 {
-                    copyFigures.Add(Figure);
+                    CopyFigures.Add(Figure);
                     undoRedoController.DoExecute(new DeleteFigureCommand(FiguresViewModels, Figure));
                 }
             }
@@ -310,25 +290,14 @@ namespace Uml_Creator.ViewModel
                 {
                     StatusText = "Deleted Object: " + Figure.Name;
                     undoRedoController.DoExecute(new DeleteFigureCommand(FiguresViewModels, Figure));
-                   // FiguresViewModels.Remove(Figure);
                 }
             }
         }
 
           private void AddClass()
         {
-            //FigureViewModel newFigure = new FigureViewModel(0, 0, 10, 20, "data", EFigure.ClassSquare, false,"testClass");
-            
             undoRedoController.DoExecute(new AddBoxCommand(FiguresViewModels, new FigureViewModel()));
             StatusText = "New class has been added";
-
-            for (int i = 0; i < FiguresViewModels.Count; i++)
-            {
-                var tempfig = FiguresViewModels[i];
-
-                
-            }
-            
         }
 
         private void Load_Click()
@@ -356,13 +325,11 @@ namespace Uml_Creator.ViewModel
                         temp = (SaveClass) serializer.Deserialize(reader);
                         for (int i = 0; i < temp.Figures.Count; i++)
                         {
-                          //  FiguresViewModels.Add(new FigureViewModel(temp[i].X, temp[i].Y, temp[i].Width, temp[i].Height, temp[i].Data, temp[i].Type,false,temp[i].Name));
                             FiguresViewModels.Add(new FigureViewModel(temp.Figures[i]));
                         }
 
                         for (int i = 0; i < temp.Lines.Count; i++)
                         {
-                            //  FiguresViewModels.Add(new FigureViewModel(temp[i].X, temp[i].Y, temp[i].Width, temp[i].Height, temp[i].Data, temp[i].Type,false,temp[i].Name));
                             lines.Add(new LineViewModel(temp.Lines[i]));
                         }
                         undoRedoController.reset();
@@ -377,7 +344,6 @@ namespace Uml_Creator.ViewModel
             {
                 StatusText = "File could not be loaded";
                 Console.WriteLine(ex.ToString());
-                //Log exception here
             }
         }
 
@@ -416,13 +382,12 @@ namespace Uml_Creator.ViewModel
             {
                 StatusText = "Document could not be saved";
                 Console.WriteLine(ex.ToString());
-                //Log exception here
             }
         }
 
         private void Export_Click(Grid canvas)
         {
-            this.canvas = canvas;
+            this.Canvas = canvas;
             SaveFileDialog exportfildialog = new SaveFileDialog();
             exportfildialog.Filter = "PNG files (*.png)|*.png";
 
@@ -433,16 +398,12 @@ namespace Uml_Creator.ViewModel
                 (int) canvas.RenderSize.Height, 96d, 96d, PixelFormats.Default);
                 rtb.Render(canvas);
 
-                //var crop = new CroppedBitmap(rtb, new Int32Rect(0, 0, 1000, 1000));
-
                 BitmapEncoder pngEncoder = new PngBitmapEncoder();
                 pngEncoder.Frames.Add(BitmapFrame.Create(rtb));
             using (var fs = File.OpenWrite(FileNamePic))
                 {
                     pngEncoder.Save(fs);
                 }
-            //worker.DoWork += worker_Export;
-            //worker.RunWorkerAsync();
             }
 
        /* private void worker_Export(object sender, DoWorkEventArgs e)
@@ -465,7 +426,6 @@ namespace Uml_Creator.ViewModel
         private string GetValue(DependencyProperty statusBarTextPropertyProperty)
         {
             return statusBarTextPropertyProperty.Name;
-            //throw new NotImplementedException();
         }
 
         public event PropertyChangedEventHandler PropertyChanged;

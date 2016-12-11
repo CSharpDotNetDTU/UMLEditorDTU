@@ -24,7 +24,7 @@
                 <i:EventTrigger EventName="MouseLeftButtonUp">
                     <command:EventToCommand Command="{Binding OnMouseLeftBtnUpCommand}" PassEventArgsToCommand="True" />
                 </i:EventTrigger>
-            </i:Interaction.Triggers>
+                </i:Interaction.Triggers>
        
             <Grid x:Name="ClassGrid" Background="Orange" SizeChanged="ClassGrid_OnSizeChanged">
             
