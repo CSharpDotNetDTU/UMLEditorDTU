@@ -1,11 +1,13 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 14
-VisualStudioVersion = 14.0.24720.0
+VisualStudioVersion = 14.0.25420.1
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Uml-Creator", "Uml-Creator\Uml-Creator.csproj", "{0554FCE0-11C5-4B4B-B4DF-F0682BFE8721}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Model", "Model\Model.csproj", "{82976E99-8560-4513-965B-2C5DB4E93DA1}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UnitTest", "UnitTest\UnitTest.csproj", "{ED66B14E-B8C5-44FE-BC65-15A51317519C}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -21,6 +23,10 @@ Global
 		{82976E99-8560-4513-965B-2C5DB4E93DA1}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{82976E99-8560-4513-965B-2C5DB4E93DA1}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{82976E99-8560-4513-965B-2C5DB4E93DA1}.Release|Any CPU.Build.0 = Release|Any CPU
+		{ED66B14E-B8C5-44FE-BC65-15A51317519C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{ED66B14E-B8C5-44FE-BC65-15A51317519C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{ED66B14E-B8C5-44FE-BC65-15A51317519C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{ED66B14E-B8C5-44FE-BC65-15A51317519C}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

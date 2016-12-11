@@ -3,17 +3,28 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Runtime.CompilerServices;
 
 namespace Uml_Creator.UndoRedo
 {
-    class UndoRedoController
+    internal class UndoRedoController
     {
         private Stack<IUndoCommand> undoStack = new Stack<IUndoCommand>();
         private Stack<IUndoCommand> redoStack = new Stack<IUndoCommand>();
+
+        public int UndoStackSize { get { return undoStack.Count; } }
+        public int RedoStackSize { get { return redoStack.Count; } }
+
         public static UndoRedoController Instance { get; } = new UndoRedoController();
 
         private UndoRedoController()
         {
+        }
+
+        public void reset()
+        {
+            undoStack.Clear();
+            redoStack.Clear();
         }
 
         public void DoExecute(IUndoCommand command)

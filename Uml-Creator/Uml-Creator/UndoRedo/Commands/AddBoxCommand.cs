@@ -8,7 +8,7 @@ using Uml_Creator.ViewModel;
 
 namespace Uml_Creator.UndoRedo.Commands
 {
-    class AddBoxCommand : IUndoCommand
+    internal class AddBoxCommand : IUndoCommand
     {
         private ObservableCollection<FigureViewModel> boxes;
         private FigureViewModel box;
