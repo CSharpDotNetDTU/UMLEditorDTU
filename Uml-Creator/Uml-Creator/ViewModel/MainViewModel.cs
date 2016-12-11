@@ -19,6 +19,7 @@ using System.Windows.Media;
 using Model.Model;
 using Uml_Creator.UndoRedo;
 using Uml_Creator.UndoRedo.Commands;
+using Uml_Creator.View.Resource;
 
 
 namespace Uml_Creator.ViewModel
@@ -137,8 +138,6 @@ namespace Uml_Creator.ViewModel
             {
                 if (t.IsSelected)
                 {
-                    var xOffest = t.X - pos.X;
-                    var yOffest = t.Y - pos.Y;
                     t.X = pos.X - t.XOffset;
                     t.Y = pos.Y - t.YOffset;
                 }
@@ -148,7 +147,6 @@ namespace Uml_Creator.ViewModel
         private void OnMouseLeftBtnDown(UIElement obj)
         {
             if (obj == null) return;
-            
 
             foreach (FigureViewModel t in FiguresViewModels)
             {
@@ -190,9 +188,9 @@ namespace Uml_Creator.ViewModel
             undoRedoController.ResetUndoRedoStacks();
             FiguresViewModels.Clear();
             if (lines != null)
-        {
+            {
                 lines.Clear();
-        }
+            }
         }
 
         public bool IsAddingSolidLineBtnPressed
@@ -274,7 +272,7 @@ namespace Uml_Creator.ViewModel
                     copyFigures.Add(Figure);
                 }
             }
-            StatusText = "Nr of objects added to the copy List: " + nrOfObjectsCopied;
+            StatusText = nrOfObjectsCopied + " items copied";
         }
 
         /// <summary>
@@ -298,18 +296,11 @@ namespace Uml_Creator.ViewModel
                 
                     nrOfCopied++;
                 }
-                StatusText = "you have copied " + nrOfCopied + " objects";
-               // Debug.Print("Antal Objecter copieret:" + nrOfCopied);
-               // Debug.Print("nr of objects total ---->"+FiguresViewModels.Count);
-                //Write to status bar that x objects were copied to the canvas
+                StatusText = nrOfCopied + " items pasted";
             }
             else
             {
-                string text = "Nothing to copy in the copy list";
-                StatusText = text;
-                //Debug.WriteLine(text);
-                //throw new NotImplementedException();
-                //No objects in copy list write to statusbar
+                StatusText = "Nothing to paste";
             }
         }
 
@@ -321,23 +312,12 @@ namespace Uml_Creator.ViewModel
             for (int i = FiguresViewModels.Count - 1; i >= 0; i--)
             {
                 FigureViewModel Figure = FiguresViewModels[i];
-                    if (Figure.IsSelected)
-                    {
-                    copyFigures.Add(Figure);
-                    undoRedoController.DoExecute(new DeleteFigureCommand(FiguresViewModels, Figure));
-                }
-                }
-            /*
-            foreach (FigureViewModel Figure in FiguresViewModels)
-            {
                 if (Figure.IsSelected)
                 {
-                    //We create a new instance to make sure we get a new object, and so it dosent have the same FigureNr, also its added a little ofset from the original models
-
                     copyFigures.Add(Figure);
                     undoRedoController.DoExecute(new DeleteFigureCommand(FiguresViewModels, Figure));
                 }
-            }*/
+            }
         }
 
 
@@ -347,7 +327,7 @@ namespace Uml_Creator.ViewModel
             {
                 if (Figure.IsSelected)
                 {
-                    StatusText = "Deleted Objekt: " + Figure.Name;
+                    StatusText = "Deleted Object: " + Figure.Name;
                     undoRedoController.DoExecute(new DeleteFigureCommand(FiguresViewModels, Figure));
                    // FiguresViewModels.Remove(Figure);
                 }
@@ -359,7 +339,7 @@ namespace Uml_Creator.ViewModel
             //FigureViewModel newFigure = new FigureViewModel(0, 0, 10, 20, "data", EFigure.ClassSquare, false,"testClass");
             
             undoRedoController.DoExecute(new AddBoxCommand(FiguresViewModels, new FigureViewModel()));
-            StatusText = "New class has been added.";
+            StatusText = "New class has been added";
 
             for (int i = 0; i < FiguresViewModels.Count; i++)
             {
@@ -386,30 +366,35 @@ namespace Uml_Creator.ViewModel
 
                 using (StringReader read = new StringReader(xmlString))
                 {
-                    ObservableCollection<FigureViewModel> temp;
-                    Type outType = typeof(ObservableCollection<FigureViewModel>);
+                    SaveClass temp;
+                    Type outType = typeof(SaveClass);
                         //skal være samme slags objekter som diagrammet
                     XmlSerializer serializer = new XmlSerializer(outType);
                     using (XmlReader reader = new XmlTextReader(read))
                     {
-                        temp = (ObservableCollection<FigureViewModel>) serializer.Deserialize(reader);
-                        FiguresViewModels.Clear();
-                        for (int i = 0; i < temp.Count; i++)
+                        temp = (SaveClass) serializer.Deserialize(reader);
+                        for (int i = 0; i < temp.Figures.Count; i++)
                         {
                           //  FiguresViewModels.Add(new FigureViewModel(temp[i].X, temp[i].Y, temp[i].Width, temp[i].Height, temp[i].Data, temp[i].Type,false,temp[i].Name));
-                            FiguresViewModels.Add(new FigureViewModel(temp[i]));
+                            FiguresViewModels.Add(new FigureViewModel(temp.Figures[i]));
                         }
-                        
+
+                        for (int i = 0; i < temp.Lines.Count; i++)
+                        {
+                            //  FiguresViewModels.Add(new FigureViewModel(temp[i].X, temp[i].Y, temp[i].Width, temp[i].Height, temp[i].Data, temp[i].Type,false,temp[i].Name));
+                            lines.Add(new LineViewModel(temp.Lines[i]));
+                        }
+                        Debug.WriteLine(lines[0].OriginFigureNr);
                         reader.Close();
                     }
 
                     read.Close();
-                    StatusText = "The file has been loaded";
+                    StatusText = "File has been loaded";
                 }
             }
             catch (Exception ex)
             {
-                StatusText = ex.ToString();
+                StatusText = "File could not be loaded";
                 Console.WriteLine(ex.ToString());
                 //Log exception here
             }
@@ -417,7 +402,7 @@ namespace Uml_Creator.ViewModel
 
         private void Save_Click()
         {
-            StatusText = "Saving your work now";
+            StatusText = "Saving...";
 
             SaveFileDialog gemfildialog = new SaveFileDialog();
             gemfildialog.Filter = "XML files (*.xml)|*.xml";
@@ -429,7 +414,7 @@ namespace Uml_Creator.ViewModel
 
         private void worker_Save(object sender, DoWorkEventArgs e)
         {
-            var serialObject = FiguresViewModels; //skal importere diagrammets data
+            var serialObject = new SaveClass(FiguresViewModels, lines); //skal importere diagrammets data
 
             if (serialObject == null) return;
             try
@@ -443,12 +428,12 @@ namespace Uml_Creator.ViewModel
                     xmlDocument.Load(stream);
                     xmlDocument.Save(FileName);
                     stream.Close();
-                    StatusText = "The document has been saved.";
+                    StatusText = "Document has been saved";
                 }
             }
             catch (Exception ex)
             {
-                   // StatusText = ex.ToString();
+                StatusText = "Document could not be saved";
                 Console.WriteLine(ex.ToString());
                 //Log exception here
             }
@@ -495,20 +480,6 @@ namespace Uml_Creator.ViewModel
                 pngEncoder.Save(fs);
         }
         }*/
-
-
-        /*
-        public string StatusBarTextProperty
-        {
-            get { return (string) GetValue(StatusBarTextPropertyProperty); }
-            set { SetValue(StatusBarTextPropertyProperty, value); }
-        }
-        
-        private void SetValue(DependencyProperty statusBarTextPropertyProperty, string value)
-        {
-            statusBarTextPropertyProperty.Name = value;
-        }
-        */
 
         private string GetValue(DependencyProperty statusBarTextPropertyProperty)
         {

@@ -102,6 +102,7 @@
     <Compile Include="UndoRedo\IUndoCommand.cs" />
     <Compile Include="UndoRedo\UndoRedoController.cs" />
     <Compile Include="ViewModel\ClassContent.cs" />
+    <Compile Include="View\Resource\SaveClass.cs" />
     <Compile Include="View\UserControls\Btns_AddClass_AddLine.xaml.cs">
       <DependentUpon>Btns_AddClass_AddLine.xaml</DependentUpon>
     </Compile>
