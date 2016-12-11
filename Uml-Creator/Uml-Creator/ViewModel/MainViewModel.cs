@@ -66,11 +66,11 @@ namespace Uml_Creator.ViewModel
         UndoRedoController undoRedoController = UndoRedoController.Instance;
         public ObservableCollection<LineViewModel> lines { get; }
 
-        private bool isAddingLineBtnPressed;
+        private bool _isAddingLineBtnPressed;
         private FigureViewModel _firstShapeToConnect;
         public string FileName;
         public string FileNamePic;
-        private ELine lineType;
+        private ELine _lineType;
         BackgroundWorker worker = new BackgroundWorker();
         public Grid canvas;
 
@@ -135,14 +135,10 @@ namespace Uml_Creator.ViewModel
             var pos = Mouse.GetPosition(obj);
             foreach (FigureViewModel t in FiguresViewModels)
             {
-                //Debug.WriteLine(IsDragging);
-                //if (!t.IsSelected) IsDragging= false;
                 if (t.IsSelected)
                 {
                     var xOffest = t.X - pos.X;
                     var yOffest = t.Y - pos.Y;
-                    Debug.WriteLine(t.X);
-                    Debug.WriteLine(pos.X);
                     t.X = pos.X - t.XOffset;
                     t.Y = pos.Y - t.YOffset;
                 }
@@ -154,24 +150,15 @@ namespace Uml_Creator.ViewModel
             if (obj == null) return;
             
 
-            Debug.WriteLine(obj.GetType());
             foreach (FigureViewModel t in FiguresViewModels)
             {
-                Debug.WriteLine("fam");
-                if (!t.IsSelected)
+                if (t.IsSelected)
                 {
-
                     OnAddLineBetweenShapes(t);
                     obj.Focus();
                 }
-                Debug.WriteLine(t.Width);
                 t.XOffset = Mouse.GetPosition(obj).X - t.X;
                 t.YOffset = Mouse.GetPosition(obj).Y - t.Y;
-                //if (!FiguresViewModels[i].IsSelected && obj.MouseDevice.Target.IsMouseCaptured) return;
-                //obj.MouseDevice.Target.CaptureMouse();
-
-                //t.OrigShapePostion = new Point(t.X, t.Y);
-                //IsDragging = true;
             }
         }
 
@@ -181,7 +168,6 @@ namespace Uml_Creator.ViewModel
             IsDragging = false;
             var visual = obj.Source as UIElement;
             if (visual == null) return;
-            Debug.WriteLine("ok ok ok");
             foreach (FigureViewModel t in FiguresViewModels)
             {
                 if (IsDragging) return;
@@ -211,39 +197,47 @@ namespace Uml_Creator.ViewModel
 
         public bool IsAddingSolidLineBtnPressed
         {
-            get { return isAddingLineBtnPressed; }
+            get { return _isAddingLineBtnPressed; }
             set
             {
+                foreach (var t in FiguresViewModels)
+                {
+                    t.IsSelected = false;
+                }
                 Debug.WriteLine("im on");
-                isAddingLineBtnPressed = value;
+                _isAddingLineBtnPressed = value;
                 if (!value)
                     _firstShapeToConnect = null;
 
-                lineType = ELine.Solid; 
-                OnPropertyChanged(nameof(isAddingLineBtnPressed));
+                _lineType = ELine.Solid; 
+                OnPropertyChanged(nameof(_isAddingLineBtnPressed));
             }
         }
 
         public bool IsAddingDashedLineBtnPressed
         {
-            get { return isAddingLineBtnPressed; }
+            get { return _isAddingLineBtnPressed; }
             set
             {
+                foreach (var t in FiguresViewModels)
+                {
+                    t.IsSelected = false;
+                }
                 Debug.WriteLine("im on");
-                isAddingLineBtnPressed = value;
+                _isAddingLineBtnPressed = value;
                 if (!value)
                     _firstShapeToConnect = null;
 
-                lineType = ELine.DashedLine;;
-                OnPropertyChanged(nameof(isAddingLineBtnPressed));
+                _lineType = ELine.DashedLine;;
+                OnPropertyChanged(nameof(_isAddingLineBtnPressed));
             }
         }
 
 
         public void OnAddLineBetweenShapes(FigureViewModel fig)
         {
-
-            if (isAddingLineBtnPressed) { 
+            Debug.WriteLine("adding");
+            if (_isAddingLineBtnPressed) { 
             if (_firstShapeToConnect == null)
                 _firstShapeToConnect = fig;
             else
@@ -251,9 +245,10 @@ namespace Uml_Creator.ViewModel
                 if (fig != _firstShapeToConnect)
                 {
                     undoRedoController.DoExecute(new AddLineCommand(lines,
-                        new LineViewModel(new Line(), _firstShapeToConnect, fig, lineType)));
+                        new LineViewModel(new Line(), _firstShapeToConnect, fig, _lineType)));
                         IsAddingSolidLineBtnPressed = false;
                     IsAddingDashedLineBtnPressed = false;
+                    _firstShapeToConnect = null;
                 }
             }
         }
@@ -370,8 +365,7 @@ namespace Uml_Creator.ViewModel
             {
                 var tempfig = FiguresViewModels[i];
 
-                if(tempfig.Mainvm == null)
-                  tempfig.Mainvm = this;
+                
             }
             
         }

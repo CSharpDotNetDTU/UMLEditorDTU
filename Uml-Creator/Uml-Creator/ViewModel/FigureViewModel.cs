@@ -37,13 +37,8 @@ namespace Uml_Creator.ViewModel
         private Point _rightPoint;
         private Point _bottomPoint;
         private List<LineViewModel> connectedLines = new List<LineViewModel>();
-        private MainViewModel mainvm;
 
-        public MainViewModel Mainvm
-        {
-            get { return mainvm; }
-            set { mainvm = value; }
-        }
+        
 
 
 
@@ -178,13 +173,6 @@ namespace Uml_Creator.ViewModel
         {
             var visual = obj.Source as UIElement;
             if (visual == null) return;
-            
-            if (!IsSelected)
-            {
-                //null reference
-                mainvm.OnAddLineBetweenShapes(this);;
-                //visual.Focus();
-            }
 
             //if (!IsSelected && obj.MouseDevice.Target.IsMouseCaptured) return;
            // obj.MouseDevice.Target.CaptureMouse();
